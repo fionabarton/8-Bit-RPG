@@ -228,7 +228,7 @@ public class CutsceneManager : MonoBehaviour
             if (!RPG.S.paused) {
                 // For Multiple Lines
                 if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx > 0) {
-                    // Reset Text & Cursor
+                    // Reset DialogueManager's text and cursor
                     DialogueManager.S.ClearForNextLine();
 
                     List<string> tMessage = new List<string>();

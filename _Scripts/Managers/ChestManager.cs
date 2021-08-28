@@ -14,8 +14,6 @@ public class ChestManager : MonoBehaviour {
 	private static ChestManager _S;
 	public static ChestManager S { get { return _S; } set { _S = value; } }
 
-	private Transform				tTransform;
-
 	void Awake(){
 		// Singleton
 		S = this;
@@ -27,8 +25,6 @@ public class ChestManager : MonoBehaviour {
 		GameObject chestsGO = GameObject.Find ("Chests");
 
 		if (chestsGO != null) {
-			//tTransform = chestsGO.transform;
-
 			foreach (Transform child in chestsGO.transform) {
 				ChestTrigger tChest = child.gameObject.GetComponent<ChestTrigger> ();
 

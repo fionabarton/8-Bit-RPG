@@ -36,11 +36,6 @@ public class RPG : MonoBehaviour {
 	public string 				previousSceneName;
 	private string				previousPreviousSceneName;
 
-	public void SetAnim(Animator anim, string animName, int speed) {
-		anim.speed = speed;
-		anim.CrossFade(animName, 0);
-	}
-
 	void Awake() {
 		// Singleton
 		S = this;

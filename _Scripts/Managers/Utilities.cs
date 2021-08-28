@@ -40,6 +40,12 @@ public class Utilities : MonoBehaviour
 		tScale.y = y;
 		tGO.transform.localScale = tScale;
 	}
+
+	// Flip GameObject Scale/Sprite
+	public void Flip(GameObject go, ref bool facingRight) {
+		facingRight = !facingRight;
+		SetScale(go, go.transform.localScale.x * -1, go.transform.localScale.y);
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	// Set Selected GameObject
 	public void SetSelectedGO(GameObject tGO) {
@@ -65,8 +71,8 @@ public class Utilities : MonoBehaviour
 		return value / maxValue;
 	}
 	////////////////////////////////////////////////////////////////////////////////
-	// Map Function (currently housed in HealthBar.cs)
-	public float map(float OldMin, float OldMax, float NewMin, float NewMax, float valueToMap) {
+	// Map a value within a set of numbers to a different set of numbers
+	public float Map(float OldMin, float OldMax, float NewMin, float NewMax, float valueToMap) {
 		float OldRange = (OldMax - OldMin);
 		float NewRange = (NewMax - NewMin);
 		float NewValue = (((valueToMap - OldMin) * NewRange) / OldRange) + NewMin;
@@ -97,5 +103,15 @@ public class Utilities : MonoBehaviour
 		for (int i = 0; i <= buttons.Count - 1; i++) {
 			buttons[i].onClick.RemoveAllListeners();
 		}
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Returns true if this gameObject is closer to another gameObject
+	// horizontally than it is vertically
+	public bool isCloserHorizontally(GameObject gameObject1, GameObject gameObject2) {
+		float tX = Mathf.Abs(gameObject1.transform.position.x - gameObject2.transform.position.x);
+		float tY = Mathf.Abs(gameObject1.transform.position.y - gameObject2.transform.position.y);
+
+		if (tX < tY) { return true; } else { return false; }
 	}
 }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Trigger that performs an action implemented its child class OnButtonPress
+/// </summary>
 public class ActivateOnButtonPress : MonoBehaviour {
     [Header("Set in Inspector")]
     // Activate Interactable Cursor OnTriggerEnter2D

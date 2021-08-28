@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Trigger that opens or closes a chest OnButtonPress
+/// </summary>
 public class ChestTrigger : ActivateOnButtonPress {
 	[Header ("Set in Inspector")]
+	// Item within this chest
 	public eItem			item;
 
 	// Used by ChestManager.cs to track whether or not this chest has been opened
 	public int				ndx;
 
+	// Sprites
 	public Sprite			openChest, closedChest;
 	public SpriteRenderer	sRend;
 

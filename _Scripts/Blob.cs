@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blob : MonoBehaviour
-{
+public class Blob : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public GameObject	playerTriggerGO;
 
@@ -50,11 +49,13 @@ public class Blob : MonoBehaviour
 
     void Loop() {
         if (canMove) {
+			// Move gameObject towards movePoint
 			transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
 
+			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
 				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) {
-					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f), .2f, bounds)) {
+					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f), 0.2f, bounds)) {
 						movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f);
 					}
 
@@ -62,7 +63,7 @@ public class Blob : MonoBehaviour
 					anim.CrossFade("Walk_Side", 0);
 					Utilities.S.SetLocalPosition(playerTriggerGO, 0.375f, 0);
 				} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) {
-					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f), .2f, bounds)) {
+					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f), 0.2f, bounds)) {
 						movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f);
 					}
 
@@ -81,17 +82,9 @@ public class Blob : MonoBehaviour
 
 	void FixedLoop() {
 		// Flip scale
-		if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight) {
-			Flip();
-		} else if (Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
-			Flip();
-		}
-	}
-
-	void Flip() {
-		if (canMove) {
-			facingRight = !facingRight;
-			Utilities.S.SetScale(gameObject, transform.localScale.x * -1, transform.localScale.y);
+		if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight ||
+			Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
+			Utilities.S.Flip(gameObject, ref facingRight);
 		}
 	}
 }

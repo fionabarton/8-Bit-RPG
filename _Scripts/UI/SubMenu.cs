@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Dialogue menu that offers the player to choose from multiple options (up to 4)
+/// </summary>
 public class SubMenu : MonoBehaviour {
 	[Header ("Set in Inspector")]
-	// Option Buttons
+	// Option Buttons and GameObjects
 	public List <GameObject>	buttonGO;
 	public List <Button>		buttonCS;
 
@@ -14,7 +17,6 @@ public class SubMenu : MonoBehaviour {
 
 	// Frame Position
 	public RectTransform		frameRT;
-
 	// Cursor Position
 	public RectTransform		cursorRT;
 
@@ -58,7 +60,7 @@ public class SubMenu : MonoBehaviour {
 			}
 			cursorRT.anchoredPosition = new Vector2 ((selectedButtonPos.x + 150), (selectedButtonPos.y));
 
-			// Prevent this from being called until next user directional input
+			// Prevent contents of this if statement from being called until next user directional input
 			canUpdate = false;
 		}
 	}
@@ -100,11 +102,11 @@ public class SubMenu : MonoBehaviour {
 	}
 
 	void SetTextHelper(bool has3Options, bool has4Options, int frameSizeY){
-		// Activate Text
-		text [2].gameObject.SetActive (has3Options);
-		text [3].gameObject.SetActive (has4Options);
+		// Activate Text gameObjects
+		text[2].gameObject.SetActive (has3Options);
+		text[3].gameObject.SetActive (has4Options);
 
-		// Interactable
+		// Buttons Interactable
 		buttonCS[2].interactable = has3Options;
 		buttonCS[3].interactable = has4Options;
 
