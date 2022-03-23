@@ -20,6 +20,9 @@ public class Blob : MonoBehaviour {
 	public float		destination;
 	public bool			alreadyTriggered; // Prevents triggering multiple triggers
 
+	private bool		canEncounter = true;
+	private int			encounterRate = 24;
+
 	// Singleton
 	private static Blob _S;
 	public static Blob S { get { return _S; } set { _S = value; } }
@@ -54,17 +57,29 @@ public class Blob : MonoBehaviour {
 
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
+				// Horizontal input detected
 				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) {
+					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f), 0.2f, bounds)) {
+						// Reposition movePoint horizontally
 						movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f);
+
+						// Check for random encounter 
+						CheckForRandomEncounter();
 					}
 
 					// Set anim and trigger position
 					anim.CrossFade("Walk_Side", 0);
 					Utilities.S.SetLocalPosition(playerTriggerGO, 0.375f, 0);
+				// Vertical input detected
 				} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) {
+					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f), 0.2f, bounds)) {
+						// Reposition movePoint vertically
 						movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f);
+
+						// Check for random encounter 
+						CheckForRandomEncounter();
 					}
 
 					// Set anim and trigger position
@@ -76,6 +91,29 @@ public class Blob : MonoBehaviour {
 						Utilities.S.SetLocalPosition(playerTriggerGO, 0, -0.375f);
 					}
 				}
+			}
+		}
+	}
+
+	// Check for random encounter 
+	void CheckForRandomEncounter() {
+		if (canEncounter) {
+			if(Random.Range(0, encounterRate) == 0) {
+				// Start battle
+				Debug.Log("Start battle");
+
+				// Freeze player
+				canMove = false;
+				alreadyTriggered = true;
+
+				// Activate battle UI
+
+
+				// Set enemy stats
+
+
+				// Get turn order
+
 			}
 		}
 	}
