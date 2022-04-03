@@ -24,7 +24,7 @@ public class ActivateOnButtonPress : MonoBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D coll) {
         if (!Blob.S.alreadyTriggered) {
-            if (!RPG.S.paused) {
+            if (!GameManager.S.paused) {
                 if (coll.gameObject.CompareTag("PlayerTrigger")) {
                     // Prevents triggering multiple triggers
                     Blob.S.alreadyTriggered = true;
@@ -59,23 +59,25 @@ public class ActivateOnButtonPress : MonoBehaviour {
     }
 
     public void Loop() {
-        if (!RPG.S.paused) {
-            if (RPG.S.canInput) {
-                // If there hasn't been any input yet...
-                if (!firstButtonPressed) {
-                    // ...Activate on button press
-                    if (Input.GetButtonDown("SNES A Button")) {
-                        Action();
-                        firstButtonPressed = true;
-                        InteractableCursor.S.Deactivate();
-                    }
-                }
-
-                // Reset trigger
-                if (canBeReset) {
-                    if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
+        if (!GameManager.S.paused) {
+            if (GameManager.S.canInput) {
+                if (!Blob.S.isBattling) {
+                    // If there hasn't been any input yet...
+                    if (!firstButtonPressed) {
+                        // ...Activate on button press
                         if (Input.GetButtonDown("SNES A Button")) {
-                            ResetTrigger();
+                            Action();
+                            firstButtonPressed = true;
+                            InteractableCursor.S.Deactivate();
+                        }
+                    }
+
+                    // Reset trigger
+                    if (canBeReset) {
+                        if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
+                            if (Input.GetButtonDown("SNES A Button")) {
+                                ResetTrigger();
+                            }
                         }
                     }
                 }

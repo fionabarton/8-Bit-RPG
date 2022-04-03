@@ -23,9 +23,15 @@ public class ChestTrigger : ActivateOnButtonPress {
 	protected override void Action() {
 		if (!chestIsOpen) {
 			OpenChest();
+
+			// Audio: Win
+			StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 		} else {
 			// Display Dialogue
 			DialogueManager.S.DisplayText("You've already looted this chest. It's empty, you greedy pig.");
+
+			// Audio: Deny
+			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
 	}
 
@@ -34,7 +40,7 @@ public class ChestTrigger : ActivateOnButtonPress {
 		sRend.sprite = openChest;
 
 		// Add Item to Inventory
-		Item tItem = ItemManager.S.GetItem (item);
+		Item tItem = Items.S.GetItem(item);
 		Inventory.S.AddItemToInventory(tItem);
 
 		// Display Dialogue 

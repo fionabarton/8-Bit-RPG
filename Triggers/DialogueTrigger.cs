@@ -84,13 +84,13 @@ public class DialogueTrigger : ActivateOnButtonPress {
 		// Remove ThisLoop() from UpdateManager delegate on scene change.
 		// This prevents an occasional bug when the Player is within this trigger on scene change.
 		// Would prefer a better solution... 
-		if (!RPG.S.canInput) {
+		if (!GameManager.S.canInput) {
             UpdateManager.updateDelegate -= ThisLoop;
         }
 
         if (Input.GetButtonDown("SNES A Button")) {
 			if (firstButtonPressed) {
-				if (!RPG.S.paused) {
+				if (!GameManager.S.paused) {
 					// If the list of dialogue has multiple elements/lines...
 					if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx > 0) {
 						// Reset DialogueManager's text and cursor
