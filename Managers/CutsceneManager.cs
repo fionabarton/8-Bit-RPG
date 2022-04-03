@@ -155,7 +155,7 @@ public class CutsceneManager : MonoBehaviour
                             CamManager.S.ChangeTarget(Player.S.gameObject, true);
                             break;
                         case 6: // Add Item to Inventory & Display Dialogue  
-                            Inventory.S.AddItemToInventory(ItemManager.S.GetItem(eItem.mpPotion));
+                            Inventory.S.AddItemToInventory(Items.S.GetItem(eItem.mpPotion));
                            
                             message.Clear();
                             message.Add("You were just gifted a magic potion...");
@@ -225,7 +225,7 @@ public class CutsceneManager : MonoBehaviour
     // Handle multiple lines of dialogue
     private void Loop() {
         if (Input.GetButtonDown("SNES A Button")) {
-            if (!RPG.S.paused) {
+            if (!GameManager.S.paused) {
                 // For Multiple Lines
                 if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx > 0) {
                     // Reset DialogueManager's text and cursor
@@ -295,7 +295,7 @@ public class CutsceneManager : MonoBehaviour
     // Start Battle 
     public void StartBattle() {
         if (enemyStats != null) {
-            RPG.S.StartBattle(enemyStats);
+            //GameManager.S.StartBattle(enemyStats);
         } else {
             Debug.LogWarning("EnemyStats not assigned in Inspector!");
         }

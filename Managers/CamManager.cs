@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eCamMode { freezeCam, followAll, noTarget };
-
 public class CamManager : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public Transform		targetTrans;
 
 	[Header("Set Dynamically")]
-	// Singleton
-	private static CamManager _S;
-	public static CamManager S { get { return _S; } set { _S = value; } }
-
-	private static bool		exists;
-
 	public float 			camPosX;
 	public float 			camPosY;  
 	private float			camPosZ = -10;
@@ -29,8 +21,12 @@ public class CamManager : MonoBehaviour {
 
 	public bool				canLerp;
 
+	private static CamManager _S;
+	public static CamManager S { get { return _S; } set { _S = value; } }
+
+	private static bool exists;
+
 	void Awake () {
-		// Singleton
 		S = this;
 
 		// DontDestroyOnLoad

@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
+		AudioManager.S.PlaySong(eSongName.never);
+
 		// Load First Scene
 		//SceneManager.LoadScene(firstScene);
 		//LoadLevel(firstScene);
@@ -108,28 +110,32 @@ public class GameManager : MonoBehaviour {
 
 		// Camera
 		CamManager.S.camMode = eCamMode.followAll;
-		CamManager.S.ChangeTarget(Player.S.gameObject, false);
+		//CamManager.S.ChangeTarget(Player.S.gameObject, false);
 		Camera.main.orthographicSize = 5;
 
 		// Disable BATTLE UI & GameObjects
-		battleUIGO.SetActive(false);
-		battleGameObjects.SetActive(false);
+		//battleUIGO.SetActive(false);
+		//battleGameObjects.SetActive(false);
+
+		// Dectivate battle UI and gameobjects
+		Battle.S.UI.battleMenu.SetActive(false);
+		Battle.S.UI.battleGameObjects.SetActive(false);
 
 		// Deactivate Dialogue Text Box
 		DialogueManager.S.DeactivateTextBox();
 
 		// Deactivate screens
-		PauseMenu.S.UnPause();
+		//PauseMenu.S.UnPause();
 		Items.S.menu.Deactivate();
 		Spells.S.menu.Deactivate();
 		EquipMenu.S.Deactivate();
-		OptionsMenu.S.Deactivate();
-		SaveMenu.S.Deactivate();
-		ShopMenu.S.Deactivate();
-		TitleScreen.S.Deactivate();
+		//OptionsMenu.S.Deactivate();
+		//SaveMenu.S.Deactivate();
+		//ShopMenu.S.Deactivate();
+		//TitleScreen.S.Deactivate();
 
 		// Deactivate PlayerButtons
-		PlayerButtons.S.gameObject.SetActive(false);
+		//PlayerButtons.S.gameObject.SetActive(false);
 
 		// Deactivate Sub Menus
 		gameSubMenu.gameObject.SetActive(false);
@@ -304,8 +310,10 @@ public class GameManager : MonoBehaviour {
 			Party.S.stats[ndx].HP = 0;
 		}
 
+		Battle.S.UI.UpdatePartyStats(ndx);
+
 		// Update Health Bars
-		ProgressBars.S.playerHealthBarsCS[ndx].UpdateBar(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP);
+		//ProgressBars.S.playerHealthBarsCS[ndx].UpdateBar(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP);
 	}
 
 	public void AddPlayerHP(int ndx, int amount) {
@@ -325,6 +333,8 @@ public class GameManager : MonoBehaviour {
 		} else if (Party.S.stats[ndx].MP <= 0) {
 			Party.S.stats[ndx].MP = 0;
 		}
+
+		Battle.S.UI.UpdatePartyStats(ndx);
 
 		// Update Magic Bars
 		//ProgressBars.S.playerMagicBarsCS[ndx].UpdateBar(Party.S.stats[ndx].MP, Party.S.stats[ndx].maxMP, false);
@@ -349,7 +359,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Update Health Bars
-		ProgressBars.S.enemyHealthBarsCS[ndx].UpdateBar(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP);
+		//ProgressBars.S.enemyHealthBarsCS[ndx].UpdateBar(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP);
 	}
 
 	public void AddEnemyHP(int ndx, int amount) {
@@ -378,7 +388,7 @@ public class GameManager : MonoBehaviour {
 		AddSubtractEnemyMP(ndx, false, amount);
 	}
 
-	// ************ Add/Subtract ENEMY MP ************ \\
+	// ************************ \\
 	public void InstantiateFloatingScore(GameObject gameObject, string message, Color color) {
 		// Get and position Floating Score game object
 		GameObject floatingScore = ObjectPool.S.GetPooledObject("FloatingScore");

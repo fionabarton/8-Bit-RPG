@@ -47,7 +47,7 @@ public class DialogueManager : MonoBehaviour {
 
 	public void ThisLoop() {
 		if (Input.GetButtonDown("SNES A Button")) {
-			if (!RPG.S.paused) {
+			if (!GameManager.S.paused) {
 				// Deactivate Text Box (On Button Press)
 				if (dialogueFinished && ndx <= 0) {
 					Invoke("EndDialogue", 0.1f);
@@ -123,7 +123,7 @@ public class DialogueManager : MonoBehaviour {
 
 			dialogueSentences += dialogueWords [i] + " ";
 			dialogueTextCS.text = dialogueSentences;
-			yield return new WaitForSeconds (0.1f);
+			yield return new WaitForSeconds (0.075f);
 		}
 
 		// Optionally Activate cursor
@@ -133,10 +133,10 @@ public class DialogueManager : MonoBehaviour {
 
 		// Optionally Activate Sub Menu
 		if (activateSubMenu) {
-			SubMenu.S.gameObject.SetActive (true);
+			GameManager.S.gameSubMenu.gameObject.SetActive(true);
 
 			// Update Delgate
-			UpdateManager.fixedUpdateDelegate += SubMenu.S.Loop;
+			UpdateManager.fixedUpdateDelegate += GameManager.S.gameSubMenu.Loop;
 		}
 
 		// Gray Out Text Box
@@ -178,7 +178,7 @@ public class DialogueManager : MonoBehaviour {
 		GrayOutTextBox (false);
 
 		// Reset sub menu
-		ResetSubMenuSettings();
+		ResetSettings();
 
 		// Unfreeze Player
 		Blob.S.canMove = canMove;
@@ -202,7 +202,7 @@ public class DialogueManager : MonoBehaviour {
 		dialogueTextCS.color = c;
 	}
 
-	public void ResetSubMenuSettings () {
+	public void ResetSettings() {
 		// Gray Out Text Box after Dialogue 
 		grayOutTextBox = false;
 
@@ -210,10 +210,8 @@ public class DialogueManager : MonoBehaviour {
 		dontActivateCursor = false;
 		// Don't activate Sub Menu after Dialogue 
 		activateSubMenu = false;
-		// Deactivate Sub Menu
-		SubMenu.S.gameObject.SetActive (false);
 
-		// Update Delgate
-		UpdateManager.fixedUpdateDelegate -= SubMenu.S.Loop;
+		// Reset sub menu
+		GameManager.S.gameSubMenu.ResetSettings();
 	}
 }
