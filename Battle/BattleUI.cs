@@ -19,6 +19,9 @@ public class BattleUI : MonoBehaviour {
 	public List<Button> optionButtonsCS;
 	public List<Text> optionButtonsText;
 
+	public List<GameObject> amountButtonsGO;
+	public List<Text> amountButtonsText;
+
 	public List<GameObject> enemySpriteButtonsGO;
 	public List<Button> enemySpriteButtonsCS;
 
@@ -396,8 +399,10 @@ public class BattleUI : MonoBehaviour {
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (i < amount) {
 				optionButtonsGO[i].gameObject.SetActive(true);
+				amountButtonsGO[i].gameObject.SetActive(true);
 			} else {
 				optionButtonsGO[i].gameObject.SetActive(false);
+				amountButtonsGO[i].gameObject.SetActive(false);
 			}
 		}
 	}
@@ -432,6 +437,7 @@ public class BattleUI : MonoBehaviour {
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < _.enemyAmount) {
 				optionButtonsText[i].text = _.enemyStats[firstSlotNdx + i].name;
+				amountButtonsText[i].text = "";
 			}
 		}
 	}
@@ -440,6 +446,7 @@ public class BattleUI : MonoBehaviour {
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < Inventory.S.GetItemList().Count) {
 				optionButtonsText[i].text = Inventory.S.GetItemList()[firstSlotNdx + i].name;
+				amountButtonsText[i].text = "x" + Inventory.S.GetItemCount(Inventory.S.GetItemList()[firstSlotNdx + i]).ToString(); ;
 			}
 		}
 	}
@@ -448,6 +455,7 @@ public class BattleUI : MonoBehaviour {
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < Party.S.stats[_.PlayerNdx()].spellNdx) {
 				optionButtonsText[i].text = Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + i].name;
+				amountButtonsText[i].text =  Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + i].cost.ToString();
 			}
 		}
 	}
