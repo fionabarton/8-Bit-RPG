@@ -41,11 +41,9 @@ public class BattleInitiative : MonoBehaviour {
 		for (int i = 0; i <= Party.S.partyNdx; i++) {
 			Battle.S.UI.partyStats[i].SetActive(true);
 
+			// Set party name and stats text
 			Battle.S.UI.partyNameText[i].text = Party.S.stats[i].name;
-			Battle.S.UI.partyStatsText[i].text =
-				Party.S.stats[i].HP.ToString() + "/" + Party.S.stats[i].maxHP.ToString() +
-				"\n" + Party.S.stats[i].MP.ToString() + "/" + Party.S.stats[i].maxMP.ToString() +
-				"\n" + Party.S.stats[i].LVL.ToString();
+			Battle.S.UI.UpdatePartyStats(i);
 
 			// Reset PlayerDead bools
 			_.playerDead[i] = false;
@@ -88,7 +86,7 @@ public class BattleInitiative : MonoBehaviour {
 		}
 
 		// Set Enemy Amount (for testing)
-		//_.enemyAmount = 1;
+		_.enemyAmount = 5;
 
 		// Deactivate all enemy sprites
 		Utilities.S.SetActiveList(_.enemySprites, false);

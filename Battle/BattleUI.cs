@@ -14,6 +14,8 @@ public class BattleUI : MonoBehaviour {
 	public List<GameObject> partyStats;
 	public List<Text> partyNameText;
 	public List<Text> partyStatsText;
+	public List<Image> partyStartsTextBoxSprite;
+	public List<Text> partyStatsHeader;
 
 	public List<GameObject> optionButtonsGO;
 	public List<Button> optionButtonsCS;
@@ -288,6 +290,24 @@ public class BattleUI : MonoBehaviour {
 			Party.S.stats[ndx].HP.ToString() + "/" + Party.S.stats[ndx].maxHP.ToString() +
 			"\n" + Party.S.stats[ndx].MP.ToString() + "/" + Party.S.stats[ndx].maxMP.ToString() +
 			"\n" + Party.S.stats[ndx].LVL.ToString();
+
+		// Set text and textBoxSprite color
+		if(Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) >= 0.25f) {
+			partyStatsText[ndx].color = new Color32(255, 255, 255, 255);
+			partyNameText[ndx].color = new Color32(255, 255, 255, 255);
+			partyStatsHeader[ndx].color = new Color32(255, 255, 255, 255);
+			partyStartsTextBoxSprite[ndx].color = new Color32(255, 255, 255, 255);
+		} else if (Party.S.stats[ndx].HP > 0 && Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) < 0.25f) {
+			partyStatsText[ndx].color = new Color32(229, 92, 15, 255);
+			partyNameText[ndx].color = new Color32(229, 92, 15, 255);
+			partyStatsHeader[ndx].color = new Color32(229, 92, 15, 255);
+			partyStartsTextBoxSprite[ndx].color = new Color32(229, 92, 15, 255);
+		} else {
+			partyStatsText[ndx].color = new Color32(168, 7, 32, 255);
+			partyNameText[ndx].color = new Color32(168, 7, 32, 255);
+			partyStatsHeader[ndx].color = new Color32(168, 7, 32, 255);
+			partyStartsTextBoxSprite[ndx].color = new Color32(168, 7, 32, 255);
+		}
 	}
 
 	public void PositionEnemySprites() {
