@@ -59,7 +59,7 @@ public class Party : MonoBehaviour {
 			new List<Spell> { Spells.S.spells[1], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[4], Spells.S.spells[5], Spells.S.spells[3], Spells.S.spells[6], Spells.S.spells[7], Spells.S.spells[8], Spells.S.spells[9], Spells.S.spells[10], Spells.S.spells[11], Spells.S.spells[12] },
 			new List<bool>(new bool[30]),
 			new List<int> { 0, 0, 7, 23, 47, 110, 220, 450, 800, 1300, 2000 },
-			false, 0)
+			false, 0, 0)
 		);
 		// Player 2
 		stats.Add(new PartyStats("Bill", 32, 32, 32, 15, 15, 15,
@@ -68,7 +68,7 @@ public class Party : MonoBehaviour {
 			new List<Spell> { Spells.S.spells[3], Spells.S.spells[1], Spells.S.spells[0], Spells.S.spells[4], Spells.S.spells[5], Spells.S.spells[2], Spells.S.spells[6], Spells.S.spells[7], Spells.S.spells[8], Spells.S.spells[9], Spells.S.spells[10], Spells.S.spells[11], Spells.S.spells[12] },
 			new List<bool>(new bool[30]),
 			new List<int> { 0, 0, 9, 23, 55, 110, 250, 450, 850, 1300, 2100 },
-			false, 0)
+			false, 0, 1)
 		);
 		// Player 3
 		stats.Add(new PartyStats("Fake Bill", 25, 25, 25, 10, 10, 10,
@@ -77,7 +77,7 @@ public class Party : MonoBehaviour {
 			new List<Spell> { Spells.S.spells[3], Spells.S.spells[4], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[1], Spells.S.spells[5], Spells.S.spells[6], Spells.S.spells[7], Spells.S.spells[8], Spells.S.spells[9] },
 			new List<bool>(new bool[30]),
 			new List<int> { 0, 0, 9, 23, 55, 110, 250, 450, 850, 1300, 2100 },
-			false, 0)
+			false, 0, 2)
 		);
 
 		EquipMenu.S.SetInitialEquipment();
@@ -268,10 +268,12 @@ public class PartyStats {
 	public bool hasLeveledUp;
 	public int previousLVL;
 
+	public int battleID;
+
 	public PartyStats(string name, int HP, int maxHP, int baseMaxHP, int MP, int maxMP, int baseMaxMP,
 		int STR, int baseSTR, int DEF, int baseDEF, int WIS, int baseWIS, int AGI, int baseAGI,
 		int EXP, int LVL, int spellNdx,
-		List<Spell> spells, List<bool> hasReachedThisLevel, List<int> expToNextLevel, bool hasLeveledUp, int previousLVL) {
+		List<Spell> spells, List<bool> hasReachedThisLevel, List<int> expToNextLevel, bool hasLeveledUp, int previousLVL, int battleID) {
 		this.name = name;
 		this.HP = HP;
 		this.maxHP = maxHP;
@@ -296,5 +298,7 @@ public class PartyStats {
 		this.hasReachedThisLevel = hasReachedThisLevel;
 		this.expToNextLevel = expToNextLevel;
 		this.previousLVL = previousLVL;
+
+		this.battleID = battleID;
 	}
 }
