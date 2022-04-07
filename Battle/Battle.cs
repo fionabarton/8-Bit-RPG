@@ -27,8 +27,10 @@ public class Battle : MonoBehaviour {
 
 	public int enemyAmount, partyQty;
 
+	public int totalEnemyAmount;
+
 	// The names of currently engaged Party Members & Enemies
-	public List<string> turnOrder;
+	public List<int> turnOrder;
 
 	// The index of which character's turn it currently is
 	public int turnNdx;
@@ -61,10 +63,6 @@ public class Battle : MonoBehaviour {
 
 	// Ensures audio is only played once when button is selected
 	public GameObject previousSelectedForAudio;
-
-	// If an enemy announces its intent to perform a certain move during its next turn,
-	// store the move's index
-	public List<int> nextTurnMoveNdx = new List<int>();
 
 	public BattleInitiative initiative;
 	public BattleDialogue dialogue;
@@ -178,12 +176,12 @@ public class Battle : MonoBehaviour {
 					case eBattleMode.enemyAction:
 						if (Input.GetButtonDown("SNES B Button")) {
 							// If the enemy announced what move it would perform during its previous turn...
-							if (nextTurnMoveNdx[EnemyNdx()] != 999) {
+							if (enemyStats[EnemyNdx()].nextTurnMoveNdx != 999) {
 								// Cache move index
-								int moveNdx = nextTurnMoveNdx[EnemyNdx()];
+								int moveNdx = enemyStats[EnemyNdx()].nextTurnMoveNdx;
 
 								// Reset this enemy's nextTurnMoveNdx
-								nextTurnMoveNdx[EnemyNdx()] = 999;
+								enemyStats[EnemyNdx()].nextTurnMoveNdx = 999;
 
 								// ...call previously announced move this turn
 								enemyAI.CallEnemyMove(moveNdx);
@@ -348,11 +346,6 @@ public class Battle : MonoBehaviour {
 		// Clear Dropped Items
 		droppedItems.Clear();
 
-		// Reset next turn move indexes & deactivate help bubbles
-		for (int i = 0; i < nextTurnMoveNdx.Count; i++) {
-			StopCallingForHelp(i);
-		}
-
 		// Reset playerActions.buttonsCS text color
 		Utilities.S.SetTextColor(playerActions.actionButtonsCS, new Color32(39, 201, 255, 255));
 
@@ -365,8 +358,11 @@ public class Battle : MonoBehaviour {
         // Deactivate Cursors
         Utilities.S.SetActiveList(UI.cursors, false);
 
-        // Reset Exp/Gold to add
-        expToAdd = 0;
+		// Deactivate Enemy "Help" Word Bubbles
+		Utilities.S.SetActiveList(UI.enemyHelpBubblesGO, false);
+
+		// Reset Exp/Gold to add
+		expToAdd = 0;
 		goldToAdd = 0;
 
 		// Reset Chance to Run
@@ -379,9 +375,9 @@ public class Battle : MonoBehaviour {
 		initiative.SetInitiative();
 
 		// Switch mode (playerTurn or enemyTurn) based off of turnNdx
-		if (turnNdx == turnOrder.IndexOf(Party.S.stats[0].name) || turnNdx == turnOrder.IndexOf(Party.S.stats[1].name) || turnNdx == turnOrder.IndexOf(Party.S.stats[2].name)) {
+		if (turnNdx == turnOrder.IndexOf(Party.S.stats[0].battleID) || turnNdx == turnOrder.IndexOf(Party.S.stats[1].battleID) || turnNdx == turnOrder.IndexOf(Party.S.stats[2].battleID)) {
 			mode = eBattleMode.playerTurn;
-		} else if (turnNdx == turnOrder.IndexOf(enemyStats[0].name) || turnNdx == turnOrder.IndexOf(enemyStats[1].name) || turnNdx == turnOrder.IndexOf(enemyStats[2].name) || turnNdx == turnOrder.IndexOf(enemyStats[3].name) || turnNdx == turnOrder.IndexOf(enemyStats[4].name)) {
+		} else if (turnNdx == turnOrder.IndexOf(enemyStats[0].battleID) || turnNdx == turnOrder.IndexOf(enemyStats[1].battleID) || turnNdx == turnOrder.IndexOf(enemyStats[2].battleID) || turnNdx == turnOrder.IndexOf(enemyStats[3].battleID) || turnNdx == turnOrder.IndexOf(enemyStats[4].battleID)) {
 			mode = eBattleMode.enemyTurn;
 		}
 	}
@@ -395,8 +391,8 @@ public class Battle : MonoBehaviour {
 			roundNdx += 1;
 		}
 
-		// Deactivate cursors
-		Utilities.S.SetActiveList(UI.cursors, false);
+        // Deactivate cursors
+        Utilities.S.SetActiveList(UI.cursors, false);
 
 		// Reset button to be selected (Fight Button)
 		previousSelectedGameObject = playerActions.actionButtonsGO[0];
@@ -407,12 +403,19 @@ public class Battle : MonoBehaviour {
 		} else {
 			mode = eBattleMode.enemyTurn;
 		}
-	}
+
+        string battleIDsString = "turnNdx: " + turnNdx + " || battleIDs: ";
+        for (int i = 0; i < enemyStats.Count; i++) {
+			//battleIDsString += turnOrder.IndexOf(enemyStats[i].battleID) + ", ";
+			battleIDsString += enemyStats[i].battleID + ", ";
+		}
+        Debug.Log(battleIDsString);
+    }
 
 	// Return current player turn index, otherwise return -1	
 	public int PlayerNdx() {
 		for (int i = 0; i < Party.S.stats.Count; i++) {
-			if (turnNdx == turnOrder.IndexOf(Party.S.stats[i].name)) {
+			if (turnNdx == turnOrder.IndexOf(Party.S.stats[i].battleID)) {
 				return i;
 			}
 		}
@@ -422,15 +425,15 @@ public class Battle : MonoBehaviour {
 	// Return current enemy turn index, otherwise return -1																																						
 	public int EnemyNdx() {
 		for (int i = 0; i < enemyStats.Count; i++) {
-			if (turnNdx == turnOrder.IndexOf(enemyStats[i].name)) {
+			if (turnNdx == turnOrder.IndexOf(enemyStats[i].battleID)) {
 				return i;
 			}
 		}
-		return -1;
+        return -1;
 	}
 
 	public void PlayerTurn(bool setPreviousSelected = true, bool checkForAilment = true) { // if (Input.GetButtonDown ("Submit"))
-		TurnHelper(Party.S.stats[PlayerNdx()].name, PlayerNdx(), true);
+		TurnHelper(PlayerNdx(), true);
 
 		// If player has status ailment...
 		if (checkForAilment) {
@@ -469,7 +472,7 @@ public class Battle : MonoBehaviour {
 
 	// Enemy is about to act!
 	public void EnemyTurn(bool checkForAilment = true) { // if (Input.GetButtonDown ("Submit"))
-		TurnHelper(enemyStats[EnemyNdx()].name, EnemyNdx(), false);
+		TurnHelper(EnemyNdx(), false);
 
         // If enemy has status ailment...
         if (checkForAilment) {
@@ -488,7 +491,7 @@ public class Battle : MonoBehaviour {
 		mode = eBattleMode.enemyAction;
 	}
 
-	public void TurnHelper(string name, int ndx, bool isPlayerTurn) {
+	public void TurnHelper(int ndx, bool isPlayerTurn) {
 		// If Defended previous turn, remove from Defenders list
 		StatusEffects.S.RemoveDefender(isPlayerTurn, ndx);
 
@@ -501,7 +504,6 @@ public class Battle : MonoBehaviour {
 		// Activate/set enemy sprites
 		for (int i = 0; i < enemyAmount; i++) {
 			enemySprites[i].SetActive(true);
-			//enemySRends[i].sprite = enemyStats[activeEnemyNdxes[i]].sprite;
 			enemySRends[i].sprite = enemyStats[i].sprite;
 		}
 
@@ -533,6 +535,11 @@ public class Battle : MonoBehaviour {
 	// Reset next turn move index & deactivate help bubble
 	public void StopCallingForHelp(int ndx) {
 		// Reset next turn move index
-		nextTurnMoveNdx[ndx] = 999;
+		enemyStats[ndx].nextTurnMoveNdx = 999;
+
+		enemyStats[ndx].isCallingForHelp = false;
+
+		// Deactivate Enemy "Help" Word Bubble
+		UI.enemyHelpBubblesGO[ndx].SetActive(false);
 	}
 }

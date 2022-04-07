@@ -334,10 +334,12 @@ public class BattleEnemyActions : MonoBehaviour {
 	// Index = 7
 	// Call for backup next turn
 	public void CallForBackupNextTurn() {
-		_.nextTurnMoveNdx[_.EnemyNdx()] = 6;
+		_.enemyStats[_.EnemyNdx()].nextTurnMoveNdx = 6;
 
 		// Activate Enemy "Help" Word Bubble
-		//_.enemyHelpBubbles[_.EnemyNdx()].SetActive(true);
+		_.UI.enemyHelpBubblesGO[_.EnemyNdx()].SetActive(true);
+
+		_.enemyStats[_.EnemyNdx()].isCallingForHelp = true;
 
 		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " is getting ready to call for help!");
 		_.NextTurn();
@@ -346,19 +348,11 @@ public class BattleEnemyActions : MonoBehaviour {
 	// Index = 6
 	// Call for backup 
 	public void CallForBackup() {
-		// Deactivate Enemy "Help" Word Bubble
-		//_.enemyHelpBubbles[_.EnemyNdx()].SetActive(false);
+		// Deactivate Enemy "Help" Word Bubble, etc.
+		_.StopCallingForHelp(_.EnemyNdx());
 
-		if (_.enemyStats[0].isDead) {
-			CallForBackupHelper(0);
-		} else if (_.enemyStats[1].isDead) {
-			CallForBackupHelper(1);
-		} else if (_.enemyStats[2].isDead) {
-			CallForBackupHelper(2);
-		} else if (_.enemyStats[3].isDead) {
-			CallForBackupHelper(3);
-		} else if (_.enemyStats[4].isDead) {
-			CallForBackupHelper(4);
+		if (_.enemyAmount < 5) {
+			CallForBackupHelper(_.enemyAmount);
 		} else {
 			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...but no one came!");
 
@@ -370,39 +364,74 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	public void CallForBackupHelper(int enemyNdx) {
-		// Set Selected GameObject (Fight Button)
-		_.enemyStats[enemyNdx].isDead = false;
+		// Display Text
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...and someone came!");
+
+		// Add to EnemyAmount 
+		_.enemyAmount += 1;
+		_.totalEnemyAmount += 1;
+
+		// Get all enemy battleIDs
+		List<int> usedBattleIDs = new List<int>();
+		for (int i = 0; i < _.enemyStats.Count; i++) {
+			usedBattleIDs.Add(_.enemyStats[i].battleID);
+		}
+
+		// Get unused battleID
+		int unusedBattleID = -1;
+		if (!usedBattleIDs.Contains(3)) {
+			unusedBattleID = 3;
+		} else if (!usedBattleIDs.Contains(4)) {
+			unusedBattleID = 4;
+		} else if (!usedBattleIDs.Contains(5)) {
+			unusedBattleID = 5;
+		} else if (!usedBattleIDs.Contains(6)) {
+			unusedBattleID = 6;
+		} else if (!usedBattleIDs.Contains(7)) {
+			unusedBattleID = 7;
+		}
+
+		// Clone and add EnemyStats
+		var clone = Instantiate(Blob.S.enemyStats[enemyNdx]);
+		_.enemyStats.Add(clone);
+
+		int ndx = _.enemyStats.Count - 1;
+
+		clone.isDead = false;
+		clone.isCallingForHelp = false;
+		clone.nextTurnMoveNdx = 999;
+
+		// Give enemy a unique battleID
+		clone.battleID = unusedBattleID; //_.totalEnemyAmount + 2;
 
 		// Add to Turn Order
-		_.turnOrder.Add(_.enemyStats[enemyNdx].name);
+		_.turnOrder.Add(clone.battleID);
 
 		// Reset HP/MP
-		_.enemyStats[enemyNdx].HP = _.enemyStats[enemyNdx].maxHP;
-		_.enemyStats[enemyNdx].MP = _.enemyStats[enemyNdx].maxMP;
+		clone.HP = clone.maxHP;
+		clone.MP = clone.maxMP;
 
 		// Gold/EXP payout
-		_.expToAdd += _.enemyStats[enemyNdx].EXP;
-		_.goldToAdd += _.enemyStats[enemyNdx].Gold;
+		_.expToAdd += clone.EXP;
+		_.goldToAdd += clone.Gold;
 
 		// Activate/Deactivate Enemy Buttons, Stats, Sprites
-		//_.playerActions.EnemyButtonSetActive(enemyNdx, true);
-		//_.enemySprite[enemyNdx].enabled = true;
+		_.enemySprites[ndx].SetActive(true);
+		_.enemySRends[ndx].sprite = clone.sprite;
 
 		// Enable/Update Health Bars
 		//ProgressBars.S.enemyHealthBarsCS[enemyNdx].transform.parent.gameObject.SetActive(true);
 		//ProgressBars.S.enemyHealthBarsCS[enemyNdx].UpdateBar(_.enemyStats[enemyNdx].HP, _.enemyStats[enemyNdx].maxHP);
 
-		// Animation: Enemy ARRIVAL 
-		//_.enemyAnimator[enemyNdx].CrossFade("Arrival", 0);
-
-		// Add to EnemyAmount 
-		_.enemyAmount += 1;
+		// Set enemy sprites positions
+		_.UI.PositionEnemySprites();
 
 		// Audio: Run
 		AudioManager.S.PlaySFX(eSoundName.run);
 
-		// Display Text
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...and someone came!");
+		//for (int i = 0; i < _.enemyStats.Count; i++) {
+		//	Debug.Log(_.enemyStats[i].battleID);
+		//}
 	}
 
 	public void PlayersDeath(List<int> deadPlayers, int totalAttackDamage) {

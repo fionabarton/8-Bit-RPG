@@ -11,27 +11,30 @@ public class BattleUI : MonoBehaviour {
 	public GameObject battleMenu;
 	public GameObject battleGameObjects;
 
+	// Party stats
 	public List<GameObject> partyStats;
 	public List<Text> partyNameText;
 	public List<Text> partyStatsText;
 	public List<Image> partyStartsTextBoxSprite;
 	public List<Text> partyStatsHeader;
+	public List<Button> partyNameButtonsCS;
 
+	// Option buttons
 	public List<GameObject> optionButtonsGO;
 	public List<Button> optionButtonsCS;
 	public List<Text> optionButtonsText;
-
 	public List<GameObject> amountButtonsGO;
 	public List<Text> amountButtonsText;
 
+	// Enemy sprites/buttons
 	public List<GameObject> enemySpriteButtonsGO;
 	public List<Button> enemySpriteButtonsCS;
-
-	public List<Button> partyNameButtonsCS;
+	public List<GameObject> enemyHelpBubblesGO;
 
 	// Player whose turn it is
 	public Text playerNameText;
 
+	// Cursors
 	public List<GameObject> cursors = new List<GameObject>();
 	public GameObject actionOptionsButtonsCursor;
 	public List<GameObject> enemySpriteButtonsCursors = new List<GameObject>();
@@ -338,6 +341,16 @@ public class BattleUI : MonoBehaviour {
 				Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3f, 0);
 				Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6f, 0);
 				break;
+		}
+
+		// Deactivate all enemy help bubbles sprites
+		Utilities.S.SetActiveList(_.UI.enemyHelpBubblesGO, false);
+
+		// Activate enemy help bubbles sprites
+		for (int i = 0; i < _.enemyAmount; i++) {
+            if (_.enemyStats[i].isCallingForHelp) {
+				_.UI.enemyHelpBubblesGO[i].SetActive(true);
+			}
 		}
 	}
 

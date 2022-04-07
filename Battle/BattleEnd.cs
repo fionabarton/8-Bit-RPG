@@ -26,7 +26,7 @@ public class BattleEnd : MonoBehaviour {
 		_.StopCallingForHelp(ndx);
 
 		// Remove enemy from turn order
-		_.turnOrder.Remove(_.enemyStats[ndx].name);
+		_.turnOrder.Remove(_.enemyStats[ndx].battleID);
 
 		// Remove all status ailments 
 		StatusEffects.S.RemoveAllStatusAilments(false, ndx);
@@ -170,7 +170,7 @@ public class BattleEnd : MonoBehaviour {
 		StatusEffects.S.RemoveAllStatusAilments(true, ndx);
 
 		// Remove player from turn order
-		_.turnOrder.Remove(Party.S.stats[ndx].name);
+		_.turnOrder.Remove(Party.S.stats[ndx].battleID);
 
 		if (displayText) {
 			_.dialogue.DisplayText("Oh no!\n" + Party.S.stats[ndx].name + " has been felled!");

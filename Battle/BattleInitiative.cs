@@ -11,7 +11,7 @@ public class BattleInitiative : MonoBehaviour {
 	// Initiative
 	private int d20;
 	// Key: Character Name, Value: Turn Order
-	private Dictionary<string, int> turnOrder = new Dictionary<string, int>();
+	private Dictionary<int, int> turnOrder = new Dictionary<int, int>();
 
 	void Start() {
 		_ = Battle.S;
@@ -87,6 +87,29 @@ public class BattleInitiative : MonoBehaviour {
 
 		// Set Enemy Amount (for testing)
 		_.enemyAmount = 5;
+		_.totalEnemyAmount = _.enemyAmount;
+
+        // Remove extra enemy stats
+        switch (_.enemyAmount) {
+			case 1:
+				_.enemyStats.RemoveAt(4);
+				_.enemyStats.RemoveAt(3);
+				_.enemyStats.RemoveAt(2);
+				_.enemyStats.RemoveAt(1);
+				break;
+			case 2:
+				_.enemyStats.RemoveAt(4);
+				_.enemyStats.RemoveAt(3);
+				_.enemyStats.RemoveAt(2);
+				break;
+			case 3:
+				_.enemyStats.RemoveAt(4);
+				_.enemyStats.RemoveAt(3);
+				break;
+			case 4:
+				_.enemyStats.RemoveAt(4);
+				break;
+		}
 
 		// Deactivate all enemy sprites
 		Utilities.S.SetActiveList(_.enemySprites, false);
@@ -110,6 +133,10 @@ public class BattleInitiative : MonoBehaviour {
 
 			// Reset EnemyDead bools:  For EnemyDeaths
 			_.enemyStats[i].isDead = false;
+			_.StopCallingForHelp(i);
+
+			// Set battleID
+			_.enemyStats[i].battleID = i + 3;
 		}
 
 		// Set enemy sprites positions
@@ -150,30 +177,30 @@ public class BattleInitiative : MonoBehaviour {
 		// For all characters to engage in battle, calculate their turn order
 
 		// Player 1
-		RollInitiative(Party.S.stats[0].name, Party.S.stats[0].AGI, Party.S.stats[0].LVL, true, whoGoesFirst);
+		RollInitiative(Party.S.stats[0].battleID, Party.S.stats[0].AGI, Party.S.stats[0].LVL, true, whoGoesFirst);
 		// Player 2
 		if (_.partyQty >= 1) {
-			RollInitiative(Party.S.stats[1].name, Party.S.stats[1].AGI, Party.S.stats[1].LVL, true, whoGoesFirst);
+			RollInitiative(Party.S.stats[1].battleID, Party.S.stats[1].AGI, Party.S.stats[1].LVL, true, whoGoesFirst);
 			// Player 3
 			if (_.partyQty >= 2) {
-				RollInitiative(Party.S.stats[2].name, Party.S.stats[2].AGI, Party.S.stats[2].LVL, true, whoGoesFirst);
+				RollInitiative(Party.S.stats[2].battleID, Party.S.stats[2].AGI, Party.S.stats[2].LVL, true, whoGoesFirst);
 			}
 		}
 
 		// Enemy 1
-		RollInitiative(_.enemyStats[0].name, _.enemyStats[0].AGI, _.enemyStats[0].LVL, false, whoGoesFirst);
+		RollInitiative(_.enemyStats[0].battleID, _.enemyStats[0].AGI, _.enemyStats[0].LVL, false, whoGoesFirst);
 		// Enemy 2
 		if (_.enemyAmount >= 2) {
-			RollInitiative(_.enemyStats[1].name, _.enemyStats[1].AGI, _.enemyStats[1].LVL, false, whoGoesFirst);
+			RollInitiative(_.enemyStats[1].battleID, _.enemyStats[1].AGI, _.enemyStats[1].LVL, false, whoGoesFirst);
 			// Enemy 3
 			if (_.enemyAmount >= 3) {
-				RollInitiative(_.enemyStats[2].name, _.enemyStats[2].AGI, _.enemyStats[2].LVL, false, whoGoesFirst);
+				RollInitiative(_.enemyStats[2].battleID, _.enemyStats[2].AGI, _.enemyStats[2].LVL, false, whoGoesFirst);
 				// Enemy 4
 				if (_.enemyAmount >= 4) {
-					RollInitiative(_.enemyStats[3].name, _.enemyStats[3].AGI, _.enemyStats[3].LVL, false, whoGoesFirst);
+					RollInitiative(_.enemyStats[3].battleID, _.enemyStats[3].AGI, _.enemyStats[3].LVL, false, whoGoesFirst);
 					// Enemy 5
 					if (_.enemyAmount >= 5) {
-						RollInitiative(_.enemyStats[4].name, _.enemyStats[4].AGI, _.enemyStats[4].LVL, false, whoGoesFirst);
+						RollInitiative(_.enemyStats[4].battleID, _.enemyStats[4].AGI, _.enemyStats[4].LVL, false, whoGoesFirst);
 					}
 				}
 			}
@@ -185,12 +212,12 @@ public class BattleInitiative : MonoBehaviour {
 					select pair;
 
 		// Add each Dictionary Key (party member or enemy name as a string) to Battle.TurnOrder
-		foreach (KeyValuePair<string, int> pair in items) {
+		foreach (KeyValuePair<int, int> pair in items) {
 			_.turnOrder.Add(pair.Key);
 		}
 	}
 
-	public void RollInitiative(string name, int AGI, int LVL, bool playerOrEnemy, string whoGoesFirst) {
+	public void RollInitiative(int battleID, int AGI, int LVL, bool playerOrEnemy, string whoGoesFirst) {
 		// Roll Player/Enemy's Initiative
 		d20 = Random.Range(1, 20);
 		d20 += AGI + LVL;
@@ -210,6 +237,6 @@ public class BattleInitiative : MonoBehaviour {
 		}
 
 		// Add character to TurnOrder
-		turnOrder.Add(name, d20);
+		turnOrder.Add(battleID, d20);
 	}
 }
