@@ -403,7 +403,11 @@ public class GameManager : MonoBehaviour {
 				texts[i].text = message;
 				// Set color of text in center
 				if (i == texts.Length - 1) {
-					texts[i].color = color;
+					if(message != "0") {
+						texts[i].color = color;
+					} else {
+						texts[i].color = Color.white;
+					}
 				}
 			}
 		}
