@@ -113,7 +113,7 @@ public class BattleSpells : MonoBehaviour {
 		// Add to TARGET Player's HP
 		GameManager.S.AddPlayerHP(ndx, amountToHeal);
 
-		//CurePlayerAnimation(ndx, true, amountToHeal);
+		CurePlayerAnimation(ndx, true, amountToHeal);
 	}
 
 	// Heal - Heal a single party member 
@@ -220,7 +220,7 @@ public class BattleSpells : MonoBehaviour {
 		_.partyQty += 1;
 
 		// Add Player to Turn Order
-		_.turnOrder.Add(Party.S.stats[ndx].name);
+		_.turnOrder.Add(Party.S.stats[ndx].battleID);
 
 		// Get 6-10% of max HP
 		float lowEnd = Mathf.Max(1, Party.S.stats[ndx].maxHP * 0.06f);
@@ -464,7 +464,7 @@ public class BattleSpells : MonoBehaviour {
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
-		//CurePlayerAnimation(ndx, false);
+		CurePlayerAnimation(ndx, false);
 
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -503,7 +503,7 @@ public class BattleSpells : MonoBehaviour {
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
 
-		//CurePlayerAnimation(ndx, false);
+		CurePlayerAnimation(ndx, false);
 
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -542,7 +542,7 @@ public class BattleSpells : MonoBehaviour {
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
 
-		//CurePlayerAnimation(ndx, false);
+		CurePlayerAnimation(ndx, false);
 
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -573,7 +573,7 @@ public class BattleSpells : MonoBehaviour {
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
 
-		//DamageEnemyAnimation(ndx);
+		DamageEnemyAnimation(ndx);
 
 		// Poison enemy
 		StatusEffects.S.AddPoisoned(ndx);
@@ -598,7 +598,7 @@ public class BattleSpells : MonoBehaviour {
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
 
-		//DamageEnemyAnimation(ndx);
+		DamageEnemyAnimation(ndx);
 
 		// Paralyze enemy
 		StatusEffects.S.AddParalyzed(ndx);
@@ -623,7 +623,7 @@ public class BattleSpells : MonoBehaviour {
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
 
-		//DamageEnemyAnimation(ndx);
+		DamageEnemyAnimation(ndx);
 
 		// Put enemy to sleep 
 		StatusEffects.S.AddSleeping(ndx);
@@ -716,29 +716,29 @@ public class BattleSpells : MonoBehaviour {
 		}
 	}
 
-    //public void CurePlayerAnimation(int ndx, bool displayFloatingScore = false, int scoreAmount = 0) {
-    //       // Get and position Poof game object
-    //       GameObject poof = ObjectPool.S.GetPooledObject("Poof");
-    //       ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[ndx]);
+    public void CurePlayerAnimation(int ndx, bool displayFloatingScore = false, int scoreAmount = 0) {
+        //// Get and position Poof game object
+        //GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+        //ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[ndx]);
 
-    //       // Display Floating Score
-    //       if (displayFloatingScore) {
-    //           GameManager.S.InstantiateFloatingScore(_.playerSprite[ndx], scoreAmount.ToString(), Color.green);
-    //       }
+        // Display Floating Score
+        if (displayFloatingScore) {
+            GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), Color.green);
+        }
 
-    //       // Set anim
-    //       _.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-    //}
+        //// Set anim
+        //_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
+    }
 
     public void DamageEnemyAnimation(int ndx, bool displayFloatingScore = false, bool playPlayerAnim = true, bool playDamageSFX = true) {
         //       // Get and position Explosion game object
         //       GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
         //       ObjectPool.S.PosAndEnableObj(explosion, _.enemySprite[ndx].gameObject);
 
-        //       // Display Floating Score
-        //       if (displayFloatingScore) {
-        //           GameManager.S.InstantiateFloatingScore(_.enemySprite[ndx].gameObject, _.attackDamage.ToString(), Color.red);
-        //       }
+        // Display Floating Score
+        if (displayFloatingScore) {
+            GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+        }
 
         //       // Set player anim
         //       if (playPlayerAnim) {
