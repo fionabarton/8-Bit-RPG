@@ -162,6 +162,9 @@ public class BattleEnemyActions : MonoBehaviour {
 			}
 		}
 
+		// Display Floating Score
+		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], amountToHeal.ToString(), Color.green);
+
 		// Audio: Buff
 		AudioManager.S.PlaySFX(eSoundName.buff1);
 
@@ -306,6 +309,9 @@ public class BattleEnemyActions : MonoBehaviour {
 						// Animation: Player Damage
 						//_.playerAnimator[i].CrossFade("Damage", 0);
 					}
+
+					// Display Floating Score
+					GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[i].gameObject, _.attackDamage.ToString(), Color.red);
 				}
 
 				// If DEFENDING, Reset AttackDamage for next Enemy
@@ -558,13 +564,13 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Animation: Shake Screen
 		Battle.S.battleUIAnim.CrossFade("BattleUI_Shake", 0);
 
-		// Get and position Explosion game object
-		//GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
-		//ObjectPool.S.PosAndEnableObj(explosion, _.playerSprite[playerToAttack]);
+        // Get and position Explosion game object
+        //GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
+        //ObjectPool.S.PosAndEnableObj(explosion, _.playerSprite[playerToAttack]);
 
-		// Display Floating Score
-		//if (displayFloatingScore) {
-		//	GameManager.S.InstantiateFloatingScore(_.playerSprite[playerToAttack], _.attackDamage.ToString(), Color.red);
-		//}
-	}
+        // Display Floating Score
+        if (displayFloatingScore) {
+            GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[playerToAttack].gameObject, _.attackDamage.ToString(), Color.red);
+        }
+    }
 }

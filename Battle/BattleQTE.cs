@@ -452,15 +452,15 @@ public class BattleQTE : MonoBehaviour {
 					// Add HP to Player that is blocking
 					GameManager.S.AddPlayerHP(blockerNdx, amountToHeal);
 
-					// Get and position Poof game object
-					//GameObject poof = ObjectPool.S.GetPooledObject("Poof");
-					//ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[blockerNdx]);
+                    // Get and position Poof game object
+                    //GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+                    //ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[blockerNdx]);
 
-					// Display Floating Score
-					//GameManager.S.InstantiateFloatingScore(_.playerSprite[blockerNdx], amountToHeal.ToString(), Color.green);
+                    // Display Floating Score
+                    GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[blockerNdx].gameObject, amountToHeal.ToString(), Color.green);
 
-					// Audio: Confirm
-					AudioManager.S.PlaySFX(eSoundName.confirm);
+                    // Audio: Confirm
+                    AudioManager.S.PlaySFX(eSoundName.confirm);
 					break;
 			}
 		} else {
