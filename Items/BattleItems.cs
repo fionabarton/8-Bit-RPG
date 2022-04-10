@@ -65,7 +65,7 @@ public class BattleItems : MonoBehaviour {
 		// Add to TARGET Player's HP
 		GameManager.S.AddPlayerHP(ndx, amountToHeal);
 
-		//CurePlayerAnimation(ndx, true, amountToHeal);
+		CurePlayerAnimation(ndx, true, amountToHeal);
 	}
 
 	public void HPPotion(int ndx, Item item) {
@@ -122,7 +122,7 @@ public class BattleItems : MonoBehaviour {
 				_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " gained " + amountToHeal + " MP!");
 			}
 
-			//CurePlayerAnimation(ndx, true, amountToHeal, false);
+			CurePlayerAnimation(ndx, true, amountToHeal, false);
 
 			ItemIsUseful(item);
 		} else {
@@ -168,7 +168,7 @@ public class BattleItems : MonoBehaviour {
 			_.partyQty += 1;
 
 			// Add Player to Turn Order
-			_.turnOrder.Add(Party.S.stats[ndx].name);
+			_.turnOrder.Add(Party.S.stats[ndx].battleID);
 
 			// Get 6-10% of max HP
 			float lowEnd = Mathf.Max(1, Party.S.stats[ndx].maxHP * 0.06f);
@@ -208,7 +208,7 @@ public class BattleItems : MonoBehaviour {
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
-			//CurePlayerAnimation(ndx);
+			CurePlayerAnimation(ndx);
 
 			ItemIsUseful(item);
 		} else {
@@ -232,7 +232,7 @@ public class BattleItems : MonoBehaviour {
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
 
-			//CurePlayerAnimation(ndx);
+			CurePlayerAnimation(ndx);
 
 			ItemIsUseful(item);
 		} else {
@@ -256,7 +256,7 @@ public class BattleItems : MonoBehaviour {
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
 
-			//CurePlayerAnimation(ndx);
+			CurePlayerAnimation(ndx);
 
 			ItemIsUseful(item);
 		} else {
@@ -326,23 +326,21 @@ public class BattleItems : MonoBehaviour {
 		_.mode = eBattleMode.playerTurn;
 	}
 
-	//public void CurePlayerAnimation(int ndx, bool displayFloatingScore = false, int scoreAmount = 0, bool greenOrBlue = true) {
- //       Get and position Poof game object
- //      GameObject poof = ObjectPool.S.GetPooledObject("Poof");
- //       ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[ndx]);
+    public void CurePlayerAnimation(int ndx, bool displayFloatingScore = false, int scoreAmount = 0, bool greenOrBlue = true) {
+		//// Get and position Poof game object
+		// GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+		// ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[ndx]);
 
- //       Display Floating Score
+		// Display Floating Score
+		if (displayFloatingScore) {
+            if (greenOrBlue) {
+                GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), Color.green);
+            } else {
+                GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), new Color32(39, 201, 255, 255));
+            }
+        }
 
- //       if (displayFloatingScore) {
- //           if (greenOrBlue) {
- //               GameManager.S.InstantiateFloatingScore(_.playerSprite[ndx], scoreAmount.ToString(), Color.green);
- //           } else {
- //               GameManager.S.InstantiateFloatingScore(_.playerSprite[ndx], scoreAmount.ToString(), new Color32(39, 201, 255, 255));
- //           }
- //       }
-
- //       Set anim
-
- //       _.playerAnimator[ndx].CrossFade("Win_Battle", 0);
- //   }
+        //// Set anim
+        //_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
+    }
 }
