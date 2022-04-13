@@ -114,6 +114,9 @@ public class DialogueTrigger : ActivateOnButtonPress {
 						}
 						tMessage.RemoveAt(0);
 
+						// Audio: High Beep 1
+						AudioManager.S.PlaySFX(eSoundName.highBeep1);
+
 						// Display the list of dialogue with one less element/line
 						DialogueManager.S.DisplayText(tMessage);
 					}
