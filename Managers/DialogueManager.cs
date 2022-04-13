@@ -57,6 +57,9 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	void EndDialogue() {
+		// Audio: High Beep 2
+		AudioManager.S.PlaySFX(eSoundName.highBeep2);
+
 		// Deactivate text box
 		DeactivateTextBox();
 		
