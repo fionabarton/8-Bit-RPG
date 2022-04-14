@@ -18,6 +18,8 @@ public class BattleItems : MonoBehaviour {
 	}
 
 	public void AddFunctionToButton(Action<int, Item> functionToPass, string messageToDisplay, Item item) {
+		_.UI.RemoveAllListeners();
+
 		Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
 		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
 		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, true);
@@ -271,7 +273,8 @@ public class BattleItems : MonoBehaviour {
 	public void DisableButtonsAndRemoveListeners() {
 		//_.playerActions.ButtonsDisableAll();
 		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
-		Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
+		//Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
+		_.UI.RemoveAllListeners();
 	}
 
 	public void ItemIsUseful(Item item) {
@@ -340,7 +343,10 @@ public class BattleItems : MonoBehaviour {
             }
         }
 
-        //// Set anim
-        //_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-    }
+		//// Set anim
+		//_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
+
+		// Animation: Flicker party member
+		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
+	}
 }
