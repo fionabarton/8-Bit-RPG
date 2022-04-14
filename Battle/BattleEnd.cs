@@ -166,6 +166,9 @@ public class BattleEnd : MonoBehaviour {
 		// Audio: Death
 		AudioManager.S.PlaySFX(eSoundName.death);
 
+		// Animation: Flicker party member
+		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
+
 		// Remove all status ailments 
 		StatusEffects.S.RemoveAllStatusAilments(true, ndx);
 

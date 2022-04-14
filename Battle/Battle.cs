@@ -10,6 +10,7 @@ public class Battle : MonoBehaviour {
 	public List<SpriteRenderer> enemySRends;
 
 	///////////////////////////////// ANIMATORS /////////////////////////////////
+	public List<Animator> partyAnims;
 	public List<Animator> enemyAnims;
 
 	// Shakes the canvas back and forth

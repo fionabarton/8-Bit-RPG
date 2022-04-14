@@ -165,6 +165,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Display Floating Score
 		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], amountToHeal.ToString(), Color.green);
 
+		// Flicker Enemy Anim 
+		_.enemyAnims[ndx].CrossFade("Damage", 0);
+
 		// Audio: Buff
 		AudioManager.S.PlaySFX(eSoundName.buff1);
 
@@ -564,12 +567,15 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Animation: Shake Screen
 		Battle.S.battleUIAnim.CrossFade("BattleUI_Shake", 0);
 
-        // Get and position Explosion game object
-        //GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
-        //ObjectPool.S.PosAndEnableObj(explosion, _.playerSprite[playerToAttack]);
+		// Animation: Flicker party member
+		Battle.S.partyAnims[playerToAttack].CrossFade("Flicker", 0);
 
-        // Display Floating Score
-        if (displayFloatingScore) {
+		// Get and position Explosion game object
+		//GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
+		//ObjectPool.S.PosAndEnableObj(explosion, _.playerSprite[playerToAttack]);
+
+		// Display Floating Score
+		if (displayFloatingScore) {
             GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[playerToAttack].gameObject, _.attackDamage.ToString(), Color.red);
         }
     }
