@@ -18,8 +18,7 @@ public class BattleSpells : MonoBehaviour {
 	}
 
 	public void AddFunctionToButton(Action<int, Spell> functionToPass, string messageToDisplay, Spell spell) {
-		Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
-		Utilities.S.RemoveListeners(_.UI.enemySpriteButtonsCS);
+		_.UI.RemoveAllListeners();
 
 		if (Party.S.stats[Battle.S.PlayerNdx()].MP >= spell.cost) {
 			Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
@@ -89,8 +88,9 @@ public class BattleSpells : MonoBehaviour {
 
 	public void SpellHelper() {
 		//_.playerActions.ButtonsDisableAll();
-		Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
-		Utilities.S.RemoveListeners(_.UI.enemySpriteButtonsCS);
+		//Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
+		//Utilities.S.RemoveListeners(_.UI.enemySpriteButtonsCS);
+		_.UI.RemoveAllListeners();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -726,9 +726,12 @@ public class BattleSpells : MonoBehaviour {
             GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), Color.green);
         }
 
-        //// Set anim
-        //_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-    }
+		//// Set anim
+		//_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
+
+		// Animation: Flicker party member
+		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
+	}
 
     public void DamageEnemyAnimation(int ndx, bool displayFloatingScore = false, bool playPlayerAnim = true, bool playDamageSFX = true) {
         //       // Get and position Explosion game object
@@ -745,7 +748,7 @@ public class BattleSpells : MonoBehaviour {
         //		_.playerAnimator[_.PlayerNdx()].CrossFade("Win_Battle", 0);
         //	}
 
-        // Shake Enemy Anim 
+        // Flicker Enemy Anim 
         _.enemyAnims[ndx].CrossFade("Damage", 0);
 
         // Audio: Damage
