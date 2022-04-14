@@ -66,8 +66,8 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		AttackEnemy(ndx);
 
-		// Otherwise AttackEnemyCo is called once, then twice second turn, thrice third turn, etc.
-		Utilities.S.RemoveListeners(_.UI.enemySpriteButtonsCS);
+		// Remove listeners
+		_.UI.RemoveAllListeners();
 	}
 
 	public void AttackEnemy(int ndx) {
@@ -87,6 +87,8 @@ public class BattlePlayerActions : MonoBehaviour {
 		// Shake Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
 
+		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+
 		AudioManager.S.PlayRandomDamageSFX();
 
 		// Enemy Death or Next Turn
@@ -99,7 +101,8 @@ public class BattlePlayerActions : MonoBehaviour {
 
 	// go back to player action buttons (fight, defend, item, run, etc.)
 	public void GoBackToActionButtons() { // if (Input.GetButtonDown ("Cancel"))
-		Utilities.S.RemoveListeners(_.UI.optionButtonsCS);
+		// Remove listeners
+		_.UI.RemoveAllListeners();
 
 		_.UI.actionOptionsButtonsCursor.SetActive(true);
 		Utilities.S.SetActiveList(_.UI.partyNameButtonsCursors, false);

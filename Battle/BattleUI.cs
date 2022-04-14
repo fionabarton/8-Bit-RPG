@@ -541,4 +541,10 @@ public class BattleUI : MonoBehaviour {
 			}
 		}
 	}
+
+	public void RemoveAllListeners() {
+		Utilities.S.RemoveListeners(optionButtonsCS);
+		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
+		Utilities.S.RemoveListeners(partyNameButtonsCS);
+	}
 }
