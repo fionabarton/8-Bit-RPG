@@ -316,6 +316,9 @@ public class BattleEnd : MonoBehaviour {
 		_.UI.battleMenu.SetActive(false);
 		_.UI.battleGameObjects.SetActive(false);
 
+		// If poisoned, activate overworld poisoned icons
+		StatusEffects.S.SetOverworldPoisonIcons();
+
 		// Deactivate Black Screen
 		ColorScreen.S.anim.Play("Clear Screen", 0, 0);
 
