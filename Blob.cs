@@ -9,6 +9,15 @@ public class Blob : MonoBehaviour {
 	public Transform	movePoint;
 	public LayerMask	bounds;
 
+	//public GameObject	follower1GO;
+	//public Transform	follower1MovePoint;
+	//public GameObject	follower2GO;
+	//public Transform	follower2MovePoint;
+
+	public List<GameObject> followers;
+	public List<Transform> followerMovePoints;
+	public List<Vector3> movePoints;
+
 	[Header("Set Dynamically")]
 	public Animator			anim;
 	public SpriteRenderer	sRend;
@@ -56,6 +65,8 @@ public class Blob : MonoBehaviour {
 
     void Start() {
 		movePoint.parent = null;
+		followerMovePoints[0].parent = null;
+		followerMovePoints[1].parent = null;
 	}
 
     void Loop() {
@@ -63,12 +74,27 @@ public class Blob : MonoBehaviour {
 			// Move gameObject towards movePoint
 			transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
 
+			followers[0].transform.position = Vector3.MoveTowards(followers[0].transform.position, followerMovePoints[0].position, speed * Time.deltaTime);
+			followers[1].transform.position = Vector3.MoveTowards(followers[1].transform.position, followerMovePoints[1].position, speed * Time.deltaTime);
+
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
 				// Horizontal input detected
 				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) {
 					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f), 0.2f, bounds)) {
+
+						// Cache move points and set followers' respective move point positions
+						// TBR: Store facing, animation, order in layer
+						movePoints.Insert(0, movePoint.position);
+						if (movePoints.Count > 3) {
+							followerMovePoints[1].position = movePoints[3];
+							movePoints.RemoveAt(movePoints.Count - 1);
+						}
+						if (movePoints.Count > 1) {
+							followerMovePoints[0].position = movePoints[1];
+						}
+
 						// Reposition movePoint horizontally
 						movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f);
 
@@ -87,6 +113,19 @@ public class Blob : MonoBehaviour {
 				} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) {
 					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f), 0.2f, bounds)) {
+
+						// Cache move points and set followers' respective move point positions
+						// TBR: Store facing, animation, order in layer
+						movePoints.Insert(0, movePoint.position);
+						if (movePoints.Count > 3) {
+							followerMovePoints[1].position = movePoints[3];
+							movePoints.RemoveAt(movePoints.Count - 1);
+						}
+						if (movePoints.Count > 1) {
+							followerMovePoints[0].position = movePoints[1];
+						}
+
+
 						// Reposition movePoint vertically
 						movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f);
 
