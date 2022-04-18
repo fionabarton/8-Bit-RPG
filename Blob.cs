@@ -1,27 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Blob : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public GameObject	playerTriggerGO;
-
 	public Transform	movePoint;
 	public LayerMask	bounds;
 
-	//public GameObject	follower1GO;
-	//public Transform	follower1MovePoint;
-	//public GameObject	follower2GO;
-	//public Transform	follower2MovePoint;
-
+	// Follower variables
 	public List<GameObject> followers;
-	public List<Transform> followerMovePoints;
-	public List<Vector3> movePoints;
+	public List<Transform>	followerMovePoints;
+	public List<Animator>	followerAnims;
+
+	// Variables for getting/setting the order in layer for all party members
+	public List<Transform>		partyTransforms;
+	public List<SpriteRenderer> partySRends;
 
 	[Header("Set Dynamically")]
 	public Animator			anim;
 	public SpriteRenderer	sRend;
 	public Flicker			flicker;
+
+	// Follower variables
+	public List<Vector3>	movePoints;
+	public List<string>		animations;
+	public List<bool>		facingRights;
 
 	private float		speed = 3f;
 	private bool		facingRight = true;
@@ -31,12 +36,12 @@ public class Blob : MonoBehaviour {
 	public float		destination;
 	public bool			alreadyTriggered; // Prevents triggering multiple triggers
 
+	// Battle variables
 	public bool			isBattling = false;
 	public bool			canEncounter = true;
 	public int			encounterRate = 24;
 	public List<EnemyStats> enemyStats;
-	// Amount of enemies to battle. If 999, set to a random amount
-	public int			enemyAmount = 999;
+	public int			enemyAmount = 999; // Amount of enemies to battle. If 999, set to a random amount
 
 	public int			stepCount = 0;
 
@@ -71,11 +76,18 @@ public class Blob : MonoBehaviour {
 
     void Loop() {
         if (canMove) {
-			// Move gameObject towards movePoint
+			// Move Blob and its followers towards their movePoints
 			transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
-
 			followers[0].transform.position = Vector3.MoveTowards(followers[0].transform.position, followerMovePoints[0].position, speed * Time.deltaTime);
 			followers[1].transform.position = Vector3.MoveTowards(followers[1].transform.position, followerMovePoints[1].position, speed * Time.deltaTime);
+
+			// Get each party member's y-pos
+			List<float> partyYPos = new List<float>();
+			for (int i = 0; i < partyTransforms.Count; i++) {
+				partyYPos.Add(partyTransforms[i].position.y);
+			}
+			// Set the order in layer for all party members based on their y-pos
+			SetOrderInLayer(partyYPos);
 
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
@@ -83,19 +95,10 @@ public class Blob : MonoBehaviour {
 				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) {
 					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f), 0.2f, bounds)) {
+						// Cache and set followers' move points and facingRights
+						SetFollowerMovePoints();
 
-						// Cache move points and set followers' respective move point positions
-						// TBR: Store facing, animation, order in layer
-						movePoints.Insert(0, movePoint.position);
-						if (movePoints.Count > 3) {
-							followerMovePoints[1].position = movePoints[3];
-							movePoints.RemoveAt(movePoints.Count - 1);
-						}
-						if (movePoints.Count > 1) {
-							followerMovePoints[0].position = movePoints[1];
-						}
-
-						// Reposition movePoint horizontally
+						// Reposition Blob's movePoint horizontally
 						movePoint.position += new Vector3(Input.GetAxisRaw("Horizontal") / 2f, 0f, 0f);
 
 						stepCount += 1;
@@ -106,27 +109,20 @@ public class Blob : MonoBehaviour {
 						CheckForPoisonDamage();
 					}
 
-					// Set anim and trigger position
-					anim.CrossFade("Walk_Side", 0);
+					// Set trigger position
 					Utilities.S.SetLocalPosition(playerTriggerGO, 0.375f, 0);
+
+					// Cache and set all party member's animations
+					SetFollowerAnimations("Walk_Side");
+
 				// Vertical input detected
 				} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) {
 					// If potential new movePoint position doesn't overlap with any bounds...
 					if (!Physics2D.OverlapCircle(movePoint.position + new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f), 0.2f, bounds)) {
+						// Cache and set followers' move points and facingRights
+						SetFollowerMovePoints();
 
-						// Cache move points and set followers' respective move point positions
-						// TBR: Store facing, animation, order in layer
-						movePoints.Insert(0, movePoint.position);
-						if (movePoints.Count > 3) {
-							followerMovePoints[1].position = movePoints[3];
-							movePoints.RemoveAt(movePoints.Count - 1);
-						}
-						if (movePoints.Count > 1) {
-							followerMovePoints[0].position = movePoints[1];
-						}
-
-
-						// Reposition movePoint vertically
+						// Reposition Blob's movePoint vertically
 						movePoint.position += new Vector3(0f, Input.GetAxisRaw("Vertical") / 2f, 0f);
 
 						stepCount += 1;
@@ -137,17 +133,95 @@ public class Blob : MonoBehaviour {
 						CheckForPoisonDamage();
 					}
 
-					// Set anim and trigger position
 					if (Input.GetAxisRaw("Vertical") > 0) {
-						anim.CrossFade("Walk_Up", 0);
+						// Set trigger position
 						Utilities.S.SetLocalPosition(playerTriggerGO, 0, 0.375f);
+
+						// Cache and set all party member's animations
+						SetFollowerAnimations("Walk_Up");
 					} else {
-						anim.CrossFade("Walk_Down", 0);
+						// Set trigger position
 						Utilities.S.SetLocalPosition(playerTriggerGO, 0, -0.375f);
+
+						// Cache and set all party member's animations
+						SetFollowerAnimations("Walk_Down");
 					}
 				}
 			}
 		}
+	}
+
+	// Cache and set followers' move points 
+	void SetFollowerMovePoints() {
+		// Cache move point and facingRight
+		movePoints.Insert(0, movePoint.position);
+		facingRights.Insert(0, facingRight);
+
+		if (movePoints.Count > 3) {
+			// Set follower's movePoint pos
+			followerMovePoints[1].position = movePoints[3];
+
+			// Set followers' facing 
+			SetFollowerFacing(1);
+
+			// Remove from lists
+			movePoints.RemoveAt(movePoints.Count - 1);
+			facingRights.RemoveAt(facingRights.Count - 1);
+		}
+		if (movePoints.Count > 1) { 
+			// Set follower's movePoint pos 
+			followerMovePoints[0].position = movePoints[1];
+
+			// Set followers' facing
+			SetFollowerFacing(0);
+		}
+	}
+
+	// Set followers' facing
+	void SetFollowerFacing(int ndx) {
+		if (facingRights[ndx]) {
+			Utilities.S.SetScale(followers[ndx], 1, followers[ndx].transform.localScale.y);
+		} else {
+			Utilities.S.SetScale(followers[ndx], -1, followers[ndx].transform.localScale.y);
+		}
+	}
+
+	// Cache and set animations for all party members
+	void SetFollowerAnimations(string animationToAdd) {
+		// Set Blob's animation
+		anim.CrossFade(animationToAdd, 0);
+
+		// Cache animation to add
+		animations.Insert(0, animationToAdd);
+
+		// Set followers' animations
+		if (animations.Count > 3) { 
+			followerAnims[1].CrossFade(animations[3], 0);
+			animations.RemoveAt(animations.Count - 1);
+		}
+		if (animations.Count > 1) { 
+			followerAnims[0].CrossFade(animations[1], 0);
+		}
+	}
+
+	// Set the order in layer for all party members based on their y-pos
+	void SetOrderInLayer(List<float> yPositions) {
+		// Set highest party member order
+		float minValue = yPositions.Min();
+		int minIndex = yPositions.IndexOf(minValue);
+		partySRends[minIndex].sortingOrder = 2;
+
+		// Set lowest party member order
+		float maxValue = yPositions.Max();
+		int maxIndex = yPositions.IndexOf(maxValue);
+		partySRends[maxIndex].sortingOrder = 0;
+
+		// Set middle party member order
+		for (int i = 0; i < yPositions.Count; i++) {
+			if(i != minIndex && i != maxIndex) {
+				partySRends[i].sortingOrder = 1;
+			}
+        }
 	}
 
 	// Check for random encounter 
