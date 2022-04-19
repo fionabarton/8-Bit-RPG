@@ -28,7 +28,9 @@ public class Blob : MonoBehaviour {
 	public List<string>		animations;
 	public List<bool>		facingRights;
 
-	private float		speed = 3f;
+	const float			walkSpeed = 3f;
+	const float			runSpeed = 6f;
+	private float		speed = walkSpeed;
 	private bool		facingRight = true;
 	private static bool exists;
 	public int			lastDirection;
@@ -44,6 +46,8 @@ public class Blob : MonoBehaviour {
 	public int			enemyAmount = 999; // Amount of enemies to battle. If 999, set to a random amount
 
 	public int			stepCount = 0;
+
+	public bool			hasRunningShoes = true;
 
 	private static Blob _S;
 	public static Blob S { get { return _S; } set { _S = value; } }
@@ -76,18 +80,19 @@ public class Blob : MonoBehaviour {
 
     void Loop() {
         if (canMove) {
+			// If B button down, double speed
+            if (hasRunningShoes) {
+                if (Input.GetButton("SNES Y Button")) {
+					speed = runSpeed;
+                } else {
+					speed = walkSpeed;
+				}
+            }
+
 			// Move Blob and its followers towards their movePoints
 			transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
 			followers[0].transform.position = Vector3.MoveTowards(followers[0].transform.position, followerMovePoints[0].position, speed * Time.deltaTime);
 			followers[1].transform.position = Vector3.MoveTowards(followers[1].transform.position, followerMovePoints[1].position, speed * Time.deltaTime);
-
-			// Get each party member's y-pos
-			List<float> partyYPos = new List<float>();
-			for (int i = 0; i < partyTransforms.Count; i++) {
-				partyYPos.Add(partyTransforms[i].position.y);
-			}
-			// Set the order in layer for all party members based on their y-pos
-			SetOrderInLayer(partyYPos);
 
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
@@ -114,6 +119,9 @@ public class Blob : MonoBehaviour {
 
 					// Cache and set all party member's animations
 					SetFollowerAnimations("Walk_Side");
+
+					// Set the order in layer for all party members based on their y-pos
+					SetOrderInLayer();
 
 				// Vertical input detected
 				} else if (Mathf.Abs(Input.GetAxisRaw("Vertical")) == 1f) {
@@ -146,6 +154,9 @@ public class Blob : MonoBehaviour {
 						// Cache and set all party member's animations
 						SetFollowerAnimations("Walk_Down");
 					}
+
+					// Set the order in layer for all party members based on their y-pos
+					SetOrderInLayer();
 				}
 			}
 		}
@@ -205,7 +216,13 @@ public class Blob : MonoBehaviour {
 	}
 
 	// Set the order in layer for all party members based on their y-pos
-	void SetOrderInLayer(List<float> yPositions) {
+	void SetOrderInLayer() {
+		// Get each party member's y-pos
+		List<float> yPositions = new List<float>();
+		for (int i = 0; i < partyTransforms.Count; i++) {
+			yPositions.Add(partyTransforms[i].position.y);
+		}
+
 		// Set highest party member order
 		float minValue = yPositions.Min();
 		int minIndex = yPositions.IndexOf(minValue);
