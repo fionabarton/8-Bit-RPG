@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
-	[Header("Set in Inspector")]
-	public AudioSource masterVolSelection;
-	public List<AudioSource> bgmCS = new List<AudioSource>();
-	public List<AudioSource> sfxCS = new List<AudioSource>();
-	public AudioSource textSpeedSelection;
+	[Header ("Set in Inspector")]
+	public AudioSource			masterVolSelection;
+	public List <AudioSource>	bgmCS = new List<AudioSource>();
+	public List <AudioSource>	sfxCS = new List<AudioSource>();
+	public AudioSource			textSpeedSelection;
 
 	[Header("Set Dynamically")]
-	public int previousSongNdx;
-	public int currentSongNdx;
+	public int					previousSongNdx;
+	public int 					currentSongNdx;
 
-	public float previousVolumeLvl;
+	public float				previousVolumeLvl;
 
 	// Singleton
 	private static AudioManager _S;
@@ -31,31 +31,31 @@ public class AudioManager : MonoBehaviour {
 		previousVolumeLvl = AudioListener.volume;
 	}
 
-	public void Loop() {
-		if (Input.GetKeyDown(KeyCode.M)) {
+    public void Loop(){
+		if (Input.GetKeyDown (KeyCode.M)) {
 			PauseAndMuteAudio();
 		}
 	}
-
+	
 	// Play a song that doesn't loop, then when it's over, resume playback of the song that was playing previously
 	public IEnumerator PlaySongThenResumePreviousSong(int ndx) {
-		// Get current song's playback time, then stop its playback
-		float time = bgmCS[currentSongNdx].time;
+        // Get current song's playback time, then stop its playback
+        float time = bgmCS[currentSongNdx].time;
 		bgmCS[currentSongNdx].Stop();
 
 		// Play new song
-		bgmCS[ndx].Play();
+        bgmCS[ndx].Play();
 
-		// Get new song length
-		AudioClip a = bgmCS[ndx].clip;
-		float songLength = a.length + 1;
+        // Get new song length
+        AudioClip a = bgmCS[ndx].clip;
+        float songLength = a.length + 1;
 
-		// Wait until new song is done playing
-		yield return new WaitForSeconds(songLength);
+        // Wait until new song is done playing
+        yield return new WaitForSeconds(songLength);
 
 		// Resume playback of the song that was playing previously
 		bgmCS[currentSongNdx].time = time;
-		bgmCS[currentSongNdx].Play();
+        bgmCS[currentSongNdx].Play();
 
 		// Set volume to 0, then gradually raise to previousVolumeLvl
 		AudioListener.volume = 0;
@@ -80,12 +80,12 @@ public class AudioManager : MonoBehaviour {
 
 	public void PlaySong(eSongName songName) {
 		// Return if this song is already playing
-		if (previousSongNdx != 999) { // Allows bgmCS[0] to play if it's the first song when the game starts
+		if(previousSongNdx != 999) { // Allows bgmCS[0] to play if it's the first song when the game starts
 			if (currentSongNdx == (int)songName) {
 				return;
 			}
 		}
-
+		
 		// Set previous song index
 		previousSongNdx = currentSongNdx;
 
@@ -116,8 +116,8 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 
-	public void PauseAndMuteAudio() {
-		if (!AudioListener.pause) {
+	public void PauseAndMuteAudio(){
+		if (!AudioListener.pause){
 			previousVolumeLvl = AudioListener.volume;
 			AudioListener.pause = true;
 
@@ -131,10 +131,10 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void PlaySFX(int ndx) {
-		sfxCS[ndx].Play();
-	}
+ 		sfxCS[ndx].Play();
+    }
 	public void PlaySFX(eSoundName soundName) {
-		switch (soundName) {
+        switch (soundName) {
 			case eSoundName.dialogue: sfxCS[0].Play(); break;
 			case eSoundName.selection: sfxCS[1].Play(); break;
 			case eSoundName.damage1: sfxCS[2].Play(); break;
@@ -164,9 +164,9 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void SetBGMVolume(float volume) {
-		for (int i = 0; i < bgmCS.Count; i++) {
+		for(int i = 0; i < bgmCS.Count; i++) {
 			bgmCS[i].volume = volume;
-		}
+        }
 	}
 
 	public void SetSFXVolume(float volume) {
