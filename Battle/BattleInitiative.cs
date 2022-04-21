@@ -86,7 +86,7 @@ public class BattleInitiative : MonoBehaviour {
 		}
 
 		// Set Enemy Amount (for testing)
-		_.enemyAmount = 5;
+		//_.enemyAmount = 5;
 		_.totalEnemyAmount = _.enemyAmount;
 
         // Remove extra enemy stats
@@ -119,24 +119,11 @@ public class BattleInitiative : MonoBehaviour {
 			Battle.S.enemySprites[i].SetActive(true);
 			Battle.S.enemySRends[i].sprite = Battle.S.enemyStats[i].sprite;
 
-			// HP/MP
-			_.enemyStats[i].HP = _.enemyStats[i].maxHP;
-			_.enemyStats[i].MP = _.enemyStats[i].maxMP;
-
-			// Amount of items to steal
-			_.enemyStats[i].amountToSteal = _.enemyStats[i].maxAmountToSteal;
-			_.enemyStats[i].stolenItems.Clear();
-
 			// Gold/EXP payout
 			_.expToAdd += _.enemyStats[i].EXP;
 			_.goldToAdd += _.enemyStats[i].Gold;
 
-			// Reset EnemyDead bools:  For EnemyDeaths
-			_.enemyStats[i].isDead = false;
 			_.StopCallingForHelp(i);
-
-			// Set battleID
-			_.enemyStats[i].battleID = i + 3;
 		}
 
 		// Set enemy sprites positions

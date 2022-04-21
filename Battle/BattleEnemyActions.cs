@@ -406,19 +406,11 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		int ndx = _.enemyStats.Count - 1;
 
-		clone.isDead = false;
-		clone.isCallingForHelp = false;
-		clone.nextTurnMoveNdx = 999;
-
 		// Give enemy a unique battleID
 		clone.battleID = unusedBattleID; //_.totalEnemyAmount + 2;
 
 		// Add to Turn Order
 		_.turnOrder.Add(clone.battleID);
-
-		// Reset HP/MP
-		clone.HP = clone.maxHP;
-		clone.MP = clone.maxMP;
 
 		// Gold/EXP payout
 		_.expToAdd += clone.EXP;
@@ -437,10 +429,6 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		// Audio: Run
 		AudioManager.S.PlaySFX(eSoundName.run);
-
-		//for (int i = 0; i < _.enemyStats.Count; i++) {
-		//	Debug.Log(_.enemyStats[i].battleID);
-		//}
 	}
 
 	public void PlayersDeath(List<int> deadPlayers, int totalAttackDamage) {
