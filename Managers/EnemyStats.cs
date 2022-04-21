@@ -41,8 +41,6 @@ public class EnemyStats : ScriptableObject {
 	// Actions/Moves Enemy can perform
 	public List<int> moveList;
 
-	public int animNdx;
-
 	public bool isDead; // set to false in BattleInitiative.cs
 	public bool isCallingForHelp;
 	public int	nextTurnMoveNdx;
