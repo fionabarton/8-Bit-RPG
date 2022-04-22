@@ -333,5 +333,8 @@ public class BattleEnd : MonoBehaviour {
 		Blob.S.movePoint.position = Blob.S.transform.position;
 
 		Blob.S.isBattling = false;
+
+		// Get new enemies based on current location
+		Blob.S.enemyStats = Blob.S.enemyManager.GetEnemies(Blob.S.locationNdx);
 	}
 }
