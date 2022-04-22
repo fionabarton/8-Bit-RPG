@@ -22,6 +22,7 @@ public class Blob : MonoBehaviour {
 	public Animator			anim;
 	public SpriteRenderer	sRend;
 	public Flicker			flicker;
+	public EnemyManager		enemyManager;
 
 	// Follower variables
 	public List<Vector3>	movePoints;
@@ -44,6 +45,7 @@ public class Blob : MonoBehaviour {
 	public int			encounterRate = 24;
 	public List<EnemyStats> enemyStats;
 	public int			enemyAmount = 999; // Amount of enemies to battle. If 999, set to a random amount
+	public int			locationNdx = 0;
 
 	public int			stepCount = 0;
 
@@ -70,6 +72,7 @@ public class Blob : MonoBehaviour {
 		anim = GetComponent<Animator>();
 		sRend = GetComponent<SpriteRenderer>();
 		flicker = GetComponent<Flicker>();
+		enemyManager = GetComponent<EnemyManager>();
 	}
 
     void Start() {
