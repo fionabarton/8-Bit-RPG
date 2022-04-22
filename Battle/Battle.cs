@@ -330,7 +330,9 @@ public class Battle : MonoBehaviour {
 
 		for (int i = 0; i < eStats.Count; i++) {
 			// Add Enemy Stats
-			enemyStats.Add(eStats[i]);
+			var clone = Instantiate(eStats[i]);
+			enemyStats.Add(clone);
+			enemyStats[i].battleID = i + 3;
 		}
 	}
 
@@ -487,6 +489,9 @@ public class Battle : MonoBehaviour {
 
 		//DisplayText: THE ENEMY IS ABOUT TO ACT!
 		dialogue.DisplayText(enemyStats[EnemyNdx()].name + " is about to act!");
+
+		// Anim: Flicker
+		enemyAnims[EnemyNdx()].CrossFade("Damage", 0);
 
 		// Switch Mode
 		mode = eBattleMode.enemyAction;
