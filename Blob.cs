@@ -46,6 +46,7 @@ public class Blob : MonoBehaviour {
 	public List<EnemyStats> enemyStats;
 	public int			enemyAmount = 999; // Amount of enemies to battle. If 999, set to a random amount
 	public int			locationNdx = 0;
+	public int			stepsUntilEncounter = 10;
 
 	public int			stepCount = 0;
 
@@ -165,6 +166,16 @@ public class Blob : MonoBehaviour {
 		}
 	}
 
+	void FixedLoop() {
+		if (canMove) {
+			// Flip scale
+			if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight ||
+				Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
+				Utilities.S.Flip(gameObject, ref facingRight);
+			}
+		}
+	}
+
 	// Cache and set followers' move points 
 	void SetFollowerMovePoints() {
 		// Cache move point and facingRight
@@ -246,8 +257,19 @@ public class Blob : MonoBehaviour {
 
 	// Check for random encounter 
 	void CheckForRandomEncounter() {
+		//if (canEncounter) {
+		//	if(Random.Range(0, encounterRate) == 0) {
+		//		// Start battle
+		//		StartCoroutine("StartBattle");
+		//	}
+		//}
+
 		if (canEncounter) {
-			if(Random.Range(0, encounterRate) == 0) {
+			if (stepsUntilEncounter > 0) {
+				stepsUntilEncounter -= 1;
+			} else {
+				stepsUntilEncounter = Random.Range(10, 100);
+
 				// Start battle
 				StartCoroutine("StartBattle");
 			}
@@ -261,6 +283,10 @@ public class Blob : MonoBehaviour {
 		// Freeze player
 		canMove = false;
 		alreadyTriggered = true;
+
+		// Set followers' movePoints to their current position
+		followerMovePoints[0].position = followers[0].transform.position;
+		followerMovePoints[1].position = followers[1].transform.position;
 
 		// Close curtain
 		Curtain.S.Close();
@@ -288,14 +314,6 @@ public class Blob : MonoBehaviour {
 
 		// Audio: Ninja
 		AudioManager.S.PlaySong(eSongName.ninja);
-	}
-
-	void FixedLoop() {
-		// Flip scale
-		if (Input.GetAxisRaw("Horizontal") > 0 && !facingRight ||
-			Input.GetAxisRaw("Horizontal") < 0 && facingRight) {
-			Utilities.S.Flip(gameObject, ref facingRight);
-		}
 	}
 
 	void CheckForPoisonDamage() {
