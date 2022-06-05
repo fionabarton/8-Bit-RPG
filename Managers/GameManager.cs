@@ -72,19 +72,20 @@ public class GameManager : MonoBehaviour {
 		//	!OptionsMenu.S.gameObject.activeInHierarchy &&
 		//	!SaveMenu.S.gameObject.activeInHierarchy) {
 
-		//	if (currentScene != "Battle" && currentScene != "Title_Screen") {
-		//		if (!PauseMenu.S.gameObject.activeInHierarchy) {
-		//			if (Input.GetButtonDown("Pause")) {
-		//				PauseMenu.S.Pause();
-		//			}
-		//		} else {
-		//			if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-		//				PauseMenu.S.UnPause(true);
-		//			}
-		//		}
-		//	}
-		//}
-	}
+		//if (currentScene != "Battle" && currentScene != "Title_Screen") {
+		if (!Blob.S.isBattling) {
+			if (!PauseMenu.S.gameObject.activeInHierarchy) {
+                if (Input.GetButtonDown("Pause")) {
+                    PauseMenu.S.Pause();
+                }
+            } else {
+                if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+                    PauseMenu.S.UnPause(true);
+                }
+            }
+        }
+        //}
+    }
 
 	// Load Level
 	public void LoadLevel(string levelToLoad) {
@@ -125,7 +126,7 @@ public class GameManager : MonoBehaviour {
 		DialogueManager.S.DeactivateTextBox();
 
 		// Deactivate screens
-		//PauseMenu.S.UnPause();
+		PauseMenu.S.UnPause();
 		Items.S.menu.Deactivate();
 		Spells.S.menu.Deactivate();
 		EquipMenu.S.Deactivate();
@@ -236,11 +237,11 @@ public class GameManager : MonoBehaviour {
 				}
 				break;
 			default:
-				// Set Player Position to Respawn Position
-				Player.S.gameObject.transform.position = Player.S.respawnPos;
+				//// Set Player Position to Respawn Position
+				//Player.S.gameObject.transform.position = Player.S.respawnPos;
 
-				Player.S.gameObject.SetActive(true);
-				Player.S.canMove = true;
+				//Player.S.gameObject.SetActive(true);
+				//Player.S.canMove = true;
 
 				// Freeze Camera
 				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
@@ -268,36 +269,36 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void StartBattle(List<EnemyStats> eStats, int enemyAmount) {
-		Battle.S.ImportEnemyStats(eStats, enemyAmount);
+	//public void StartBattle(List<EnemyStats> eStats, int enemyAmount) {
+	//	Battle.S.ImportEnemyStats(eStats, enemyAmount);
 
-		// Set Respawn Position
-		Player.S.respawnPos = Player.S.gameObject.transform.position;
+	//	// Set Respawn Position
+	//	Player.S.respawnPos = Player.S.gameObject.transform.position;
 
-		// Freeze Player
-		Player.S.canMove = false;
-		//Player.S.mode = ePlayerMode.idle;
+	//	// Freeze Player
+	//	Player.S.canMove = false;
+	//	//Player.S.mode = ePlayerMode.idle;
 
-		// Freeze all NPC & Enemies
-		paused = true;
+	//	// Freeze all NPC & Enemies
+	//	paused = true;
 
-		// Audio: Start Battle
-		AudioManager.S.PlaySong(eSongName.startBattle);
+	//	// Audio: Start Battle
+	//	AudioManager.S.PlaySong(eSongName.startBattle);
 
-		// Close Curtains
-		Curtain.S.Close();
+	//	// Close Curtains
+	//	Curtain.S.Close();
 
-		// Delay, then Load Scene
-		Invoke("LoadBattleScene", 1.25f);
-	}
+	//	// Delay, then Load Scene
+	//	Invoke("LoadBattleScene", 1.25f);
+	//}
 
-	void LoadBattleScene() {
-		LoadLevel("Battle");
+	//void LoadBattleScene() {
+	//	LoadLevel("Battle");
 
-		// Add Update & Fixed Update Delegate
-		UpdateManager.updateDelegate += Battle.S.Loop;
-		UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
-	}
+	//	// Add Update & Fixed Update Delegate
+	//	UpdateManager.updateDelegate += Battle.S.Loop;
+	//	UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
+	//}
 
 	// ************ Add/Subtract PLAYER HP ************ \\
 	public void AddSubtractPlayerHP(int ndx, bool addOrSubtract, int amount) {
