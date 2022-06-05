@@ -294,10 +294,10 @@ public class Blob : MonoBehaviour {
 		// Audio: Start Battle
 		AudioManager.S.PlaySong(eSongName.startBattle);
 
+		isBattling = true;
+
 		// Yield
 		yield return new WaitForSeconds(1.5f);
-
-		isBattling = true;
 
 		// Activate battle UI and gameobjects
 		Battle.S.UI.battleMenu.SetActive(true);
