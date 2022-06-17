@@ -46,11 +46,16 @@ public class ItemMenu : MonoBehaviour {
 		usedItemMode = GetComponent<UsedItemMode>();
 	}
 
+	void Start() {
+		gameObject.SetActive(false);
+	}
+
 	public void Activate() {
 		// Ensures first slot is selected when screen enabled
 		previousSelectedGameObject = itemButtons[0].gameObject;
 
 		firstSlotNdx = 0;
+		firstOrLastSlotSelected = true;
 
 		gameObject.SetActive(true);
 
@@ -65,9 +70,9 @@ public class ItemMenu : MonoBehaviour {
 
 	public void Deactivate(bool playSound = false) {
 		// Deactivate Cursors if in Battle Mode
-		if (!GameManager.S.paused) {
-			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
-		}
+		//if (!GameManager.S.paused) {
+		//	Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+		//}
 
 		// Set Battle Turn Cursor sorting layer ABOVE UI
 		//Battle.S.UI.turnCursorSRend.sortingLayerName = "Above UI";
@@ -82,7 +87,7 @@ public class ItemMenu : MonoBehaviour {
 			// Set Selected Gameobject (Pause Screen: Items Button)
 			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[0]);
 
-			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
+			//PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
 			PauseMenu.S.canUpdate = true;
 		}
@@ -93,7 +98,7 @@ public class ItemMenu : MonoBehaviour {
 		}
 
 		// Deactivate PlayerButtons
-		PlayerButtons.S.gameObject.SetActive(false);
+		//PlayerButtons.S.gameObject.SetActive(false);
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -107,7 +112,7 @@ public class ItemMenu : MonoBehaviour {
 		if (Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f) {
 			canUpdate = true;
 		}
-
+		
 		// Deactivate ItemScreen during Battle
 		if (GameManager.S.currentScene == "Battle") {
 			if (Input.GetButtonDown("SNES Y Button")) {

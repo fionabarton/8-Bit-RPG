@@ -22,15 +22,15 @@ public class PickItemMode : MonoBehaviour {
 
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(itemScreen.itemButtons, true);
-			Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
+			//Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
 
 			itemScreen.canUpdate = true;
 
-			if (GameManager.S.currentScene != "Battle") {
-				// Activate PlayerButtons
-				PlayerButtons.S.gameObject.SetActive(true);
-			}
+			//if (GameManager.S.currentScene != "Battle") {
+			//	// Activate PlayerButtons
+			//	PlayerButtons.S.gameObject.SetActive(true);
+			//}
 
 			// Activate Slot Headers 
 			itemScreen.nameHeaderText.text = "Name:";
@@ -53,13 +53,14 @@ public class PickItemMode : MonoBehaviour {
 				} else {
 					// Select previous itemButton in the list
 					Utilities.S.SetSelectedGO(itemScreen.itemButtons[previousSelectedNdx - 1].gameObject);
+					Debug.Log("Called");
 				}
 
 				// Set button navigation if inventory is less than 10
 				SetButtonNavigation(itemScreen);
 
 				// Activate Cursor
-				ScreenCursor.S.cursorGO[0].SetActive(true);
+				//ScreenCursor.S.cursorGO[0].SetActive(true);
 			}
 
 			// Set Battle Turn Cursor sorting layer BELOW UI
@@ -118,7 +119,7 @@ public class PickItemMode : MonoBehaviour {
 				itemScreen.Deactivate(true);
 
 				// Activate Cursor
-				ScreenCursor.S.cursorGO[0].SetActive(true);
+				//ScreenCursor.S.cursorGO[0].SetActive(true);
 			}
 		}
 	}
@@ -126,10 +127,10 @@ public class PickItemMode : MonoBehaviour {
 	public void DisplayItemDescriptions(ItemMenu itemScreen) {
 		for (int i = 0; i < itemScreen.itemButtons.Count; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemScreen.itemButtons[i].gameObject) {
-				PauseMessage.S.SetText(Inventory.S.GetItemList()[i + itemScreen.firstSlotNdx].description);
+				//PauseMessage.S.SetText(Inventory.S.GetItemList()[i + itemScreen.firstSlotNdx].description);
 
 				// Set Cursor Position set to Selected Button
-				Utilities.S.PositionCursor(itemScreen.itemButtons[i].gameObject, -170, 0, 0);
+				//Utilities.S.PositionCursor(itemScreen.itemButtons[i].gameObject, -170, 0, 0);
 
 				// Set selected button text color	
 				itemScreen.itemButtonsNameText[i].color = new Color32(205, 208, 0, 255);
