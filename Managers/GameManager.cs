@@ -64,27 +64,27 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Loop() {
-		//// Pause Screen input
-		//if (!Items.S.menu.gameObject.activeInHierarchy &&
-		//	!Spells.S.menu.gameObject.activeInHierarchy &&
-		//	!EquipMenu.S.gameObject.activeInHierarchy &&
-		//	!ShopMenu.S.gameObject.activeInHierarchy &&
-		//	!OptionsMenu.S.gameObject.activeInHierarchy &&
-		//	!SaveMenu.S.gameObject.activeInHierarchy) {
+		// Pause Screen input
+		if (!Items.S.menu.gameObject.activeInHierarchy &&
+			!Spells.S.menu.gameObject.activeInHierarchy &&
+			!EquipMenu.S.gameObject.activeInHierarchy) {
+			//!ShopMenu.S.gameObject.activeInHierarchy &&
+			//!OptionsMenu.S.gameObject.activeInHierarchy &&
+			//!SaveMenu.S.gameObject.activeInHierarchy) {
 
-		//if (currentScene != "Battle" && currentScene != "Title_Screen") {
-		if (!Blob.S.isBattling) {
-			if (!PauseMenu.S.gameObject.activeInHierarchy) {
-                if (Input.GetButtonDown("Pause")) {
-                    PauseMenu.S.Pause();
-                }
-            } else {
-                if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-                    PauseMenu.S.UnPause(true);
-                }
-            }
+			//if (currentScene != "Battle" && currentScene != "Title_Screen") {
+			if (!Blob.S.isBattling && currentScene != "Title_Screen") {
+				if (!PauseMenu.S.gameObject.activeInHierarchy) {
+					if (Input.GetButtonDown("Pause")) {
+						PauseMenu.S.Pause();
+					}
+				} else {
+					if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+						PauseMenu.S.UnPause(true);
+					}
+				}
+			}
         }
-        //}
     }
 
 	// Load Level
