@@ -56,6 +56,10 @@ public class SpellMenu : MonoBehaviour {
 		cantUseSpell = GetComponent<CantUseSpell>();
 	}
 
+	void Start() {
+		gameObject.SetActive(false);
+	}
+
 	public void Activate() {
 		if (GameManager.S.currentScene != "Battle") {
 			// Ensures first slots are selected when screen enabled
