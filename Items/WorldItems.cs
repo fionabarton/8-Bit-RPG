@@ -9,49 +9,51 @@ using System;
 public class WorldItems : MonoBehaviour {
 	public void AddFunctionToButton(Action<int> functionToPass, string messageToDisplay, Item item) {
 		// Buttons Interactable
-		Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, true);
+		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, true);
 		Utilities.S.ButtonsInteractable(Items.S.menu.itemButtons, false);
 
 		// Set Selected GameObject
-		Utilities.S.SetSelectedGO(PlayerButtons.S.buttonsCS[0].gameObject);
+		Utilities.S.SetSelectedGO(PauseMenu.S.playerNameButtons[0].gameObject);
 
 		// Set previously selected GameObject
-		Items.S.menu.pickPartyMemberMode.previousSelectedPlayerGO = PlayerButtons.S.buttonsCS[0].gameObject;
+		Items.S.menu.pickPartyMemberMode.previousSelectedPlayerGO = PauseMenu.S.playerNameButtons[0].gameObject;
 
 		// Remove Listeners
-		Utilities.S.RemoveListeners(PlayerButtons.S.buttonsCS);
+		Utilities.S.RemoveListeners(PauseMenu.S.playerNameButtons);
 
-		// Display Text
-		PauseMessage.S.DisplayText(messageToDisplay);
+        // Display Text
+        PauseMessage.S.DisplayText(messageToDisplay);
 
-		// Audio: Confirm
-		AudioManager.S.PlaySFX(eSoundName.confirm);
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSoundName.confirm);
 
 		// Add Listeners
-		PlayerButtons.S.buttonsCS[0].onClick.AddListener(delegate { functionToPass(0); });
-		PlayerButtons.S.buttonsCS[1].onClick.AddListener(delegate { functionToPass(1); });
-		PlayerButtons.S.buttonsCS[2].onClick.AddListener(delegate { functionToPass(2); });
+		PauseMenu.S.playerNameButtons[0].onClick.AddListener(delegate { functionToPass(0); });
+		PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { functionToPass(1); });
+		PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { functionToPass(2); });
 
 		// If multiple targets
 		if (!item.multipleTargets) {
 			// Set animation to idle
-			PlayerButtons.S.SetSelectedAnim("Idle");
+			//PlayerButtons.S.SetSelectedAnim("Idle");
 
 			Items.S.menu.mode = eItemMenuMode.pickPartyMember;
 		} else {
 			for (int i = 0; i <= Party.S.partyNdx; i++) {
 				// Set cursor positions
-				Utilities.S.PositionCursor(PlayerButtons.S.buttonsCS[i].gameObject, 0, 60, 3, i);
+				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3, i);
 
 				// Set animations to walk
-				PlayerButtons.S.anim[i].CrossFade("Walk", 0);
+				//PlayerButtons.S.anim[i].CrossFade("Walk", 0);
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
+
+                PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 255);
 			}
 
 			// Set button colors
-			PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(253, 255, 116, 255));
+			//PlayerButtons.S.SetButtonsColor(PauseMenu.S.playerNameButtons, new Color32(253, 255, 116, 255));
 
 			Items.S.menu.mode = eItemMenuMode.pickAllPartyMembers;
 		}
@@ -68,22 +70,22 @@ public class WorldItems : MonoBehaviour {
 
 			// Display Text
 			if (Party.S.stats[ndx].HP >= Party.S.stats[ndx].maxHP) {
-				PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
+                PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 			} else {
-				PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
-			}
+                PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
+            }
 
 			// Set animation to success
-			PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
-			// Display Text
-			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to use this potion!");
+            // Display Text
+            PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to use this potion!");
 
 			// Set animation to idle
-			PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -102,22 +104,22 @@ public class WorldItems : MonoBehaviour {
 
 			// Display Text
 			if (Party.S.stats[ndx].MP >= Party.S.stats[ndx].maxMP) {
-				PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " back to Max MP!");
+                PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " back to Max MP!");
 			} else {
-				PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " gained " + randomValue + " MP!");
+                PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " gained " + randomValue + " MP!");
 			}
 
 			// Set animation to success
-			PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
-			// Display Text
-			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full magic...\n...no need to use this potion!");
+            // Display Text
+            PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full magic...\n...no need to use this potion!");
 
 			// Set animation to idle
-			PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -133,11 +135,11 @@ public class WorldItems : MonoBehaviour {
 			// Remove poison
 			StatusEffects.S.RemovePoisoned(true, ndx);
 
-			// Display Text
-			PauseMessage.S.DisplayText("Used Detoxify Potion!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
+            // Display Text
+            PauseMessage.S.DisplayText("Used Detoxify Potion!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
 			// Set animation to success
-			PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
 
 			// If poisoned, activate overworld poisoned icons
 			StatusEffects.S.SetOverworldPoisonIcons();
@@ -145,11 +147,11 @@ public class WorldItems : MonoBehaviour {
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
-			// Display Text
-			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this potion!");
+            // Display Text
+            PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this potion!");
 
-			// Set animation to idle
-			PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+            // Set animation to idle
+            //PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -184,24 +186,26 @@ public class WorldItems : MonoBehaviour {
 			// Remove from Inventory
 			Inventory.S.RemoveItemFromInventory(Items.S.items[22]);
 
-			// Display Text
-			PauseMessage.S.DisplayText("Used Heal All Potion!\nHealed ALL party members for an average of "
-				+ Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.stats.Count) + " HP!");
+            // Display Text
+            PauseMessage.S.DisplayText("Used Heal All Potion!\nHealed ALL party members for an average of " + Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.stats.Count) + " HP!");
 
-			// Set animations to success
-			for (int i = 0; i <= Party.S.partyNdx; i++) {
-				PlayerButtons.S.anim[i].CrossFade("Success", 0);
+            // Set animations to success
+            for (int i = 0; i <= Party.S.partyNdx; i++) {
+				//PlayerButtons.S.anim[i].CrossFade("Success", 0);
+
+				// Reset button colors
+				PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 200);
 			}
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
-			// Display Text
-			PauseMessage.S.DisplayText("The party is already at full health...\n...no need to use this potion!");
+            // Display Text
+            PauseMessage.S.DisplayText("The party is already at full health...\n...no need to use this potion!");
 
-			// Set animations to idle
-			for (int i = 0; i <= Party.S.partyNdx; i++) {
-				PlayerButtons.S.anim[i].CrossFade("Idle", 0);
+            // Set animations to idle
+            for (int i = 0; i <= Party.S.partyNdx; i++) {
+				//PlayerButtons.S.anim[i].CrossFade("Idle", 0);
 			}
 
 			// Audio: Deny
@@ -209,7 +213,7 @@ public class WorldItems : MonoBehaviour {
 		}
 
 		// Reset button colors
-		PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+		//PlayerButtons.S.SetButtonsColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 200));
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
@@ -238,11 +242,11 @@ public class WorldItems : MonoBehaviour {
 
 	public void ClickedButtonHelper() {
 		// Buttons Interactable
-		Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
+		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
 		Utilities.S.ButtonsInteractable(Items.S.menu.itemButtons, true);
 
 		// Update GUI
-		PlayerButtons.S.UpdateGUI();
+		//PlayerButtons.S.UpdateGUI();
 		PauseMenu.S.UpdateGUI();
 
 		// Deactivate screen cursors
@@ -257,12 +261,12 @@ public class WorldItems : MonoBehaviour {
 	public void CantUseItem() {
 		Utilities.S.ButtonsInteractable(Items.S.menu.itemButtons, false);
 		Items.S.menu.mode = eItemMenuMode.usedItem;
-		PauseMessage.S.DisplayText("This item is not usable... sorry!");
+        PauseMessage.S.DisplayText("This item is not usable... sorry!");
 
-		// Deactivate screen cursors
-		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+        // Deactivate screen cursors
+        Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
-		// Audio: Deny
-		AudioManager.S.PlaySFX(eSoundName.deny);
+        // Audio: Deny
+        AudioManager.S.PlaySFX(eSoundName.deny);
 	}
 }

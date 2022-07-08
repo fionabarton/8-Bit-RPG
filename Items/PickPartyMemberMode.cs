@@ -14,7 +14,7 @@ public class PickPartyMemberMode : MonoBehaviour {
 			Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 60, 3);
 
 			// Set animation to walk
-			PlayerButtons.S.SetSelectedAnim("Walk");
+			//PlayerButtons.S.SetSelectedAnim("Walk");
 
 			// Audio: Selection (when a new gameObject is selected)
 			Utilities.S.PlayButtonSelectedSFX(ref previousSelectedPlayerGO);
@@ -22,10 +22,10 @@ public class PickPartyMemberMode : MonoBehaviour {
 			itemScreen.canUpdate = false;
 		}
 
-		if (PauseMessage.S.dialogueFinished) {
-			if (Input.GetButtonDown("SNES Y Button")) {
+        if (PauseMessage.S.dialogueFinished) {
+            if (Input.GetButtonDown("SNES Y Button")) {
 				// Set animation to idle
-				PlayerButtons.S.SetSelectedAnim("Idle");
+				//PlayerButtons.S.SetSelectedAnim("Idle");
 
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);
@@ -33,6 +33,6 @@ public class PickPartyMemberMode : MonoBehaviour {
 				// Go back to PickItem mode
 				itemScreen.pickItemMode.Setup(Items.S.menu);
 			}
-		}
-	}
+        }
+    }
 }

@@ -69,27 +69,28 @@ public class ItemMenu : MonoBehaviour {
 	}
 
 	public void Deactivate(bool playSound = false) {
-		// Deactivate Cursors if in Battle Mode
-		//if (!GameManager.S.paused) {
-		//	Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
-		//}
+        // Deactivate Cursors if in Battle Mode
+        if (!GameManager.S.paused) {
+            Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+        }
 
-		// Set Battle Turn Cursor sorting layer ABOVE UI
-		//Battle.S.UI.turnCursorSRend.sortingLayerName = "Above UI";
+        // Set Battle Turn Cursor sorting layer ABOVE UI
+        //Battle.S.UI.turnCursorSRend.sortingLayerName = "Above UI";
 
-		// Remove Listeners
-		Utilities.S.RemoveListeners(itemButtons);
+        // Remove Listeners
+        Utilities.S.RemoveListeners(itemButtons);
 
-		if (GameManager.S.currentScene != "Battle") {
+		//if (GameManager.S.currentScene != "Battle") {
+		if (!Blob.S.isBattling) {
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
 
 			// Set Selected Gameobject (Pause Screen: Items Button)
 			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[0]);
 
-			//PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
+            PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
-			PauseMenu.S.canUpdate = true;
+            PauseMenu.S.canUpdate = true;
 		}
 
 		if (playSound) {
@@ -114,7 +115,7 @@ public class ItemMenu : MonoBehaviour {
 		}
 		
 		// Deactivate ItemScreen during Battle
-		if (GameManager.S.currentScene == "Battle") {
+		if (Blob.S.isBattling) {
 			if (Input.GetButtonDown("SNES Y Button")) {
 				PauseMessage.S.gameObject.SetActive(false);
 				Deactivate(true);
@@ -225,10 +226,10 @@ public class ItemMenu : MonoBehaviour {
 	void GoBackToPickItemMode() {
 		if (PauseMessage.S.dialogueFinished) {
 			// Set animations to idle
-			PlayerButtons.S.SetSelectedAnim("Idle");
+			//PlayerButtons.S.SetSelectedAnim("Idle");
 
 			// Reset button colors
-			PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
 
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
