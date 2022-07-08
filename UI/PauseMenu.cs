@@ -16,6 +16,8 @@ public class PauseMenu : MonoBehaviour {
 	public List<GameObject> buttonGO; // 0: Items, 1: Equip, 2: Spells, 3: Options, 4: Save
 	public List<Button> buttonCS; // 0: Items, 1: Equip, 2: Spells, 3: Options, 4: Save
 
+	public List<Button> playerNameButtons;
+
 	[Header("Set Dynamically")]
 	// Stats
 	public int seconds;
@@ -65,7 +67,7 @@ public class PauseMenu : MonoBehaviour {
             }
 
             // Activate Cursor
-            //ScreenCursor.S.cursorGO[0].SetActive(true);
+            ScreenCursor.S.cursorGO[0].SetActive(true);
 
             // Account for time that PauseScreen is not active
             timeWhenEnabled = Time.time;
@@ -82,7 +84,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void OnDisable() {
 		// Deactivate screen cursors
-		//Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
 		// Account for time that PauseScreen is not active
 		timeWhenDisabled = Time.time;
@@ -101,7 +103,7 @@ public class PauseMenu : MonoBehaviour {
 				for (int i = 0; i < buttonGO.Count; i++) {
 					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == buttonGO[i]) {
 						// Set Cursor Position to Selected Button
-						//Utilities.S.PositionCursor(buttonGO[i], 160);
+						Utilities.S.PositionCursor(buttonGO[i], 160);
 
 						// Set selected button text color	
 						buttonGO[i].gameObject.GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
@@ -169,11 +171,11 @@ public class PauseMenu : MonoBehaviour {
         GameManager.S.paused = true;
 		Blob.S.canMove = false;
 
-		// Activate PauseMessage
-		//PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
+        // Activate PauseMessage
+        PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
-		// Audio: Confirm
-		AudioManager.S.PlaySFX(eSoundName.confirm);
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSoundName.confirm);
 
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
@@ -187,19 +189,19 @@ public class PauseMenu : MonoBehaviour {
 		GameManager.S.paused = false;
 		Blob.S.canMove = true;
 
-		// Deactivate PauseMessage
-		//PauseMessage.S.gameObject.SetActive(false);
+        // Deactivate PauseMessage
+        PauseMessage.S.gameObject.SetActive(false);
 
-		// If SubMenu enabled when Paused, re-select this GO when Unpaused
-		// TBR: Account for SubMenu having 2 to 4 options
-		//for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
-		//	if (previousSelectedSubMenuGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
-		//		Utilities.S.SetSelectedGO(previousSelectedSubMenuGameObject);
-		//	}
-		//	GameManager.S.gameSubMenu.buttonCS[i].interactable = true;
-		//}
+        // If SubMenu enabled when Paused, re-select this GO when Unpaused
+        // TBR: Account for SubMenu having 2 to 4 options
+        //for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
+        //	if (previousSelectedSubMenuGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
+        //		Utilities.S.SetSelectedGO(previousSelectedSubMenuGameObject);
+        //	}
+        //	GameManager.S.gameSubMenu.buttonCS[i].interactable = true;
+        //}
 
-		if (playSound) {
+        if (playSound) {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
