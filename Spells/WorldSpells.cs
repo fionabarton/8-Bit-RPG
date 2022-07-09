@@ -13,7 +13,7 @@ public class WorldSpells : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.confirm);
 
 			// Buttons Interactable
-			Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, true);
+			Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, true);
 			Utilities.S.ButtonsInteractable(Spells.S.menu.spellsButtons, false);
 
 			// Set Selected GameObject
@@ -26,9 +26,9 @@ public class WorldSpells : MonoBehaviour {
 			PauseMessage.S.DisplayText(messageToDisplay);
 
 			// Add Listeners
-			PlayerButtons.S.buttonsCS[0].onClick.AddListener(delegate { functionToPass(0); });
-			PlayerButtons.S.buttonsCS[1].onClick.AddListener(delegate { functionToPass(1); });
-			PlayerButtons.S.buttonsCS[2].onClick.AddListener(delegate { functionToPass(2); });
+			PauseMenu.S.playerNameButtons[0].onClick.AddListener(delegate { functionToPass(0); });
+			PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { functionToPass(1); });
+			PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { functionToPass(2); });
 
 			Spells.S.menu.canUpdate = true;
 		} else {
@@ -39,23 +39,23 @@ public class WorldSpells : MonoBehaviour {
 		// If multiple targets
 		if (!spell.multipleTargets) {
 			// Set animation to idle
-			PlayerButtons.S.SetSelectedAnim("Idle");
+			//PlayerButtons.S.SetSelectedAnim("Idle");
 
 			Spells.S.menu.mode = eSpellScreenMode.pickWhichMemberToHeal;
 		} else {
 			for (int i = 0; i <= Party.S.partyNdx; i++) {
 				// Set cursor positions
-				Utilities.S.PositionCursor(PlayerButtons.S.buttonsCS[i].gameObject, 0, 60, 3, i);
+				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3, i);
 
 				// Set animations to walk
-				PlayerButtons.S.anim[i].CrossFade("Walk", 0);
+				//PlayerButtons.S.anim[i].CrossFade("Walk", 0);
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
 			}
 
 			// Set button colors
-			PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(253, 255, 116, 255));
+			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(253, 255, 116, 255));
 
 			Spells.S.menu.mode = eSpellScreenMode.pickAllMembersToHeal;
 		}
@@ -67,7 +67,7 @@ public class WorldSpells : MonoBehaviour {
 	public void HealSelectedPartyMember(int ndx) {
 		if (Party.S.stats[ndx].HP < Party.S.stats[ndx].maxHP) {
 			// Set animation to success
-			PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
 
 			// Subtract Spell cost from CASTING Player's MP 
 			GameManager.S.SubtractPlayerMP(Spells.S.menu.playerNdx, 3);
@@ -90,7 +90,7 @@ public class WorldSpells : MonoBehaviour {
 			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to cast this spell!");
 
 			// Set animation to idle
-			PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -107,7 +107,7 @@ public class WorldSpells : MonoBehaviour {
 			StatusEffects.S.RemovePoisoned(true, ndx);
 
 			// Set animation to success
-			PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
 
 			// If poisoned, activate overworld poisoned icons
 			StatusEffects.S.SetOverworldPoisonIcons();
@@ -125,7 +125,7 @@ public class WorldSpells : MonoBehaviour {
 			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to cast this spell!");
 
 			// Set animation to idle
-			PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -197,9 +197,9 @@ public class WorldSpells : MonoBehaviour {
 				+ Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.stats.Count) + " HP!");
 
 			// Set animations to success
-			for (int i = 0; i <= Party.S.partyNdx; i++) {
-				PlayerButtons.S.anim[i].CrossFade("Success", 0);
-			}
+			//for (int i = 0; i <= Party.S.partyNdx; i++) {
+			//	PlayerButtons.S.anim[i].CrossFade("Success", 0);
+			//}
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -208,16 +208,16 @@ public class WorldSpells : MonoBehaviour {
 			PauseMessage.S.DisplayText("The party is already at full health...\n...no need to cast this spell!");
 
 			// Set animations to idle
-			for (int i = 0; i <= Party.S.partyNdx; i++) {
-				PlayerButtons.S.anim[i].CrossFade("Idle", 0);
-			}
+			//for (int i = 0; i <= Party.S.partyNdx; i++) {
+			//	PlayerButtons.S.anim[i].CrossFade("Idle", 0);
+			//}
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
 
 		// Reset button colors
-		PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+		//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);

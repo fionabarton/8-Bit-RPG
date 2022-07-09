@@ -98,11 +98,11 @@ public class Spells : MonoBehaviour {
 
 	public void SpellHelper() {
 		// Buttons Interactable
-		Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
+		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
 		Utilities.S.ButtonsInteractable(menu.spellsButtons, false);
 
 		// Update GUI
-		PlayerButtons.S.UpdateGUI();
+		//PlayerButtons.S.UpdateGUI();
 		PauseMenu.S.UpdateGUI();
 
 		// Deactivate screen cursors
@@ -115,7 +115,7 @@ public class Spells : MonoBehaviour {
 	}
 
 	public void CantUseSpell(string message) {
-		//PauseMessage.S.DisplayText(message);
+		PauseMessage.S.DisplayText(message);
 
 		// Audio: Deny
 		AudioManager.S.PlaySFX(eSoundName.deny);
@@ -132,15 +132,15 @@ public class Spells : MonoBehaviour {
 			// Switch Mode
 			Battle.S.mode = eBattleMode.playerTurn;
 
-			//Utilities.S.RemoveListeners(menu.spellsButtons);
+            Utilities.S.RemoveListeners(menu.spellsButtons);
 
-			//menu.canUpdate = true;
+            menu.canUpdate = true;
 
-			// Switch ScreenMode 
-			//menu.mode = eSpellScreenMode.cantUseSpell;
-		} else {
-			//SpellHelper();
-		}
+            // Switch ScreenMode 
+            menu.mode = eSpellScreenMode.cantUseSpell;
+        } else {
+            SpellHelper();
+        }
 	}
 }
 

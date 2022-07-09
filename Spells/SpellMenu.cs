@@ -61,9 +61,9 @@ public class SpellMenu : MonoBehaviour {
 	}
 
 	public void Activate() {
-		if (GameManager.S.currentScene != "Battle") {
+		if (!Blob.S.isBattling) {
 			// Ensures first slots are selected when screen enabled
-			previousSelectedPlayerGO = PlayerButtons.S.buttonsCS[0].gameObject;
+			previousSelectedPlayerGO = PauseMenu.S.playerNameButtons[0].gameObject;
 			previousSelectedSpellGO = spellsButtons[0].gameObject;
 		}
 
@@ -120,7 +120,7 @@ public class SpellMenu : MonoBehaviour {
 		}
 
 		// Deactivate PlayerButtons
-		PlayerButtons.S.gameObject.SetActive(false);
+		//PlayerButtons.S.gameObject.SetActive(false);
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -262,10 +262,10 @@ public class SpellMenu : MonoBehaviour {
 	void GoBackToPickSpellMode() {
 		if (PauseMessage.S.dialogueFinished) {
 			// Set animations to idle
-			PlayerButtons.S.SetSelectedAnim("Idle");
+			//PlayerButtons.S.SetSelectedAnim("Idle");
 
 			// Reset button colors
-			PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
 
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
@@ -278,10 +278,10 @@ public class SpellMenu : MonoBehaviour {
 	}
 
 	public void LoadSpells(int playerNdx, bool playSound = false) {
-		PlayerButtons.S.SetSelectedAnim("Idle");
+		//PlayerButtons.S.SetSelectedAnim("Idle");
 
 		// Buttons Interactable
-		Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
+		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
 		Utilities.S.ButtonsInteractable(spellsButtons, true);
 
 		this.playerNdx = playerNdx; // Now used to DisplaySpellsDescriptions
@@ -378,7 +378,7 @@ public class SpellMenu : MonoBehaviour {
 	}
 
 	public void AssignSpellsEffect(int playerNdx) {
-		Utilities.S.RemoveListeners(PlayerButtons.S.buttonsCS);
+		Utilities.S.RemoveListeners(PauseMenu.S.playerNameButtons);
 		Utilities.S.RemoveListeners(spellsButtons);
 
 		for (int i = 0; i < spellsButtons.Count; i++) {

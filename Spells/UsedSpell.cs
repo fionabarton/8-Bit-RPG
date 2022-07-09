@@ -11,7 +11,7 @@ public class UsedSpell : MonoBehaviour {
 		if (PauseMessage.S.dialogueFinished) {
 			if (Input.GetButtonDown("SNES B Button")) {
 				// Set animation to idle
-				PlayerButtons.S.SetSelectedAnim("Idle");
+				//PlayerButtons.S.SetSelectedAnim("Idle");
 				spellScreen.LoadSpells(spellScreen.playerNdx);
 			}
 		}

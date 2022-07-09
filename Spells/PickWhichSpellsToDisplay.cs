@@ -18,21 +18,21 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 		try {
 			if (GameManager.S.currentScene != "Battle") {
 				// Buttons Interactable
-				Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, true);
+				Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, true);
 				Utilities.S.ButtonsInteractable(spellScreen.spellsButtons, false);
 				Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
 
 				spellScreen.canUpdate = true;
 
 				// Remove Listeners
-				Utilities.S.RemoveListeners(PlayerButtons.S.buttonsCS);
+				Utilities.S.RemoveListeners(PauseMenu.S.playerNameButtons);
 				// Add Listeners
-				PlayerButtons.S.buttonsCS[0].onClick.AddListener(delegate { spellScreen.LoadSpells(0, true); });
-				PlayerButtons.S.buttonsCS[1].onClick.AddListener(delegate { spellScreen.LoadSpells(1, true); });
-				PlayerButtons.S.buttonsCS[2].onClick.AddListener(delegate { spellScreen.LoadSpells(2, true); });
+				PauseMenu.S.playerNameButtons[0].onClick.AddListener(delegate { spellScreen.LoadSpells(0, true); });
+				PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { spellScreen.LoadSpells(1, true); });
+				PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { spellScreen.LoadSpells(2, true); });
 
 				// Activate PlayerButtons
-				PlayerButtons.S.gameObject.SetActive(true);
+				//PlayerButtons.S.gameObject.SetActive(true);
 
 				// Set Slot Headers Text 
 				spellScreen.nameHeaderText.text = "Name:";
@@ -64,12 +64,12 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 	public void Loop(SpellMenu spellScreen) {
 		if (spellScreen.canUpdate) {
 			// Display each Member's Spells
-			for (int i = 0; i < PlayerButtons.S.buttonsCS.Count; i++) {
-				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == PlayerButtons.S.buttonsCS[i].gameObject) {
+			for (int i = 0; i < PauseMenu.S.playerNameButtons.Count; i++) {
+				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == PauseMenu.S.playerNameButtons[i].gameObject) {
 					spellScreen.DeactivateUnusedSpellsSlots(i);
 					spellScreen.DisplaySpellsDescriptions(i);
 					spellScreen.AssignSpellsNames(i);
-					Utilities.S.PositionCursor(PlayerButtons.S.buttonsCS[i].gameObject, 0, 60, 3);
+					Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3);
 					titleText.text = "Spells: " + "<color=white>" + Party.S.stats[i].name + "</color>";
 
 					// Audio: Selection (when a new gameObject is selected)
@@ -78,7 +78,7 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 			}
 
 			// Set animation to walk
-			PlayerButtons.S.SetSelectedAnim("Walk");
+			//PlayerButtons.S.SetSelectedAnim("Walk");
 
 			spellScreen.canUpdate = false;
 		}
