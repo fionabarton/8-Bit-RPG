@@ -27,11 +27,6 @@ public class PickItemMode : MonoBehaviour {
 
 			itemScreen.canUpdate = true;
 
-			//if (GameManager.S.currentScene != "Battle") {
-			//	// Activate PlayerButtons
-			//	PlayerButtons.S.gameObject.SetActive(true);
-			//}
-
 			// Activate Slot Headers 
 			itemScreen.nameHeaderText.text = "Name:";
 			itemScreen.slotHeadersHolder.SetActive(true);
@@ -113,14 +108,10 @@ public class PickItemMode : MonoBehaviour {
 			}
 		}
 
-		if (GameManager.S.currentScene != "Battle") {
-			if (Input.GetButtonDown("SNES Y Button")) {
-				itemScreen.Deactivate(true);
-
-                // Activate Cursor
-                ScreenCursor.S.cursorGO[0].SetActive(true);
-            }
-		}
+		// Deactivate menu
+		if (Input.GetButtonDown("SNES Y Button")) {
+			itemScreen.Deactivate(true);
+        }
 	}
 
 	public void DisplayItemDescriptions(ItemMenu itemScreen) {

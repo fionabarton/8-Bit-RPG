@@ -80,26 +80,20 @@ public class ItemMenu : MonoBehaviour {
         // Remove Listeners
         Utilities.S.RemoveListeners(itemButtons);
 
-		//if (GameManager.S.currentScene != "Battle") {
-		if (!Blob.S.isBattling) {
-			// Buttons Interactable
-			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
+		// Buttons Interactable
+		Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
 
-			// Set Selected Gameobject (Pause Screen: Items Button)
-			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[0]);
+		// Set Selected Gameobject (Pause Screen: Items Button)
+		Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[0]);
 
-            PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
+        PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
-            PauseMenu.S.canUpdate = true;
-		}
+        PauseMenu.S.canUpdate = true;
 
 		if (playSound) {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
-
-		// Deactivate PlayerButtons
-		//PlayerButtons.S.gameObject.SetActive(false);
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -112,15 +106,6 @@ public class ItemMenu : MonoBehaviour {
 		// Reset canUpdate
 		if (Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f) {
 			canUpdate = true;
-		}
-		
-		// Deactivate ItemScreen during Battle
-		if (Blob.S.isBattling) {
-			if (Input.GetButtonDown("SNES Y Button")) {
-				PauseMessage.S.gameObject.SetActive(false);
-				Deactivate(true);
-				Battle.S.PlayerTurn(true, false);
-			}
 		}
 
 		switch (mode) {
