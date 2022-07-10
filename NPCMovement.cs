@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eMovement { random, patrol, pursueWalk, pursueRun, flee, idle, reverse, auto };
-
 /// <summary>
 /// Movement AI for NPCs 
 /// </summary>
@@ -40,7 +38,7 @@ public class NPCMovement : MonoBehaviour {
 
 	public IEnumerator FixedUpdateCoroutine() {
 		// If not paused, and there isn't any dialogue being displayed...
-		if (!RPG.S.paused && !DialogueManager.S.TextBoxSpriteGO.activeInHierarchy) {
+		if (!GameManager.S.paused && !DialogueManager.S.TextBoxSpriteGO.activeInHierarchy) {
             if (isWalking) {
 				// Move gameObject towards movePoint
 				transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
