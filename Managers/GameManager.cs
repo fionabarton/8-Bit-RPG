@@ -67,9 +67,9 @@ public class GameManager : MonoBehaviour {
 		// Pause Screen input
 		if (!Items.S.menu.gameObject.activeInHierarchy &&
 			!Spells.S.menu.gameObject.activeInHierarchy &&
-			!EquipMenu.S.gameObject.activeInHierarchy) {
+			!EquipMenu.S.gameObject.activeInHierarchy &&
 			//!ShopMenu.S.gameObject.activeInHierarchy &&
-			//!OptionsMenu.S.gameObject.activeInHierarchy &&
+			!OptionsMenu.S.gameObject.activeInHierarchy) {
 			//!SaveMenu.S.gameObject.activeInHierarchy) {
 
 			//if (currentScene != "Battle" && currentScene != "Title_Screen") {
@@ -130,16 +130,16 @@ public class GameManager : MonoBehaviour {
 		Items.S.menu.Deactivate();
 		Spells.S.menu.Deactivate();
 		EquipMenu.S.Deactivate();
-		//OptionsMenu.S.Deactivate();
-		//SaveMenu.S.Deactivate();
-		//ShopMenu.S.Deactivate();
-		//TitleScreen.S.Deactivate();
+        OptionsMenu.S.Deactivate();
+        //SaveMenu.S.Deactivate();
+        //ShopMenu.S.Deactivate();
+        //TitleScreen.S.Deactivate();
 
-		// Deactivate PlayerButtons
-		//PlayerButtons.S.gameObject.SetActive(false);
+        // Deactivate PlayerButtons
+        //PlayerButtons.S.gameObject.SetActive(false);
 
-		// Deactivate Sub Menus
-		gameSubMenu.gameObject.SetActive(false);
+        // Deactivate Sub Menus
+        gameSubMenu.gameObject.SetActive(false);
 		pauseSubMenu.gameObject.SetActive(false);
 
 		// Randomly Spawn Objects
