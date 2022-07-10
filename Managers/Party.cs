@@ -53,7 +53,7 @@ public class Party : MonoBehaviour {
 
 	public void Start() {
 		// Player 1
-		stats.Add(new PartyStats("Blob", 10, 10, 10, 6, 6, 6,
+		stats.Add(new PartyStats("Blob", 40, 40, 40, 6, 6, 6,
 			2, 2, 2, 2, 1, 1, 1, 1,
 			0, 1, 13,
 			new List<Spell> { Spells.S.spells[1], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[4], Spells.S.spells[5], Spells.S.spells[3], Spells.S.spells[6], Spells.S.spells[7], Spells.S.spells[8], Spells.S.spells[9], Spells.S.spells[10], Spells.S.spells[11], Spells.S.spells[12] },

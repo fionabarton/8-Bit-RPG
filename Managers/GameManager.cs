@@ -72,19 +72,20 @@ public class GameManager : MonoBehaviour {
 			!OptionsMenu.S.gameObject.activeInHierarchy) {
 			//!SaveMenu.S.gameObject.activeInHierarchy) {
 
-			//if (currentScene != "Battle" && currentScene != "Title_Screen") {
-			if (!Blob.S.isBattling && currentScene != "Title_Screen") {
-				if (!PauseMenu.S.gameObject.activeInHierarchy) {
-					if (Input.GetButtonDown("Pause")) {
-						PauseMenu.S.Pause();
-					}
-				} else {
-					if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-						PauseMenu.S.UnPause(true);
+			if (!Blob.S.isBattling) {
+				if (currentScene != "Title_Screen") {
+					if (!PauseMenu.S.gameObject.activeInHierarchy) {
+						if (Input.GetButtonDown("Pause")) {
+							PauseMenu.S.Pause();
+						}
+					} else {
+						if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+							PauseMenu.S.UnPause(true);
+						}
 					}
 				}
 			}
-        }
+		}
     }
 
 	// Load Level
@@ -114,10 +115,6 @@ public class GameManager : MonoBehaviour {
 		//CamManager.S.ChangeTarget(Player.S.gameObject, false);
 		Camera.main.orthographicSize = 5;
 
-		// Disable BATTLE UI & GameObjects
-		//battleUIGO.SetActive(false);
-		//battleGameObjects.SetActive(false);
-
 		// Dectivate battle UI and gameobjects
 		Battle.S.UI.battleMenu.SetActive(false);
 		Battle.S.UI.battleGameObjects.SetActive(false);
@@ -134,9 +131,6 @@ public class GameManager : MonoBehaviour {
         //SaveMenu.S.Deactivate();
         //ShopMenu.S.Deactivate();
         //TitleScreen.S.Deactivate();
-
-        // Deactivate PlayerButtons
-        //PlayerButtons.S.gameObject.SetActive(false);
 
         // Deactivate Sub Menus
         gameSubMenu.gameObject.SetActive(false);
@@ -268,37 +262,6 @@ public class GameManager : MonoBehaviour {
 			Curtain.S.Open();
 		}
 	}
-
-	//public void StartBattle(List<EnemyStats> eStats, int enemyAmount) {
-	//	Battle.S.ImportEnemyStats(eStats, enemyAmount);
-
-	//	// Set Respawn Position
-	//	Player.S.respawnPos = Player.S.gameObject.transform.position;
-
-	//	// Freeze Player
-	//	Player.S.canMove = false;
-	//	//Player.S.mode = ePlayerMode.idle;
-
-	//	// Freeze all NPC & Enemies
-	//	paused = true;
-
-	//	// Audio: Start Battle
-	//	AudioManager.S.PlaySong(eSongName.startBattle);
-
-	//	// Close Curtains
-	//	Curtain.S.Close();
-
-	//	// Delay, then Load Scene
-	//	Invoke("LoadBattleScene", 1.25f);
-	//}
-
-	//void LoadBattleScene() {
-	//	LoadLevel("Battle");
-
-	//	// Add Update & Fixed Update Delegate
-	//	UpdateManager.updateDelegate += Battle.S.Loop;
-	//	UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
-	//}
 
 	// ************ Add/Subtract PLAYER HP ************ \\
 	public void AddSubtractPlayerHP(int ndx, bool addOrSubtract, int amount) {
