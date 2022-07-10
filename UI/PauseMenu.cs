@@ -153,9 +153,6 @@ public class PauseMenu : MonoBehaviour {
 		//	GameManager.S.gameSubMenu.buttonCS[i].interactable = false;
 		//}
 
-		// Overworld Player Stats
-		//PlayerButtons.S.gameObject.SetActive(false);
-
 		gameObject.SetActive(true);
 
         // Buttons Interactable
@@ -182,9 +179,6 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void UnPause(bool playSound = false) {
-		// Overworld Player Stats
-		//Player.S.playerUITimer = Time.time + 1.5f;
-
 		// Unfreeze player
 		GameManager.S.paused = false;
 		Blob.S.canMove = true;

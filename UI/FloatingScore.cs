@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FloatingScore : MonoBehaviour {
 	[Header ("Set in Inspector")]
-	public float 	speed = 2f;
+	public float 	speed = 1f;
 
 	[Header ("Set Dynamically")]
 	private bool	canScale;

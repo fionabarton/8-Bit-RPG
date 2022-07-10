@@ -70,7 +70,7 @@ public class OptionsMenu : MonoBehaviour {
 		sliders[2].onValueChanged.AddListener(delegate { SetSFXVolume(); });
 		sliders[3].onValueChanged.AddListener(delegate { SetTextSpeed(); });
 
-		gameObject.SetActive(false);
+		Deactivate();
 	}
 
 	// Set in Inspector on OptionsScreen
@@ -95,7 +95,8 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void Deactivate(bool playSound = false) {
-		if (!Blob.S.isBattling || GameManager.S.currentScene != "Title_Screen") {
+		//if (!Blob.S.isBattling) {
+		if (GameManager.S.currentScene != "Title_Screen") {
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
 
@@ -108,9 +109,7 @@ public class OptionsMenu : MonoBehaviour {
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
 			PauseMenu.S.canUpdate = true;
-		}
-
-		if (GameManager.S.currentScene == "Title_Screen") {
+		} else {
 			// Set Selected GameObject (New Game Button)
 			Utilities.S.SetSelectedGO(TitleScreen.S.previousSelectedButton);
 
@@ -140,10 +139,9 @@ public class OptionsMenu : MonoBehaviour {
 			canUpdate = false;
 		}
 
-		if (!Blob.S.isBattling) {
-			if (Input.GetButtonDown("SNES Y Button")) {
-				Deactivate(true);
-			}
+		// Deactivate menu
+		if (Input.GetButtonDown("SNES Y Button")) {
+			Deactivate(true);
 		}
 	}
 
