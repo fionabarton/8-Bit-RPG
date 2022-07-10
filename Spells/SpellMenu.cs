@@ -61,11 +61,9 @@ public class SpellMenu : MonoBehaviour {
 	}
 
 	public void Activate() {
-		if (!Blob.S.isBattling) {
-			// Ensures first slots are selected when screen enabled
-			previousSelectedPlayerGO = PauseMenu.S.playerNameButtons[0].gameObject;
-			previousSelectedSpellGO = spellsButtons[0].gameObject;
-		}
+		// Ensures first slots are selected when screen enabled
+		previousSelectedPlayerGO = PauseMenu.S.playerNameButtons[0].gameObject;
+		previousSelectedSpellGO = spellsButtons[0].gameObject;
 
 		firstSlotNdx = 0;
 
@@ -94,7 +92,7 @@ public class SpellMenu : MonoBehaviour {
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
 			// Set Selected Gameobject (Pause Screen: Spells Button)
-			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[2]);
+			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[1]);
 
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
@@ -211,7 +209,7 @@ public class SpellMenu : MonoBehaviour {
 								if (firstSlotNdx == 0) {
 									firstSlotNdx = Party.S.stats[playerNdx].spellNdx - spellsButtons.Count;
 
-									// Set  selected GameObject
+									// Set selected GameObject
 									Utilities.S.SetSelectedGO(spellsButtons[9].gameObject);
 								} else {
 									firstSlotNdx -= 1;
@@ -222,7 +220,7 @@ public class SpellMenu : MonoBehaviour {
 								if (firstSlotNdx + spellsButtons.Count == Party.S.stats[playerNdx].spellNdx) {
 									firstSlotNdx = 0;
 
-									// Set  selected GameObject
+									// Set selected GameObject
 									Utilities.S.SetSelectedGO(spellsButtons[0].gameObject);
 								} else {
 									firstSlotNdx += 1;
