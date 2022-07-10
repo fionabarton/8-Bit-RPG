@@ -84,7 +84,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		ButtonsDisableAll();
 		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
 
-		// Shake Enemy Anim 
+		// Flicker Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
 
 		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);

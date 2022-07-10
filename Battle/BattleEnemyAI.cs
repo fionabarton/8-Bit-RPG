@@ -46,10 +46,10 @@ public class BattleEnemyAI : MonoBehaviour {
         //ChanceToCallMove(13,9);
 
         // Call for backup
-        ChanceToCallMove(7);
+        //ChanceToCallMove(7);
 
         // Select Random Move
-        //CallRandomMove();
+        CallRandomMove();
 
         // Attack OR Defend
         //ChanceToCallMove(0, 1);
