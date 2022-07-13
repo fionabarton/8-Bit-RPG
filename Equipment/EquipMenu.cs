@@ -123,7 +123,7 @@ public class EquipMenu : MonoBehaviour {
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
 
 			// Set Selected Gameobject (Pause Screen: Equip Button)
-			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[1]);
+			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[2]);
 
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
