@@ -97,6 +97,8 @@ public class BattleUI : MonoBehaviour {
 				actionOptionsButtonsCursor.transform.localPosition = new Vector2(-4.5f, -4.3f);
 			} else if (go == _.playerActions.actionButtonsGO[4]) {
 				actionOptionsButtonsCursor.transform.localPosition = new Vector2(-6.1f, -4.9f);
+			} else if (go == _.playerActions.actionButtonsGO[5]) {
+				actionOptionsButtonsCursor.transform.localPosition = new Vector2(-4.5f, -4.9f);
 
 			// Option buttons
 			} else if (go == optionButtonsGO[0]) {
