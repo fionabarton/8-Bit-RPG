@@ -73,7 +73,7 @@ public class Party : MonoBehaviour {
 		// Player 3
 		stats.Add(new PartyStats("Fake Bill", 25, 25, 25, 10, 10, 10,
 			1, 1, 1, 1, 2, 2, 2, 2,
-			0, 1, 12,
+			0, 1, 10,
 			new List<Spell> { Spells.S.spells[3], Spells.S.spells[4], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[1], Spells.S.spells[5], Spells.S.spells[6], Spells.S.spells[7], Spells.S.spells[8], Spells.S.spells[9] },
 			new List<bool>(new bool[30]),
 			new List<int> { 0, 0, 9, 23, 55, 110, 250, 450, 850, 1300, 2100 },
