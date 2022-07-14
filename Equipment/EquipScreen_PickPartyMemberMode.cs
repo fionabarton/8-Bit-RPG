@@ -23,6 +23,7 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(equipScreen.equippedButtons, false);
+			Utilities.S.ButtonsInteractable(equipScreen.inventoryButtons, false);
 			Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, true);
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
 
