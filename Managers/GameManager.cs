@@ -68,8 +68,8 @@ public class GameManager : MonoBehaviour {
 		if (!Items.S.menu.gameObject.activeInHierarchy &&
 			!Spells.S.menu.gameObject.activeInHierarchy &&
 			!EquipMenu.S.gameObject.activeInHierarchy &&
-			//!ShopMenu.S.gameObject.activeInHierarchy &&
-			!OptionsMenu.S.gameObject.activeInHierarchy) {
+            !ShopMenu.S.gameObject.activeInHierarchy &&
+            !OptionsMenu.S.gameObject.activeInHierarchy) {
 			//!SaveMenu.S.gameObject.activeInHierarchy) {
 
 			if (!Blob.S.isBattling) {
