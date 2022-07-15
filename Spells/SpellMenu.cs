@@ -343,7 +343,7 @@ public class SpellMenu : MonoBehaviour {
 				PauseMessage.S.SetText(Party.S.stats[playerNdx].spells[i + firstSlotNdx].description);
 
 				// Cursor Position set to Selected Button
-				Utilities.S.PositionCursor(spellsButtons[i].gameObject, -160, 0, 0);
+				Utilities.S.PositionCursor(spellsButtons[i].gameObject, -175, 0, 0);
 
 				// Set selected button text color	
 				spellsButtonNameText[i].color = new Color32(205, 208, 0, 255);
