@@ -43,7 +43,7 @@ public class Items : MonoBehaviour {
 
         // Paper Sword
         items[2] = new Item("Paper Sword", eItemType.Weapon, eItemStatEffect.STR, 10, 10, 5,
-        "A paper sword capable of inflicting light physical damage upon an enemy. Adds +10 to Strength." + "\n Value: 5 Gold", itemSprite[2]);
+        "Capable of inflicting light physical damage upon an enemy.\nAdds +10 to Strength." + "\n Value: 5 Gold", itemSprite[2]);
 
         // Crap 
         items[3] = new Item("Crap", eItemType.Useless, eItemStatEffect.nothing, 0, 0, 0,
@@ -51,75 +51,75 @@ public class Items : MonoBehaviour {
 
         // Nothing 
         items[4] = new Item("Nothing", eItemType.Useless, eItemStatEffect.nothing, 0, 0, 0,
-        "It's nothing. Absolutely nothing. Really? What a disappointing game!" + "\n Value: 0 Gold", itemSprite[4]);
+        "It's nothing. Absolutely nothing.\nReally? What a disappointing game!" + "\n Value: 0 Gold", itemSprite[4]);
 
         // Paper Armor
         items[5] = new Item("Paper Armor", eItemType.Armor, eItemStatEffect.DEF, 6, 6, 7,
-        "A set of paper armor capable of reducing the amount of damage taken from an enemy. Adds +6 to Defense." + "\n Value: 7 Gold", itemSprite[5]);
+        "Reduces the amount of damage taken from an enemy.\nAdds +6 to Defense." + "\n Value: 7 Gold", itemSprite[5]);
 
         // Paper Helmet
         items[6] = new Item("Paper Helmet", eItemType.Helmet, eItemStatEffect.DEF, 9, 9, 9,
-        "A paper helmet capable of reducing the amount of damage taken from an enemy. Adds +9 to Defense." + "\n Value: 9 Gold", itemSprite[6]);
+        "Reduces the amount of damage taken from an enemy.\nAdds +9 to Defense." + "\n Value: 9 Gold", itemSprite[6]);
 
         // Paper Accessory
         items[7] = new Item("Paper Accessory", eItemType.Accessory, eItemStatEffect.AGI, 9, 9, 9,
-        "A paper accessory that slightly increases the speed of a party member. Adds +9 to Agility." + "\n Value: 9 Gold", itemSprite[7]);
+        "Increases the speed of a party member.\nAdds +9 to Agility." + "\n Value: 9 Gold", itemSprite[7]);
 
         // Wooden Sword
         items[8] = new Item("Wooden Sword", eItemType.Weapon, eItemStatEffect.STR, 12, 12, 6,
-        "A wooden sword capable of inflicting moderate physical damage upon an enemy. Adds +12 to Strength." + "\n Value: 6 Gold", itemSprite[8]);
+        "Capable of inflicting moderate physical damage upon an enemy.\nAdds +12 to Strength." + "\n Value: 6 Gold", itemSprite[8]);
 
         // Ass Wand
         items[9] = new Item("Ass Wand", eItemType.Weapon, eItemStatEffect.WIS, 10, 10, 1,
-        "A paper wand capable of inflicting light magic damage upon an enemy. Adds +10 to Wisdom." + "\n Value: 1 Gold", itemSprite[9]);
+        "Capable of inflicting light magic damage upon an enemy.\nAdds +10 to Wisdom." + "\n Value: 1 Gold", itemSprite[9]);
 
         // Berry
         items[10] = new Item("Berry", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 5,
-        "Aside from its resale value, the party has no current use for this tasty berry." + "\n Value: 5 Gold", itemSprite[10]);
+        "Aside from its resale value,\nthe party has no current use for this tasty berry." + "\n Value: 5 Gold", itemSprite[10]);
 
         // Small Key
         items[11] = new Item("Small Key", eItemType.Important, eItemStatEffect.nothing, 0, 0, 0,
-        "A small key that can unlock any small lock found on any small door. It can only be used on a single door." + "\n Value: 0 Gold", itemSprite[11]);
+        "A small key that can unlock any small door.\nIt can only be used on a single door." + "\n Value: 0 Gold", itemSprite[11]);
 
         // Bug_1
         items[12] = new Item("Blue Bat", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[12]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[12]);
 
         // Bug_2
         items[13] = new Item("Violet Butterfly", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[13]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[13]);
 
         // Bug_3
         items[14] = new Item("Vampire Bat", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[14]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[14]);
 
         // Bug_4
         items[15] = new Item("Orange Butterfly", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[15]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[15]);
 
         // Bug_5
         items[16] = new Item("Blue Butterfly", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[16]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[16]);
 
         // Bug_6
         items[17] = new Item("Bumble Bee", eItemType.Ingredient, eItemStatEffect.nothing, 0, 0, 15,
-        "Aside from its resale value, the party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[17]);
+        "Aside from its resale value,\nthe party has no current use for this creature." + "\n Value: 15 Gold", itemSprite[17]);
 
         // Default Weapon
         items[18] = new Item("Default Weapon", eItemType.Weapon, eItemStatEffect.STR, 1, 1, 5,
-        "The weapon that each party member starts out with. Adds +1 to Strength." + "\n Value: 5 Gold", itemSprite[18], true);
+        "The weapon that each party member starts out with.\nAdds +1 to Strength." + "\n Value: 5 Gold", itemSprite[18], true);
 
         // Default Armor
         items[19] = new Item("Default Armor", eItemType.Armor, eItemStatEffect.DEF, 1, 1, 5,
-        "The armor that each party member starts out with. Adds +1 to Defense." + "\n Value: 5 Gold", itemSprite[19], true);
+        "The armor that each party member starts out with.\nAdds +1 to Defense." + "\n Value: 5 Gold", itemSprite[19], true);
 
         // Default Helmet
         items[20] = new Item("Default Helmet", eItemType.Helmet, eItemStatEffect.DEF, 1, 1, 5,
-        "The helmet that each party member starts out with. Adds +1 to Defense." + "\n Value: 5 Gold", itemSprite[20], true);
+        "The helmet that each party member starts out with.\nAdds +1 to Defense." + "\n Value: 5 Gold", itemSprite[20], true);
 
         // Default Accessory
         items[21] = new Item("Default Accessory", eItemType.Accessory, eItemStatEffect.AGI, 1, 1, 5,
-        "The accessory that each party member starts out with. Adds +1 to Agility." + "\n Value: 5 Gold", itemSprite[21], true);
+        "The accessory that each party member starts out with.\nAdds +1 to Agility." + "\n Value: 5 Gold", itemSprite[21], true);
 
         // Heal All Potion
         items[22] = new Item("Heal All Potion", eItemType.Consumable, eItemStatEffect.HP, 12, 20, 20,
@@ -127,15 +127,15 @@ public class Items : MonoBehaviour {
 
         // Warp Potion
         items[23] = new Item("Warp Potion", eItemType.Consumable, eItemStatEffect.nothing, 0, 0, 15,
-        "Instantaneously transports the party to a previously visited location." + "\n Value: 15 Gold", itemSprite[23]);
+        "Instantaneously transports the party\nto a previously visited location." + "\n Value: 15 Gold", itemSprite[23]);
 
         // Revive Potion
         items[24] = new Item("Revive Potion", eItemType.Consumable, eItemStatEffect.HP, 12, 20, 25,
-        "Revives a fallen party member and restores a small amount of their HP." + "\n Value: 25 Gold", itemSprite[24]);
+        "Revives a fallen party member and\nrestores a small amount of their HP." + "\n Value: 25 Gold", itemSprite[24]);
 
         // Detoxify Potion
         items[25] = new Item("Detoxify Potion", eItemType.Consumable, eItemStatEffect.nothing, 0, 0, 5,
-        "Eradicates any toxins that have infected a poisoned party member." + "\n Value: 5 Gold", itemSprite[25]);
+        "Eradicates any toxins that have infected\na poisoned party member." + "\n Value: 5 Gold", itemSprite[25]);
 
         // Mobilize Potion
         items[26] = new Item("Mobilize Potion", eItemType.Consumable, eItemStatEffect.nothing, 0, 0, 5,
