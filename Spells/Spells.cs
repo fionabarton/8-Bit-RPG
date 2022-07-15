@@ -41,7 +41,7 @@ public class Spells : MonoBehaviour {
 		// Warp
 		spells[2] = new Spell("Warp",
 			eSpellType.World, eSpellStatEffect.none, eSpellUseableMode.world, 0, 0, 1,
-			"Instantaneously transports the party to a previously visited location." + "\n Cost: 1 MP");
+			"Instantaneously transports the party\nto a previously visited location." + "\n Cost: 1 MP");
 
 		// Fireblast
 		spells[3] = new Spell("Fireblast",
@@ -56,12 +56,12 @@ public class Spells : MonoBehaviour {
 		// Revive
 		spells[5] = new Spell("Revive",
 			eSpellType.Healing, eSpellStatEffect.HP, eSpellUseableMode.battle, 12, 20, 6,
-			"Revives a fallen party member and restores a small amount of their HP." + "\n Cost: 6 MP");
+			"Revives a fallen party member and\nrestores a small amount of their HP." + "\n Cost: 6 MP");
 
 		// Detoxify 
 		spells[6] = new Spell("Detoxify",
 			eSpellType.Healing, eSpellStatEffect.none, eSpellUseableMode.battle, 0, 0, 2,
-			"Eradicates any toxins that have infected a poisoned party member." + "\n Cost: 2 MP");
+			"Eradicates any toxins that have\ninfected a poisoned party member." + "\n Cost: 2 MP");
 
 		// Mobilize 
 		spells[7] = new Spell("Mobilize",
