@@ -6,7 +6,8 @@ using System;
 
 public class EquipMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
-	public Text playerName;
+	//public Text playerName;
+	public Text titleText;
 	public Text currentStats;
 	public GameObject equippedItemTypeNames;
 
@@ -197,7 +198,7 @@ public class EquipMenu : MonoBehaviour {
 
 	// Display member's name and current stats
 	public void DisplayCurrentStats(int playerNdx) {
-		playerName.text = Party.S.stats[playerNdx].name;
+		titleText.text = "Spells: " + "<color=white>" + Party.S.stats[playerNdx].name + "</color>";
 		currentStats.text = Party.S.stats[playerNdx].LVL + "\n" + Party.S.stats[playerNdx].HP + "/" + Party.S.stats[playerNdx].maxHP + "\n" + Party.S.stats[playerNdx].MP + "/" + Party.S.stats[playerNdx].maxMP;
 		equipStatsEffect.currentAttributeAmounts.text = Party.S.stats[playerNdx].STR + "\n" + Party.S.stats[playerNdx].DEF + "\n" + Party.S.stats[playerNdx].WIS + "\n" + Party.S.stats[playerNdx].AGI;
 		equipStatsEffect.potentialStats.text = "";
