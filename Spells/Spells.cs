@@ -76,7 +76,7 @@ public class Spells : MonoBehaviour {
 		// Poison 
 		spells[9] = new Spell("Poison",
 			eSpellType.Offensive, eSpellStatEffect.none, eSpellUseableMode.battle, 0, 0, 1,
-			"Poisons a single enemy.\nAt the start of each turn, it damages the enemy for a small amount of HP." + "\n Cost: 1 MP");
+			"Poisons a single enemy. At the start of each turn,\nit damages the enemy for a small amount of HP." + "\n Cost: 1 MP");
 
 		// Paralyze 
 		spells[10] = new Spell("Paralyze",
