@@ -161,12 +161,12 @@ public class ItemMenu : MonoBehaviour {
 									firstSlotNdx = Inventory.S.GetItemList().Count - itemButtons.Count;
 
 									// Set  selected GameObject
-									Utilities.S.SetSelectedGO(itemButtons[9].gameObject);
+									Utilities.S.SetSelectedGO(itemButtons[itemButtons.Count - 1].gameObject);
 								} else {
 									firstSlotNdx -= 1;
 								}
 							}
-						} else if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[9].gameObject) {
+						} else if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[itemButtons.Count - 1].gameObject) {
 							if (Input.GetAxisRaw("Vertical") < 0) {
 								if (firstSlotNdx + itemButtons.Count == Inventory.S.GetItemList().Count) {
 									firstSlotNdx = 0;
@@ -195,7 +195,7 @@ public class ItemMenu : MonoBehaviour {
 
 			// Check if first or last slot is selected
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[0].gameObject
-			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[9].gameObject) {
+			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[itemButtons.Count-1].gameObject) {
 				firstOrLastSlotSelected = true;
 			} else {
 				firstOrLastSlotSelected = false;
