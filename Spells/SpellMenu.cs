@@ -210,12 +210,12 @@ public class SpellMenu : MonoBehaviour {
 									firstSlotNdx = Party.S.stats[playerNdx].spellNdx - spellsButtons.Count;
 
 									// Set selected GameObject
-									Utilities.S.SetSelectedGO(spellsButtons[9].gameObject);
+									Utilities.S.SetSelectedGO(spellsButtons[spellsButtons.Count - 1].gameObject);
 								} else {
 									firstSlotNdx -= 1;
 								}
 							}
-						} else if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[9].gameObject) {
+						} else if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count - 1].gameObject) {
 							if (Input.GetAxisRaw("Vertical") < 0) {
 								if (firstSlotNdx + spellsButtons.Count == Party.S.stats[playerNdx].spellNdx) {
 									firstSlotNdx = 0;
@@ -244,7 +244,7 @@ public class SpellMenu : MonoBehaviour {
 
 			// Check if first or last slot is selected
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[0].gameObject
-			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[9].gameObject) {
+			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count-1].gameObject) {
 				firstOrLastSlotSelected = true;
 			} else {
 				firstOrLastSlotSelected = false;
