@@ -71,6 +71,9 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 					}
 				}
 			}
+
+			// Set selected member animation to walk
+			PauseMenu.S.SetSelectedMemberAnim("Walk");
 		}
 
 		// Deactivate EquipScreen

@@ -141,6 +141,9 @@ public class EquipMenu : MonoBehaviour {
 			inventoryButtons[i].gameObject.SetActive(false);
 		}
 
+		// Set party animations to idle
+		PauseMenu.S.SetSelectedMemberAnim("Idle");
+
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
 
@@ -251,7 +254,7 @@ public class EquipMenu : MonoBehaviour {
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
 
-		playerAnim.CrossFade("Success", 0);
+		//playerAnim.CrossFade("Success", 0);
 	}
 
 	public void SwitchMode(eEquipScreenMode mode, GameObject selectedGO, bool potentialStats) {
