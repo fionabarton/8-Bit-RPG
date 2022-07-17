@@ -10,8 +10,10 @@ public class UsedSpell : MonoBehaviour {
 	public void Loop(SpellMenu spellScreen) {
 		if (PauseMessage.S.dialogueFinished) {
 			if (Input.GetButtonDown("SNES B Button")) {
-				// Set animation to idle
-				//PlayerButtons.S.SetSelectedAnim("Idle");
+				// Activate the animation and text color of the previously selected party member
+				PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor(spellScreen.previousSelectedPlayerGO);
+
+				// Load spells of selected party member
 				spellScreen.LoadSpells(spellScreen.playerNdx);
 			}
 		}

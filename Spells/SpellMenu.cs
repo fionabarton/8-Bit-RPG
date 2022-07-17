@@ -117,8 +117,8 @@ public class SpellMenu : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
 
-		// Deactivate PlayerButtons
-		//PlayerButtons.S.gameObject.SetActive(false);
+		// Set party animations to idle
+		PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -259,11 +259,8 @@ public class SpellMenu : MonoBehaviour {
 
 	void GoBackToPickSpellMode() {
 		if (PauseMessage.S.dialogueFinished) {
-			// Set animations to idle
-			//PlayerButtons.S.SetSelectedAnim("Idle");
-
-			// Reset button colors
-			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+			// Activate the animation and text color of the previously selected party member
+			PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor(previousSelectedPlayerGO);
 
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
@@ -275,19 +272,28 @@ public class SpellMenu : MonoBehaviour {
 		}
 	}
 
-	public void LoadSpells(int playerNdx, bool playSound = false) {
-		//PlayerButtons.S.SetSelectedAnim("Idle");
+	//// Activate the animation and text color of the previously selected party member
+	//public void SetPreviousSelectedPlayerAnimAndColor() {
+	//	if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[0].gameObject) {
+	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 0);
+	//	} else if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[1].gameObject) {
+	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 1);
+	//	} else if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[2].gameObject) {
+	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 2);
+	//	}
+	//}
 
+	public void LoadSpells(int playerNdx, bool playSound = false) {
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
 		Utilities.S.ButtonsInteractable(spellsButtons, true);
 
 		this.playerNdx = playerNdx; // Now used to DisplaySpellsDescriptions
 
-		if (GameManager.S.currentScene == "Battle") {
-			// Activate Spell Screen
-			Activate();
-		}
+		//if (GameManager.S.currentScene == "Battle") {
+		//	// Activate Spell Screen
+		//	Activate();
+		//}
 
 		// Empty Inventory
 		if (Party.S.stats[playerNdx].spellNdx == 0) {

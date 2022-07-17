@@ -38,8 +38,8 @@ public class WorldSpells : MonoBehaviour {
 
 		// If multiple targets
 		if (!spell.multipleTargets) {
-			// Set animation to idle
-			//PlayerButtons.S.SetSelectedAnim("Idle");
+			// Set party animations to idle
+			//PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			Spells.S.menu.mode = eSpellScreenMode.pickWhichMemberToHeal;
 		} else {
@@ -47,15 +47,15 @@ public class WorldSpells : MonoBehaviour {
 				// Set cursor positions
 				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3, i);
 
-				// Set animations to walk
-				//PlayerButtons.S.anim[i].CrossFade("Walk", 0);
+				// Set party animations to walk
+				PauseMenu.S.playerAnims[i].CrossFade("Walk", 0);
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
 			}
 
 			// Set button colors
-			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(253, 255, 116, 255));
+			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(205, 208, 0, 255));
 
 			Spells.S.menu.mode = eSpellScreenMode.pickAllMembersToHeal;
 		}
@@ -89,8 +89,8 @@ public class WorldSpells : MonoBehaviour {
 			// Display Text
 			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to cast this spell!");
 
-			// Set animation to idle
-			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			// Set party animations to idle
+			//PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -124,8 +124,8 @@ public class WorldSpells : MonoBehaviour {
 			// Display Text
 			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to cast this spell!");
 
-			// Set animation to idle
-			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			// Set party animations to idle
+			//PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -207,17 +207,17 @@ public class WorldSpells : MonoBehaviour {
 			// Display Text
 			PauseMessage.S.DisplayText("The party is already at full health...\n...no need to cast this spell!");
 
-			// Set animations to idle
-			//for (int i = 0; i <= Party.S.partyNdx; i++) {
-			//	PlayerButtons.S.anim[i].CrossFade("Idle", 0);
-			//}
+            // Set party animations to idle
+            //for (int i = 0; i <= Party.S.partyNdx; i++) {
+            //    PauseMenu.S.playerAnims[i].CrossFade("Idle", 0);
+            //}
 
-			// Audio: Deny
-			AudioManager.S.PlaySFX(eSoundName.deny);
+            // Audio: Deny
+            AudioManager.S.PlaySFX(eSoundName.deny);
 		}
 
 		// Reset button colors
-		//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+		Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 255));
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);

@@ -15,8 +15,8 @@ public class PickWhichMemberToHeal : MonoBehaviour {
 		if (spellScreen.canUpdate) {
 			Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 60, 3);
 
-			// Set animation to walk
-			//PlayerButtons.S.SetSelectedAnim("Walk");
+			// Set selected member animation to walk
+			PauseMenu.S.SetSelectedMemberAnim("Walk");
 
 			// Audio: Selection (when a new gameObject is selected)
 			Utilities.S.PlayButtonSelectedSFX(ref previousSelectedPlayerGO);
@@ -26,8 +26,8 @@ public class PickWhichMemberToHeal : MonoBehaviour {
 
 		if (PauseMessage.S.dialogueFinished) {
 			if (Input.GetButtonDown("SNES Y Button")) {
-				// Set animation to idle
-				//PlayerButtons.S.SetSelectedAnim("Idle");
+				// Activate the animation and text color of the previously selected party member
+				PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor(spellScreen.previousSelectedPlayerGO);
 
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);

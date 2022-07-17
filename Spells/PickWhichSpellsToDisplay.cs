@@ -31,9 +31,6 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 				PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { spellScreen.LoadSpells(1, true); });
 				PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { spellScreen.LoadSpells(2, true); });
 
-				// Activate PlayerButtons
-				//PlayerButtons.S.gameObject.SetActive(true);
-
 				// Set Slot Headers Text 
 				spellScreen.nameHeaderText.text = "Name:";
 
@@ -77,8 +74,8 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 				}
 			}
 
-			// Set animation to walk
-			//PlayerButtons.S.SetSelectedAnim("Walk");
+			// Set selected member animation to walk
+			PauseMenu.S.SetSelectedMemberAnim("Walk");
 
 			spellScreen.canUpdate = false;
 		}
