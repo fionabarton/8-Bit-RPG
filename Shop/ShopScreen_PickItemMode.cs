@@ -166,16 +166,7 @@ public class ShopScreen_PickItemMode : MonoBehaviour {
 	// Set the first and last button’s navigation 
 	public void SetButtonNavigation(ShopMenu shopScreen) {
 		// Reset all button's navigation to automatic
-		for (int i = 0; i < shopScreen.inventoryButtons.Count; i++) {
-			// Get the Navigation data
-			Navigation navigation = shopScreen.inventoryButtons[i].navigation;
-
-			// Switch mode to Automatic
-			navigation.mode = Navigation.Mode.Automatic;
-
-			// Reassign the struct data to the button
-			shopScreen.inventoryButtons[i].navigation = navigation;
-		}
+		Utilities.S.ResetButtonNavigation(shopScreen.inventoryButtons);
 
 		// Set button navigation if inventory is less than 10
 		if (shopScreen.inventory.Count < shopScreen.inventoryButtons.Count) {
