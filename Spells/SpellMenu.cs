@@ -272,17 +272,6 @@ public class SpellMenu : MonoBehaviour {
 		}
 	}
 
-	//// Activate the animation and text color of the previously selected party member
-	//public void SetPreviousSelectedPlayerAnimAndColor() {
-	//	if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[0].gameObject) {
-	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 0);
-	//	} else if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[1].gameObject) {
-	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 1);
-	//	} else if (previousSelectedPlayerGO == PauseMenu.S.playerNameButtons[2].gameObject) {
-	//		PauseMenu.S.SetSelectedMemberAnim("Walk", 2);
-	//	}
-	//}
-
 	public void LoadSpells(int playerNdx, bool playSound = false) {
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
@@ -410,16 +399,7 @@ public class SpellMenu : MonoBehaviour {
 	// Set the first and last button’s navigation 
 	public void SetButtonNavigation() {
 		// Reset all button's navigation to automatic
-		for (int i = 0; i < spellsButtons.Count; i++) {
-			// Get the Navigation data
-			Navigation navigation = spellsButtons[i].navigation;
-
-			// Switch mode to Automatic
-			navigation.mode = Navigation.Mode.Automatic;
-
-			// Reassign the struct data to the button
-			spellsButtons[i].navigation = navigation;
-		}
+		Utilities.S.ResetButtonNavigation(spellsButtons);
 
 		// Set button navigation if inventory is less than 10
 		if (Party.S.stats[playerNdx].spellNdx < spellsButtons.Count) {
