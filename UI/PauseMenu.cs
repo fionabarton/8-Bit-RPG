@@ -16,7 +16,9 @@ public class PauseMenu : MonoBehaviour {
 	public List<GameObject> buttonGO; // 0: Items, 1: Equip, 2: Spells, 3: Options, 4: Save
 	public List<Button> buttonCS; // 0: Items, 1: Equip, 2: Spells, 3: Options, 4: Save
 
+	// Player buttons
 	public List<Button> playerNameButtons;
+	public List<Animator> playerAnims;
 
 	[Header("Set Dynamically")]
 	// Stats
@@ -206,6 +208,7 @@ public class PauseMenu : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
+	// Returns the time in '0:00' format
 	public string GetTime() {
         string zeroString = "";
 
@@ -240,4 +243,47 @@ public class PauseMenu : MonoBehaviour {
                 Party.S.GetExpToNextLevel(i);
         }
     }
+
+	// Sets the menu's mini party member sprites' animations and text color
+	// - Target party member is selected AUTOMATICALLY
+	public void SetSelectedMemberAnim(string animName) {
+		for (int i = 0; i < playerNameButtons.Count; i++) {
+			if (playerNameButtons[i].gameObject.activeInHierarchy) {
+				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == playerNameButtons[i].gameObject) {
+					playerAnims[i].CrossFade(animName, 0);
+					playerNameText[i].color = new Color32(205, 208, 0, 255);
+				} else {
+					playerAnims[i].CrossFade("Idle", 0);
+					playerNameText[i].color = new Color32(255, 255, 255, 255);
+				}
+			}
+		}
+	}
+
+	// Sets the menu's mini party member sprites' animations and text color
+	// - Target party member is selected MANUALLY
+	public void SetSelectedMemberAnim(string animName, int ndx) {
+		// Set all party members' anims and text color
+		for (int i = 0; i < playerNameButtons.Count; i++) {
+			if (playerNameButtons[i].gameObject.activeInHierarchy) {
+				playerAnims[i].CrossFade("Idle", 0);
+				playerNameText[i].color = new Color32(255, 255, 255, 255);
+			}
+		}
+
+		// Set target anim and text color
+		playerAnims[ndx].CrossFade(animName, 0);
+		playerNameText[ndx].color = new Color32(205, 208, 0, 255);
+	}
+
+	// Activate the animation and text color of the previously selected party member
+	public void SetPreviousSelectedPlayerAnimAndColor(GameObject previousGO) {
+		if (previousGO == playerNameButtons[0].gameObject) {
+			SetSelectedMemberAnim("Walk", 0);
+		} else if (previousGO == playerNameButtons[1].gameObject) {
+			SetSelectedMemberAnim("Walk", 1);
+		} else if (previousGO == playerNameButtons[2].gameObject) {
+			SetSelectedMemberAnim("Walk", 2);
+		}
+	}
 }
