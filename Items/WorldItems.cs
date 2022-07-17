@@ -34,8 +34,8 @@ public class WorldItems : MonoBehaviour {
 
 		// If multiple targets
 		if (!item.multipleTargets) {
-			// Set animation to idle
-			//PlayerButtons.S.SetSelectedAnim("Idle");
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			Items.S.menu.mode = eItemMenuMode.pickPartyMember;
 		} else {
@@ -43,8 +43,8 @@ public class WorldItems : MonoBehaviour {
 				// Set cursor positions
 				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3, i);
 
-				// Set animations to walk
-				//PlayerButtons.S.anim[i].CrossFade("Walk", 0);
+				// Set party member animations to walk
+				PauseMenu.S.playerAnims[i].CrossFade("Walk", 0);
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
@@ -53,7 +53,7 @@ public class WorldItems : MonoBehaviour {
 			}
 
 			// Set button colors
-			//PlayerButtons.S.SetButtonsColor(PauseMenu.S.playerNameButtons, new Color32(253, 255, 116, 255));
+			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(205, 208, 0, 255));
 
 			Items.S.menu.mode = eItemMenuMode.pickAllPartyMembers;
 		}
@@ -84,8 +84,8 @@ public class WorldItems : MonoBehaviour {
             // Display Text
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to use this potion!");
 
-			// Set animation to idle
-			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -118,8 +118,8 @@ public class WorldItems : MonoBehaviour {
             // Display Text
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full magic...\n...no need to use this potion!");
 
-			// Set animation to idle
-			//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -150,8 +150,8 @@ public class WorldItems : MonoBehaviour {
             // Display Text
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this potion!");
 
-            // Set animation to idle
-            //PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -194,7 +194,7 @@ public class WorldItems : MonoBehaviour {
 				//PlayerButtons.S.anim[i].CrossFade("Success", 0);
 
 				// Reset button colors
-				PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 200);
+				PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 255);
 			}
 
 			// Audio: Buff 1
@@ -205,7 +205,7 @@ public class WorldItems : MonoBehaviour {
 
             // Set animations to idle
             for (int i = 0; i <= Party.S.partyNdx; i++) {
-				//PlayerButtons.S.anim[i].CrossFade("Idle", 0);
+				PauseMenu.S.playerAnims[i].CrossFade("Idle", 0);
 			}
 
 			// Audio: Deny
@@ -213,7 +213,7 @@ public class WorldItems : MonoBehaviour {
 		}
 
 		// Reset button colors
-		//PlayerButtons.S.SetButtonsColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 200));
+		Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 255));
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
@@ -246,7 +246,6 @@ public class WorldItems : MonoBehaviour {
 		Utilities.S.ButtonsInteractable(Items.S.menu.itemButtons, true);
 
 		// Update GUI
-		//PlayerButtons.S.UpdateGUI();
 		PauseMenu.S.UpdateGUI();
 
 		// Deactivate screen cursors
@@ -266,7 +265,7 @@ public class WorldItems : MonoBehaviour {
         // Deactivate screen cursors
         Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
-        // Audio: Deny
-        AudioManager.S.PlaySFX(eSoundName.deny);
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.deny);
 	}
 }

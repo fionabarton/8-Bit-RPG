@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class ItemMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
@@ -210,11 +208,11 @@ public class ItemMenu : MonoBehaviour {
 
 	void GoBackToPickItemMode() {
 		if (PauseMessage.S.dialogueFinished) {
-			// Set animations to idle
-			//PlayerButtons.S.SetSelectedAnim("Idle");
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Reset button colors
-			//PlayerButtons.S.SetButtonsColor(PlayerButtons.S.buttonsCS, new Color32(255, 255, 255, 200));
+			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 200));
 
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
 
@@ -30,6 +28,9 @@ public class PickItemMode : MonoBehaviour {
 			// Activate Slot Headers 
 			itemScreen.nameHeaderText.text = "Name:";
 			itemScreen.slotHeadersHolder.SetActive(true);
+
+			// Reset party name text colors
+			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 255));
 
 			// If Inventory Empty 
 			if (Inventory.S.GetItemList().Count == 0) {
