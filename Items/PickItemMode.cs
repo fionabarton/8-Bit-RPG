@@ -72,16 +72,7 @@ public class PickItemMode : MonoBehaviour {
 	// Set the first and last button’s navigation if the player’s inventory is less than 10
 	public void SetButtonNavigation(ItemMenu itemScreen) {
 		// Reset all button's navigation to automatic
-		for (int i = 0; i < itemScreen.itemButtons.Count; i++) {
-			// Get the Navigation data
-			Navigation navigation = itemScreen.itemButtons[i].navigation;
-
-			// Switch mode to Automatic
-			navigation.mode = Navigation.Mode.Automatic;
-
-			// Reassign the struct data to the button
-			itemScreen.itemButtons[i].navigation = navigation;
-		}
+		Utilities.S.ResetButtonNavigation(itemScreen.itemButtons);
 
 		// Set button navigation if inventory is less than 10
 		if (Inventory.S.GetItemList().Count < itemScreen.itemButtons.Count) {
