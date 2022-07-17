@@ -70,7 +70,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedGameObject);
 				} else {
 					// Set non-selected button text color
-					equipScreen.equippedButtonsTxt[i].color = new Color32(39, 201, 255, 255);
+					equipScreen.equippedButtonsTxt[i].color = new Color32(255, 255, 255, 255);
 				}
 			}
 
@@ -83,7 +83,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 				EquipMenu.S.pickPartyMemberMode.SetUp(equipScreen);
 
 				// Reset equippedButtons text color
-				Utilities.S.SetTextColor(equipScreen.equippedButtons, new Color32(39, 201, 255, 255));
+				Utilities.S.SetTextColor(equipScreen.equippedButtons, new Color32(255, 255, 255, 255));
 
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);

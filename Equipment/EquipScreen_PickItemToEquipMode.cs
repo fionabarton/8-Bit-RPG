@@ -119,7 +119,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedGameObject);
 				} else {
 					// Set non-selected button text color
-					equipScreen.inventoryButtonsTxt[i].color = new Color32(39, 201, 255, 255);
+					equipScreen.inventoryButtonsTxt[i].color = new Color32(255, 255, 255, 255);
 				}
 			}
 		}

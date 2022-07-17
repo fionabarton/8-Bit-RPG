@@ -194,7 +194,7 @@ public class EquipMenu : MonoBehaviour {
 				ScreenCursor.S.cursorGO[0].SetActive(true);
 
 				// Reset inventoryButtons text color
-				Utilities.S.SetTextColor(inventoryButtons, new Color32(39, 201, 255, 255));
+				Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
 			}
 		}
 	}
