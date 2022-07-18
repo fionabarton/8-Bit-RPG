@@ -209,6 +209,34 @@ public class Utilities : MonoBehaviour {
 		// Reassign the struct data to the button
 		button.navigation = navigation;
 	}
+
+	// Dynamically set a list of horizontally placed buttons' navigation
+	public void SetHorizontalButtonsNavigation(List<Button> buttons, int amount) {
+		// Reset all button's navigation to automatic
+		ResetButtonNavigation(buttons);
+
+		// Set button navigation if inventory is less than buttons.Count
+		if (amount <= buttons.Count) {
+			if (amount > 1) {
+				// Set first button navigation
+				SetButtonNavigation(
+					buttons[0],
+					null,
+					null,
+					buttons[amount - 1],
+					buttons[1]);
+
+				// Set last button navigation
+				SetButtonNavigation(
+					buttons[amount - 1],
+					null,
+					null,
+					buttons[amount - 2],
+					buttons[0]);
+			}
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// Play "Selection" SFX when a new gameObject is selected
 	public void PlayButtonSelectedSFX(ref GameObject previousSelectedGameObject) {
