@@ -46,7 +46,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		_.UI.actionOptionsButtonsCursor.SetActive(false);
 
 		// Set the first and last button’s navigation 
-		_.UI.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
+		Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
 
 		// Set selected gameObject
 		Utilities.S.SetSelectedGO(_.UI.enemySpriteButtonsGO[0]);
