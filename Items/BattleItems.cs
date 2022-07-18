@@ -39,11 +39,11 @@ public class BattleItems : MonoBehaviour {
 		_.UI.partyNameButtonsCS[0].onClick.AddListener(delegate { functionToPass(0, item); });
 		_.UI.partyNameButtonsCS[1].onClick.AddListener(delegate { functionToPass(1, item); });
 		_.UI.partyNameButtonsCS[2].onClick.AddListener(delegate { functionToPass(2, item); });
-
+		
 		// If multiple targets
 		if (!item.multipleTargets) {
 			_.mode = eBattleMode.selectPartyMember;
-			_.UI.SetHorizontalButtonsNavigation(_.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
+			Utilities.S.SetHorizontalButtonsNavigation(_.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
 		} else {
 			_.mode = eBattleMode.selectAll;
 			_.UI.TargetAllPartyMembers();

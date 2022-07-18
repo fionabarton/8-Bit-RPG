@@ -62,6 +62,8 @@ public class ItemMenu : MonoBehaviour {
 
 		pickItemMode.Setup(Items.S.menu);
 
+		Utilities.S.SetHorizontalButtonsNavigation(PauseMenu.S.playerNameButtons, Party.S.partyNdx + 1);
+
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
