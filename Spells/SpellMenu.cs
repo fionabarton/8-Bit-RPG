@@ -75,6 +75,8 @@ public class SpellMenu : MonoBehaviour {
 		// Activate MP Cost header
 		slotHeadersHolder.SetActive(true);
 
+		Utilities.S.SetHorizontalButtonsNavigation(PauseMenu.S.playerNameButtons, Party.S.partyNdx + 1);
+
 		gameObject.SetActive(true);
 
 		// Audio: Confirm

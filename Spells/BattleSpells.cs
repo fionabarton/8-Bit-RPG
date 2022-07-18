@@ -48,7 +48,7 @@ public class BattleSpells : MonoBehaviour {
 					_.UI.TargetAllPartyMembers();
                 } else {
 					_.mode = eBattleMode.selectPartyMember;
-					_.UI.SetHorizontalButtonsNavigation(_.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
+					Utilities.S.SetHorizontalButtonsNavigation(_.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
 				}
 			} else if (spell.type == eSpellType.Offensive || spell.type == eSpellType.Thievery) {
 				Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, true);
@@ -77,7 +77,7 @@ public class BattleSpells : MonoBehaviour {
 					_.UI.TargetAllEnemies();
 				} else {
 					_.mode = eBattleMode.canGoBackToFightButton;
-					_.UI.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
+					Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
 				}
 			}
 		} else {
