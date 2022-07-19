@@ -40,8 +40,8 @@ public class ShopScreen_DisplayPotentialStats : MonoBehaviour {
 			if (tItem == EquipMenu.S.playerEquipment[i][(int)tItem.type]) {
 				statsNameText[i].text = "Already\nequipped!";
 				statsAmountText[i].text = "";
-				//anim[i].CrossFade("Idle", 0);
-				continue;
+                anim[i].CrossFade("Idle", 0);
+                continue;
 			}
 
 			// Get Current Stats
@@ -101,14 +101,14 @@ public class ShopScreen_DisplayPotentialStats : MonoBehaviour {
 			statsNameText[i].text = nameString;
 			statsAmountText[i].text = amountString;
 
-			// Set animation
-			//if (totaStatDifference > 0) {
-			//	anim[i].CrossFade("Success", 0);
-			//} else if (totaStatDifference < 0) {
-			//	anim[i].CrossFade("Fail", 0);
-			//} else {
-			//	anim[i].CrossFade("Idle", 0);
-			//}
-		}
+            // Set animation
+            if (totaStatDifference > 0) {
+                anim[i].CrossFade("Success", 0);
+            } else if (totaStatDifference < 0) {
+                anim[i].CrossFade("Fail", 0);
+            } else {
+                anim[i].CrossFade("Idle", 0);
+            }
+        }
 	}
 }
