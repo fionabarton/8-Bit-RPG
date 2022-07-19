@@ -48,16 +48,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 	// Set the first and last button’s navigation 
 	public void SetButtonNavigation(EquipMenu equipScreen) {
 		// Reset all button's navigation to automatic
-		for (int i = 0; i < equipScreen.inventoryButtons.Count; i++) {
-			// Get the Navigation data
-			Navigation navigation = equipScreen.inventoryButtons[i].navigation;
-
-			// Switch mode to Automatic
-			navigation.mode = Navigation.Mode.Automatic;
-
-			// Reassign the struct data to the button
-			equipScreen.inventoryButtons[i].navigation = navigation;
-		}
+		Utilities.S.ResetButtonNavigation(equipScreen.inventoryButtons);
 
 		// Set button navigation if inventory is less than 10
 		//if (SortItems.S.tItems.Count < equipScreen.inventoryButtons.Count) {
