@@ -6,12 +6,8 @@ using System;
 
 public class EquipMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
-	//public Text playerName;
 	public Text titleText;
-	public Text currentStats;
 	public GameObject equippedItemTypeNames;
-
-	public Animator playerAnim;
 
 	// Equipped Buttons (the currently selected party member's equipment)
 	public List<Button> equippedButtons;
@@ -195,6 +191,9 @@ public class EquipMenu : MonoBehaviour {
 
 				// Reset inventoryButtons text color
 				Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
+
+				// Set selected member animation to walk
+				PauseMenu.S.playerAnims[playerNdx].CrossFade("Walk", 0);
 			}
 		}
 	}
@@ -202,7 +201,6 @@ public class EquipMenu : MonoBehaviour {
 	// Display member's name and current stats
 	public void DisplayCurrentStats(int playerNdx) {
 		titleText.text = "Spells: " + "<color=white>" + Party.S.stats[playerNdx].name + "</color>";
-		currentStats.text = Party.S.stats[playerNdx].LVL + "\n" + Party.S.stats[playerNdx].HP + "/" + Party.S.stats[playerNdx].maxHP + "\n" + Party.S.stats[playerNdx].MP + "/" + Party.S.stats[playerNdx].maxMP;
 		equipStatsEffect.currentAttributeAmounts.text = Party.S.stats[playerNdx].STR + "\n" + Party.S.stats[playerNdx].DEF + "\n" + Party.S.stats[playerNdx].WIS + "\n" + Party.S.stats[playerNdx].AGI;
 		equipStatsEffect.potentialStats.text = "";
 	}
@@ -255,6 +253,7 @@ public class EquipMenu : MonoBehaviour {
 		AudioManager.S.PlaySFX(eSoundName.buff1);
 
 		//playerAnim.CrossFade("Success", 0);
+		PauseMenu.S.playerAnims[playerNdx].CrossFade("Success", 0);
 	}
 
 	public void SwitchMode(eEquipScreenMode mode, GameObject selectedGO, bool potentialStats) {
