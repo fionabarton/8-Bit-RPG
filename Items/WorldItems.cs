@@ -48,8 +48,6 @@ public class WorldItems : MonoBehaviour {
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
-
-                PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 255);
 			}
 
 			// Set button colors
@@ -76,7 +74,7 @@ public class WorldItems : MonoBehaviour {
             }
 
 			// Set animation to success
-			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			PauseMenu.S.playerAnims[ndx].CrossFade("Success", 0);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -110,7 +108,7 @@ public class WorldItems : MonoBehaviour {
 			}
 
 			// Set animation to success
-			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			PauseMenu.S.playerAnims[ndx].CrossFade("Success", 0);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -139,7 +137,7 @@ public class WorldItems : MonoBehaviour {
             PauseMessage.S.DisplayText("Used Detoxify Potion!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
 			// Set animation to success
-			//PlayerButtons.S.anim[ndx].CrossFade("Success", 0);
+			PauseMenu.S.playerAnims[ndx].CrossFade("Success", 0);
 
 			// If poisoned, activate overworld poisoned icons
 			StatusEffects.S.SetOverworldPoisonIcons();
@@ -191,10 +189,7 @@ public class WorldItems : MonoBehaviour {
 
             // Set animations to success
             for (int i = 0; i <= Party.S.partyNdx; i++) {
-				//PlayerButtons.S.anim[i].CrossFade("Success", 0);
-
-				// Reset button colors
-				PauseMenu.S.playerNameText[i].color = new Color32(255, 255, 255, 255);
+				PauseMenu.S.playerAnims[i].CrossFade("Success", 0);
 			}
 
 			// Audio: Buff 1
@@ -211,9 +206,6 @@ public class WorldItems : MonoBehaviour {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
-
-		// Reset button colors
-		Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 255));
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
