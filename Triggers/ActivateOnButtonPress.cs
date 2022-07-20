@@ -53,6 +53,9 @@ public class ActivateOnButtonPress : MonoBehaviour {
             // Remove Update Delgate
             UpdateManager.updateDelegate -= Loop;
 
+            // Unsubscribe ResetTrigger() from the OnShopScreenDeactivated event
+            EventManager.OnShopScreenDeactivated -= ResetTrigger;
+
             // Prevents triggering multiple triggers
             Blob.S.alreadyTriggered = false;
         }
@@ -85,7 +88,7 @@ public class ActivateOnButtonPress : MonoBehaviour {
         }
 	}
 
-    void ResetTrigger() {
+    public void ResetTrigger() {
         firstButtonPressed = false;
 
         // Activate Interactable Trigger

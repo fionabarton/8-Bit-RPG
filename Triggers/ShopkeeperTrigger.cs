@@ -47,7 +47,6 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(Buy);
         GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(Sell);
         GameManager.S.gameSubMenu.buttonCS[2].onClick.AddListener(No);
-        //RPG.S.gameSubMenu.subMenuButtonCS[3].onClick.AddListener(Option3);
 
         // Set button navigation
         Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[2], GameManager.S.gameSubMenu.buttonCS[1]);
@@ -109,7 +108,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
                     DialogueManager.S.DeactivateTextBox(false);
 
                     // Subscribe ResetTrigger() to the OnShopScreenDeactivated event
-                   // EventManager.OnShopScreenDeactivated += ResetTrigger;
+                    EventManager.OnShopScreenDeactivated += ResetTrigger;
 
                     // Reset ability to input
                     mode = eShopkeeperMode.pickBuyOrSell;
@@ -135,7 +134,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
             UpdateManager.updateDelegate -= ThisLoop;
 
             // Unsubscribe ResetTrigger() from the OnShopScreenDeactivated event
-            //EventManager.OnShopScreenDeactivated -= ResetTrigger;
+            EventManager.OnShopScreenDeactivated -= ResetTrigger;
         }
     }
 }
