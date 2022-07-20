@@ -8,11 +8,12 @@ public class ShopMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
 	// Inventory Buttons
 	public List<Button> inventoryButtons;
-	public List<Text> inventoryButtonsNameText;
-	public List<Text> inventoryButtonsTypeText;
-	public List<Text> inventoryButtonsPriceText;
-	public List<Text> inventoryButtonsQTYOwnedText;
-	public List<Text> inventoryButtonsQTYEquippedText;
+	public List<Text>	inventoryButtonsNameText;
+	public List<Text>	inventoryButtonsTypeText;
+	public List<Text>	inventoryButtonsPriceText;
+	public List<Text>	inventoryButtonsQTYOwnedText;
+	public List<Text>	inventoryButtonsQTYEquippedText;
+	public Text			goldAmountText;
 
 	[Header("Set Dynamically")]
 	// For Input & Display Message
@@ -61,6 +62,9 @@ public class ShopMenu : MonoBehaviour {
 
 		firstSlotNdx = 0;
 
+		// Display gold amount
+		goldAmountText.text = Party.S.gold.ToString();
+
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
@@ -79,7 +83,6 @@ public class ShopMenu : MonoBehaviour {
 
 		// Deactivate PauseMessage and PlayerButtons
 		PauseMessage.S.gameObject.SetActive(false);
-		//PlayerButtons.S.gameObject.SetActive(false);
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -88,7 +91,7 @@ public class ShopMenu : MonoBehaviour {
 		//CamManager.S.ChangeTarget(Player.S.gameObject, true);
 
 		// Broadcast event
-		//EventManager.ShopScreenDeactivated();
+		EventManager.ShopScreenDeactivated();
 
 		// Deactivate this gameObject
 		gameObject.SetActive(false);
