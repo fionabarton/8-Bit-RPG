@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// ShopScreen Mode/Step 2: ItemPurchasedOrSold
@@ -30,9 +31,7 @@ public class ShopScreen_ItemPurchasedOrSoldMode : MonoBehaviour {
 
 			// Subtract item price from Player's Gold
 			Party.S.gold -= item.value;
-
-			// Update Gold 
-			//PlayerButtons.S.goldValue.text = Party.S.gold.ToString();
+			shopScreen.goldAmountText.text = Party.S.gold.ToString();
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -65,9 +64,7 @@ public class ShopScreen_ItemPurchasedOrSoldMode : MonoBehaviour {
 
 		// Subtract item price from Player's Gold
 		Party.S.gold += item.value;
-
-		// Update Gold 
-		//PlayerButtons.S.goldValue.text = Party.S.gold.ToString();
+		shopScreen.goldAmountText.text = Party.S.gold.ToString();
 
 		// Remove Listeners
 		Utilities.S.RemoveListeners(shopScreen.inventoryButtons);
