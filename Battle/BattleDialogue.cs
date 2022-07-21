@@ -97,4 +97,27 @@ public class BattleDialogue : MonoBehaviour {
 			dialogueFinished = true;
 		}
 	}
+
+	// Set Text Instantly 
+	// - No delay/stagger between displaying each word)
+	public void SetText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false) {
+		StopCoroutine("DisplayTextCo");
+
+		// Set Text Alignment
+		//if (upperLeftAlignment) {
+		//	message.alignment = TextAnchor.UpperLeft;
+		//} else {
+		//	message.alignment = TextAnchor.MiddleCenter;
+		//}
+
+		displayMessageTextBottom.text = text;
+
+		// Optionally Activate Sub Menu
+		//if (activateSubMenu) {
+		//	GameManager.S.pauseSubMenu.gameObject.SetActive(true);
+
+		//	// Update Delgate
+		//	UpdateManager.fixedUpdateDelegate += GameManager.S.pauseSubMenu.Loop;
+		//}
+	}
 }
