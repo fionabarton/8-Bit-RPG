@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-public enum eBattleMode {
+﻿public enum eBattleMode {
     actionButtons, playerTurn, canGoBackToFightButton, canGoBackToFightButtonMultipleTargets,
     selectPartyMember, selectAll,
-    qteInitialize, qte, itemMenu, spellMenu, triedToRunFromBoss,
+    qteInitialize, qte, itemMenu, spellMenu, gearMenu, triedToRunFromBoss,
     enemyTurn, enemyAction,
     dropItem, addExpAndGold, addExpAndGoldNoDrops, partyDeath, levelUp, returnToWorld, noInputPermitted,
     statusAilment
