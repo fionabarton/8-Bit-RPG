@@ -75,6 +75,7 @@ public class SpellMenu : MonoBehaviour {
 		// Activate MP Cost header
 		slotHeadersHolder.SetActive(true);
 
+		// Set party member button navigation
 		Utilities.S.SetHorizontalButtonsNavigation(PauseMenu.S.playerNameButtons, Party.S.partyNdx + 1);
 
 		gameObject.SetActive(true);
@@ -93,6 +94,8 @@ public class SpellMenu : MonoBehaviour {
 		if (GameManager.S.currentScene != "Battle") {
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
+			Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
+
 			// Set Selected Gameobject (Pause Screen: Spells Button)
 			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[1]);
 
