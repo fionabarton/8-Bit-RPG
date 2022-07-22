@@ -18,12 +18,9 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 			AudioManager.S.PlaySFX(soundNdx);
 		}
 
-		// Set anims
-		//equipScreen.playerAnim.CrossFade("Walk", 0);
-		//PlayerButtons.S.anim[ndx].CrossFade("Idle", 0);
-
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
+		Utilities.S.ButtonsInteractable(Battle.S.UI.partyNameButtonsCS, false);
 		Utilities.S.ButtonsInteractable(equipScreen.equippedButtons, true);
 
 		equipScreen.playerNdx = ndx;
@@ -36,6 +33,14 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(equipScreen.inventoryButtons, false);
+
+		// Activate Cursor
+		ScreenCursor.S.cursorGO[0].SetActive(true);
+
+        if (Blob.S.isBattling) {
+			equipScreen.DisplayCurrentEquipmentNames(ndx);
+			equipScreen.DisplayCurrentStats(ndx);
+		}
 	}
 
 	public void Loop(EquipMenu equipScreen) {
@@ -78,15 +83,17 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		}
 
 		// Go back to pickPartyMember mode
-		if (PauseMessage.S.dialogueFinished) {
+		if (PauseMessage.S.dialogueFinished) { 
 			if (Input.GetButtonDown("SNES Y Button")) {
-				EquipMenu.S.pickPartyMemberMode.SetUp(equipScreen);
+                if (!Blob.S.isBattling) {
+					EquipMenu.S.pickPartyMemberMode.SetUp(equipScreen);
 
-				// Reset equippedButtons text color
-				Utilities.S.SetTextColor(equipScreen.equippedButtons, new Color32(255, 255, 255, 255));
+					// Reset equippedButtons text color
+					Utilities.S.SetTextColor(equipScreen.equippedButtons, new Color32(255, 255, 255, 255));
 
-				// Audio: Deny
-				AudioManager.S.PlaySFX(eSoundName.deny);
+					// Audio: Deny
+					AudioManager.S.PlaySFX(eSoundName.deny);
+				} 
 			}
 		}
 	}
@@ -106,7 +113,11 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		for (int i = 0; i <= equipScreen.equippedButtons.Count - 1; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.equippedButtons[i].gameObject) {
 				// Display item's description
-				PauseMessage.S.SetText(equipScreen.playerEquipment[playerNdx][i].description);
+                if (!Blob.S.isBattling) {
+					PauseMessage.S.SetText(equipScreen.playerEquipment[playerNdx][i].description);
+				} else {
+					Battle.S.dialogue.SetText(equipScreen.playerEquipment[playerNdx][i].description);
+				}
 
 				// Set cursor position to currently selected button
 				Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, 0, 0);

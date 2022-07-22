@@ -89,42 +89,69 @@ public class EquipMenu : MonoBehaviour {
 		playerNdx = 0;
 
 		// Ensures first slots are selected when screen enabled
-		previousSelectedGameObject = PauseMenu.S.playerNameButtons[playerNdx].gameObject;
 		pickTypeToEquipMode.previousSelectedGameObject = equippedButtons[0].gameObject;
 		pickItemToEquipMode.previousSelectedGameObject = inventoryButtons[0].gameObject;
 
-		DisplayCurrentEquipmentNames(0);
-
-		pickPartyMemberMode.SetUp(S);
+		// Reset equippedButtons text color
+		Utilities.S.SetTextColor(equippedButtons, new Color32(255, 255, 255, 255));
 
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
-		PauseMenu.S.playerNameButtons[0].Select();
-		PauseMenu.S.playerNameButtons[0].OnSelect(null);
+		if (!Blob.S.isBattling) {
+			DisplayCurrentEquipmentNames(0);
 
-		// Set anim controller to party member 1
-		//playerAnim.runtimeAnimatorController = PlayerButtons.S.anim[0].runtimeAnimatorController;
+			pickPartyMemberMode.SetUp(S);
+
+			// Ensures first slots are selected when screen enabled
+			previousSelectedGameObject = PauseMenu.S.playerNameButtons[playerNdx].gameObject;
+
+			PauseMenu.S.playerNameButtons[0].Select();
+			PauseMenu.S.playerNameButtons[0].OnSelect(null);
+
+			// Set party member button navigation
+			Utilities.S.SetHorizontalButtonsNavigation(PauseMenu.S.playerNameButtons, Party.S.partyNdx + 1);
+		} else {
+			pickTypeToEquipMode.SetUp(Battle.S.PlayerNdx(), S);
+
+			// Ensures first slots are selected when screen enabled
+			previousSelectedGameObject = Battle.S.UI.partyNameButtonsCS[playerNdx].gameObject;
+
+			Utilities.S.SetHorizontalButtonsNavigation(Battle.S.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
+
+			// Deactivate battle game objects, enemy sprites in particular
+			Battle.S.UI.battleGameObjects.SetActive(false);
+		}
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
 
 	public void Deactivate(bool playSound = false) {
-		// Activate Cursor
-		ScreenCursor.S.cursorGO[0].SetActive(true);
-
 		// Go back to Pause Screen
-		if (GameManager.S.currentScene != "Battle") {
+		if (!Blob.S.isBattling) {
+			// Activate Cursor
+			ScreenCursor.S.cursorGO[0].SetActive(true);
+
 			// Pause Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
+			Utilities.S.ButtonsInteractable(PauseMenu.S.playerNameButtons, false);
 
 			// Set Selected Gameobject (Pause Screen: Equip Button)
 			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[2]);
 
+			// Set party animations to idle
+			PauseMenu.S.SetSelectedMemberAnim("Idle");
+
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
 			PauseMenu.S.canUpdate = true;
+        } else {
+			// Activate battle game objects, enemy sprites in particular
+			Battle.S.UI.battleGameObjects.SetActive(true);
+
+			// Deactivate Cursor
+			ScreenCursor.S.cursorGO[0].SetActive(false);
 		}
 
 		if (playSound) {
@@ -136,9 +163,6 @@ public class EquipMenu : MonoBehaviour {
 		for (int i = 0; i < inventoryButtons.Count; i++) {
 			inventoryButtons[i].gameObject.SetActive(false);
 		}
-
-		// Set party animations to idle
-		PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -165,7 +189,6 @@ public class EquipMenu : MonoBehaviour {
 				break;
 			case eEquipScreenMode.noInventory:
 			case eEquipScreenMode.equippedItem:
-				// Go back to pickTypeToEquip mode 
 				GoBackToPickTypeToEquipMode("SNES B Button", 99);
 				GoBackToPickTypeToEquipMode("SNES Y Button", 99);
 				break;
@@ -173,27 +196,50 @@ public class EquipMenu : MonoBehaviour {
 	}
 
 	public void GoBackToPickTypeToEquipMode(string inputName, int soundNdx) {
-		if (PauseMessage.S.dialogueFinished) {
-			if (Input.GetButtonDown(inputName)) {
-				// Deactivate Buttons
-				for (int i = 0; i < inventoryButtons.Count; i++) {
-					inventoryButtons[i].gameObject.SetActive(false);
+		if (!Blob.S.isBattling) {
+			if (PauseMessage.S.dialogueFinished) {
+				if (Input.GetButtonDown(inputName)) {
+					// Deactivate Buttons
+					for (int i = 0; i < inventoryButtons.Count; i++) {
+						inventoryButtons[i].gameObject.SetActive(false);
+					}
+
+					// Set Up pickTypeToEquip mode
+					pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
+
+					// Set Selected Gameobject 
+					Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
+
+					// Activate Cursor
+					ScreenCursor.S.cursorGO[0].SetActive(true);
+
+					// Reset inventoryButtons text color
+					Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
+
+					// Set selected member animation to walk
+					PauseMenu.S.playerAnims[playerNdx].CrossFade("Walk", 0);
 				}
+			}
+        } else {
+			if (Battle.S.dialogue.dialogueFinished) {
+				if (Input.GetButtonDown(inputName)) {
+					// Deactivate Buttons
+					for (int i = 0; i < inventoryButtons.Count; i++) {
+						inventoryButtons[i].gameObject.SetActive(false);
+					}
 
-				// Set Up pickTypeToEquip mode
-				pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
+					// Set Up pickTypeToEquip mode
+					pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
 
-				// Set Selected Gameobject 
-				Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
+					// Set Selected Gameobject 
+					Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
 
-				// Activate Cursor
-				ScreenCursor.S.cursorGO[0].SetActive(true);
+					// Activate Cursor
+					ScreenCursor.S.cursorGO[0].SetActive(true);
 
-				// Reset inventoryButtons text color
-				Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
-
-				// Set selected member animation to walk
-				PauseMenu.S.playerAnims[playerNdx].CrossFade("Walk", 0);
+					// Reset inventoryButtons text color
+					Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
+				}
 			}
 		}
 	}
@@ -212,8 +258,6 @@ public class EquipMenu : MonoBehaviour {
 			equippedButtonsTxt[i].text = playerEquipment[playerNdx][i].name;
 		}
 	}
-
-	// eEquipScreenMode.equippedItem /////////////////////////////////////////////////////////////
 
 	// Remove equipped item and equip new item
 	public void EquipItem(int playerNdx, Item item) {
@@ -240,7 +284,13 @@ public class EquipMenu : MonoBehaviour {
 		// Equip new item
 		playerEquipment[playerNdx][(int)item.type] = item;
 
-		PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " equipped " + item.name + "!");
+		if (!Blob.S.isBattling) {
+			PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " equipped " + item.name + "!");
+
+			PauseMenu.S.playerAnims[playerNdx].CrossFade("Success", 0);
+		} else {
+			Battle.S.dialogue.DisplayText(Party.S.stats[playerNdx].name + " equipped " + item.name + "!");
+		}
 
 		// Add Item StatEffect
 		equipStatsEffect.AddItemEffect(playerNdx, item);
@@ -251,9 +301,6 @@ public class EquipMenu : MonoBehaviour {
 
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
-
-		//playerAnim.CrossFade("Success", 0);
-		PauseMenu.S.playerAnims[playerNdx].CrossFade("Success", 0);
 	}
 
 	public void SwitchMode(eEquipScreenMode mode, GameObject selectedGO, bool potentialStats) {

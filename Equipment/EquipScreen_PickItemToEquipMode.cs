@@ -29,9 +29,13 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
-			PauseMessage.S.DisplayText("You don't have any items of this type to equip!");
+			if (!Blob.S.isBattling) {
+				PauseMessage.S.DisplayText("You don't have any items of this type to equip!");
+            } else {
+				Battle.S.dialogue.DisplayText("You don't have any items of this type to equip!");
+			}
 		}
-
+		
 		// Add Listeners
 		AddListenersToInventoryButtons(equipScreen.playerNdx, equipScreen);
 
@@ -76,7 +80,6 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 
 		// Go back to pickTypeToEquip
 		equipScreen.GoBackToPickTypeToEquipMode("SNES Y Button", 7);
-
 	}
 
 	// Add listeners to inventory buttons
@@ -95,7 +98,11 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 			for (int i = 0; i < SortItems.S.tItems.Count; i++) {
 				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.inventoryButtons[i].gameObject) {
 					// Display item's description
-					PauseMessage.S.SetText(SortItems.S.tItems[i].description);
+					if (!Blob.S.isBattling) {
+						PauseMessage.S.SetText(SortItems.S.tItems[i].description);
+					} else {
+						Battle.S.dialogue.SetText(SortItems.S.tItems[i].description);
+					}
 
 					// Set cursor position to currently selected button
 					Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, 0, 0);
