@@ -101,6 +101,7 @@ public class EquipMenu : MonoBehaviour {
 		if (!Blob.S.isBattling) {
 			DisplayCurrentEquipmentNames(0);
 
+			// Set up for pick party member mode
 			pickPartyMemberMode.SetUp(S);
 
 			// Ensures first slots are selected when screen enabled
@@ -112,6 +113,7 @@ public class EquipMenu : MonoBehaviour {
 			// Set party member button navigation
 			Utilities.S.SetHorizontalButtonsNavigation(PauseMenu.S.playerNameButtons, Party.S.partyNdx + 1);
 		} else {
+			// Set up for pick type to equip mode
 			pickTypeToEquipMode.SetUp(Battle.S.PlayerNdx(), S);
 
 			// Ensures first slots are selected when screen enabled
@@ -199,22 +201,7 @@ public class EquipMenu : MonoBehaviour {
 		if (!Blob.S.isBattling) {
 			if (PauseMessage.S.dialogueFinished) {
 				if (Input.GetButtonDown(inputName)) {
-					// Deactivate Buttons
-					for (int i = 0; i < inventoryButtons.Count; i++) {
-						inventoryButtons[i].gameObject.SetActive(false);
-					}
-
-					// Set Up pickTypeToEquip mode
-					pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
-
-					// Set Selected Gameobject 
-					Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
-
-					// Activate Cursor
-					ScreenCursor.S.cursorGO[0].SetActive(true);
-
-					// Reset inventoryButtons text color
-					Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
+					GoBackToPickTypeToEquipModeHelper(soundNdx);
 
 					// Set selected member animation to walk
 					PauseMenu.S.playerAnims[playerNdx].CrossFade("Walk", 0);
@@ -223,25 +210,29 @@ public class EquipMenu : MonoBehaviour {
         } else {
 			if (Battle.S.dialogue.dialogueFinished) {
 				if (Input.GetButtonDown(inputName)) {
-					// Deactivate Buttons
-					for (int i = 0; i < inventoryButtons.Count; i++) {
-						inventoryButtons[i].gameObject.SetActive(false);
-					}
-
-					// Set Up pickTypeToEquip mode
-					pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
-
-					// Set Selected Gameobject 
-					Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
-
-					// Activate Cursor
-					ScreenCursor.S.cursorGO[0].SetActive(true);
-
-					// Reset inventoryButtons text color
-					Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
+					GoBackToPickTypeToEquipModeHelper(soundNdx);
 				}
 			}
 		}
+	}
+
+	public void GoBackToPickTypeToEquipModeHelper(int soundNdx) {
+		// Deactivate Buttons
+		for (int i = 0; i < inventoryButtons.Count; i++) {
+			inventoryButtons[i].gameObject.SetActive(false);
+		}
+
+		// Set Up pickTypeToEquip mode
+		pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
+
+		// Set Selected Gameobject 
+		Utilities.S.SetSelectedGO(pickTypeToEquipMode.previousSelectedGameObject);
+
+		// Activate Cursor
+		ScreenCursor.S.cursorGO[0].SetActive(true);
+
+		// Reset inventoryButtons text color
+		Utilities.S.SetTextColor(inventoryButtons, new Color32(255, 255, 255, 255));
 	}
 
 	// Display member's name and current stats
