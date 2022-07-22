@@ -24,8 +24,6 @@ public class BattlePlayerActions : MonoBehaviour {
 		// Cache Selected Gameobject (Fight Button) 
 		_.previousSelectedGameObject = actionButtonsGO[0];
 
-		//ButtonsInteractable(false, false, false, false, false, true, true, true, true, true);
-
 		ButtonsDisableAll();
 
 		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, true);
@@ -106,6 +104,11 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		_.UI.actionOptionsButtonsCursor.SetActive(true);
 		Utilities.S.SetActiveList(_.UI.partyNameButtonsCursors, false);
+
+		// Deactivate gear menu
+        if (EquipMenu.S.gameObject.activeInHierarchy) {
+			EquipMenu.S.Deactivate();
+        }
 
 		_.PlayerTurn(true, false);
 
@@ -273,6 +276,29 @@ public class BattlePlayerActions : MonoBehaviour {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
+	}
+
+	public void GearButton() {
+		// Cache Selected Gameobject (Gear Button) 
+		Battle.S.previousSelectedGameObject = actionButtonsGO[4];
+
+		ButtonsDisableAll();
+		Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
+		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, true);
+
+		_.UI.RemoveAllListeners();
+
+		EquipMenu.S.Activate();
+
+		// Activate display message
+		_.UI.ActivateDisplayMessage();
+
+		// Audio: Confirm
+		AudioManager.S.PlaySFX(eSoundName.confirm);
+
+		// Switch Mode
+		_.mode = eBattleMode.gearMenu;
 	}
 
 	public void ButtonsInteractable(bool fight, bool spell, bool item, bool defend, bool run, bool oButton1, bool oButton2, bool oButton3, bool oButton4, bool oButton5) {

@@ -164,6 +164,13 @@ public class Battle : MonoBehaviour {
 							playerActions.GoBackToActionButtons();
 						}
 						break;
+					case eBattleMode.gearMenu:
+						if(EquipMenu.S.equipScreenMode == eEquipScreenMode.pickTypeToEquip) {
+                            if (Input.GetButtonDown("SNES Y Button")) {
+                                playerActions.GoBackToActionButtons();
+                            }
+                        }
+						break;
 					case eBattleMode.triedToRunFromBoss:
 						if (Input.GetButtonDown("SNES B Button")) {
 							PlayerTurn();
@@ -297,6 +304,7 @@ public class Battle : MonoBehaviour {
 				break;
 			case eBattleMode.canGoBackToFightButton:
 			case eBattleMode.selectPartyMember:
+			//case eBattleMode.gearMenu:
 				if (canUpdate) {
 					// Audio: Selection (when a new gameObject is selected)
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedForAudio);
