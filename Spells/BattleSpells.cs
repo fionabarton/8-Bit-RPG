@@ -87,10 +87,7 @@ public class BattleSpells : MonoBehaviour {
 	}
 
 	public void SpellHelper() {
-		//_.playerActions.ButtonsDisableAll();
-		//Utilities.S.RemoveListeners(_.UI.partyNameButtonsCS);
-		//Utilities.S.RemoveListeners(_.UI.enemySpriteButtonsCS);
-		_.UI.RemoveAllListeners();
+        _.UI.RemoveAllListeners();
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -143,6 +140,9 @@ public class BattleSpells : MonoBehaviour {
 
 		Heal(ndx, spell.statEffectMinValue, spell.statEffectMaxValue);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
 			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
@@ -187,6 +187,9 @@ public class BattleSpells : MonoBehaviour {
 			}
 		}
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Success");
+
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed ALL party members for an average of "
 			+ Utilities.S.CalculateAverage(totalAmountToHeal, _.partyQty + 1) + " HP!");
@@ -227,6 +230,9 @@ public class BattleSpells : MonoBehaviour {
 		float highEnd = Mathf.Max(1, Party.S.stats[ndx].maxHP * 0.10f);
 		Heal(ndx, (int)lowEnd, (int)highEnd);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
 			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
@@ -262,6 +268,9 @@ public class BattleSpells : MonoBehaviour {
 		// 5% chance to Miss/Dodge...
 		// ...but 10% chance if Defender WIS is more than Attacker's 
 		if (UnityEngine.Random.value <= 0.05f || (_.enemyStats[ndx].WIS > Party.S.stats[_.PlayerNdx()].WIS && UnityEngine.Random.value < 0.10f)) {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
+
 			if (UnityEngine.Random.value <= 0.5f) {
 				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the spell... but missed " + _.enemyStats[ndx].name + " completely!");
 			} else {
@@ -273,6 +282,9 @@ public class BattleSpells : MonoBehaviour {
 
 			_.NextTurn();
 		} else {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
 			// Subtract 8-12 HP
 			_.attackDamage = UnityEngine.Random.Range(spell.statEffectMinValue, spell.statEffectMaxValue);
 			// Add Player's WIS to Damage
@@ -324,6 +336,9 @@ public class BattleSpells : MonoBehaviour {
 		// 5% chance to Miss/Dodge...
 		// ...but 25% chance if Defender WIS is more than Attacker's 
 		if (UnityEngine.Random.value <= 0.10f || (_.enemyStats[0].WIS > Party.S.stats[_.PlayerNdx()].WIS && UnityEngine.Random.value < 0.10f)) {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
+
 			if (UnityEngine.Random.value <= 0.5f) {
 				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the spell... but missed those goons completely!");
 			} else {
@@ -335,6 +350,9 @@ public class BattleSpells : MonoBehaviour {
 
 			_.NextTurn();
 		} else {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
 			List<int> deadEnemies = new List<int>();
 
 			// Subtract 12-20 HP
@@ -461,6 +479,9 @@ public class BattleSpells : MonoBehaviour {
 		// Remove poison
 		StatusEffects.S.RemovePoisoned(true, ndx);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
@@ -499,6 +520,9 @@ public class BattleSpells : MonoBehaviour {
 
 		// Remove paralysis
 		StatusEffects.S.RemoveParalyzed(true, ndx);
+
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
@@ -539,6 +563,9 @@ public class BattleSpells : MonoBehaviour {
 		// Remove sleeping
 		StatusEffects.S.RemoveSleeping(true, ndx);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 		// Display Text
 		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
 
@@ -573,6 +600,9 @@ public class BattleSpells : MonoBehaviour {
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
 		DamageEnemyAnimation(ndx);
 
 		// Poison enemy
@@ -598,6 +628,9 @@ public class BattleSpells : MonoBehaviour {
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
 
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
 		DamageEnemyAnimation(ndx);
 
 		// Paralyze enemy
@@ -622,6 +655,9 @@ public class BattleSpells : MonoBehaviour {
 
 		// Subtract Spell cost from Player's MP
 		GameManager.S.SubtractPlayerMP(_.PlayerNdx(), spell.cost);
+
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
 
 		DamageEnemyAnimation(ndx);
 
@@ -671,11 +707,17 @@ public class BattleSpells : MonoBehaviour {
 				// Add item to party inventory
 				Inventory.S.AddItemToInventory(tItem);
 
+				// Set mini party member animations
+				_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
 				// Display text: item stolen
 				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " swiped a " + tItem.name + " from " + _.enemyStats[ndx].name + ".\n" + WordManager.S.GetRandomExclamation() + "!");
 			} else {
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);
+
+				// Set mini party member animations
+				_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
 
 				// Display text: miss
 				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted to loot an item from " + _.enemyStats[ndx].name + "...\n...but missed the mark!\n" + WordManager.S.GetRandomInterjection() + "!");
