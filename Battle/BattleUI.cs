@@ -40,6 +40,9 @@ public class BattleUI : MonoBehaviour {
 	public List<GameObject> enemySpriteButtonsCursors = new List<GameObject>();
 	public List<GameObject> partyNameButtonsCursors = new List<GameObject>();
 
+	// Mini party member images
+	public List<Animator> playerAnims;
+
 	[Header("Set Dynamically")]
 	// Caches what index of the inventory is currently stored in the first item slot
 	public int firstSlotNdx;
@@ -54,12 +57,6 @@ public class BattleUI : MonoBehaviour {
 
 	void Start() {
 		_ = Battle.S;
-	}
-
-	private void Update() {
-		if (Input.GetKeyDown(KeyCode.T)) {
-			TargetAllEnemies();
-		}
 	}
 
 	public void ActivatePlayerActionsMenu() {
@@ -518,29 +515,24 @@ public class BattleUI : MonoBehaviour {
 		}
 	}
 
-	public void SetHorizontalButtonsNavigation(List<Button> buttons, int amount) {
-		// Reset all button's navigation to automatic
-		Utilities.S.ResetButtonNavigation(buttons);
-
-		// Set button navigation if inventory is less than optionButtonsGO.Count
-		if (amount <= buttons.Count) {
-			if (amount > 1) {
-				// Set first button navigation
-				Utilities.S.SetButtonNavigation(
-					buttons[0],
-					null,
-					null,
-					buttons[amount - 1],
-					buttons[1]);
-
-				// Set last button navigation
-				Utilities.S.SetButtonNavigation(
-					buttons[amount - 1],
-					null,
-					null,
-					buttons[amount - 2],
-					buttons[0]);
+	// Sets the mini party members' animations
+	public void SetPartyMemberAnim(string animName = "Idle", string selectedMemberAnimName = "Walk", int selectedMemberNdx = -1) {
+		// Set all party member animations
+		for (int i = 0; i < playerAnims.Count; i++) {
+			if (playerAnims[i].gameObject.activeInHierarchy) {
+				if(i != selectedMemberNdx) {
+					if (Party.S.stats[i].HP > 0) {
+						playerAnims[i].CrossFade(animName, 0);
+					} else {
+						playerAnims[i].CrossFade("Fail", 0);
+					}
+				}
 			}
+		}
+
+		// Set target member animation
+		if(selectedMemberNdx != -1) {
+			playerAnims[selectedMemberNdx].CrossFade(selectedMemberAnimName, 0);
 		}
 	}
 

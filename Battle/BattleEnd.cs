@@ -113,6 +113,9 @@ public class BattleEnd : MonoBehaviour {
 				StatusEffects.S.RemoveSleeping(true, i, false);
 			}
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
 			// DropItem or AddExpAndGold
 			if (_.droppedItems.Count >= 1) {
 				// Switch Mode
@@ -168,6 +171,9 @@ public class BattleEnd : MonoBehaviour {
 
 		// Animation: Flicker party member
 		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
+
+		// Animation: Death party member
+		_.UI.playerAnims[ndx].CrossFade("Death", 0);
 
 		// Remove all status ailments 
 		StatusEffects.S.RemoveAllStatusAilments(true, ndx);

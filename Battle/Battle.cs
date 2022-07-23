@@ -415,12 +415,11 @@ public class Battle : MonoBehaviour {
 			mode = eBattleMode.enemyTurn;
 		}
 
-        string battleIDsString = "turnNdx: " + turnNdx + " || battleIDs: ";
-        for (int i = 0; i < enemyStats.Count; i++) {
-			//battleIDsString += turnOrder.IndexOf(enemyStats[i].battleID) + ", ";
-			battleIDsString += enemyStats[i].battleID + ", ";
-		}
-        Debug.Log(battleIDsString);
+  //      string battleIDsString = "turnNdx: " + turnNdx + " || battleIDs: ";
+  //      for (int i = 0; i < enemyStats.Count; i++) {
+		//	battleIDsString += enemyStats[i].battleID + ", ";
+		//}
+  //      Debug.Log(battleIDsString);
     }
 
 	// Return current player turn index, otherwise return -1	
@@ -444,6 +443,9 @@ public class Battle : MonoBehaviour {
 	}
 
 	public void PlayerTurn(bool setPreviousSelected = true, bool checkForAilment = true) { // if (Input.GetButtonDown ("Submit"))
+		// Set mini party member animations
+		UI.SetPartyMemberAnim("Idle", "Walk", PlayerNdx());
+
 		TurnHelper(PlayerNdx(), true);
 
 		// If player has status ailment...
@@ -483,6 +485,9 @@ public class Battle : MonoBehaviour {
 
 	// Enemy is about to act!
 	public void EnemyTurn(bool checkForAilment = true) { // if (Input.GetButtonDown ("Submit"))
+		// Set mini party member animations
+		UI.SetPartyMemberAnim("Idle", "Idle");
+
 		TurnHelper(EnemyNdx(), false);
 
         // If enemy has status ailment...

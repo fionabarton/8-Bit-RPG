@@ -122,6 +122,13 @@ public class BattleStats : MonoBehaviour {
 		// 5% chance to Miss/Dodge...
 		// ...AND 10% chance to Miss/Dodge if Defender AGI is more than Attacker's 
 		if (Random.value <= 0.05f || (defenderAGI > attackerAGI && Random.value < 0.10f)) {
+			// Set mini party member animations
+			if (targetIsPlayer) {
+				_.UI.SetPartyMemberAnim("Idle", "Success", targetNdx);
+			} else {
+				_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
+			}
+
 			// If there's any QTE bonus damage...
 			if (_.qteBonusDamage > 0) {
 				// Add QTE Bonus Damage
@@ -169,6 +176,13 @@ public class BattleStats : MonoBehaviour {
 
 			// If DEFENDING, cut AttackDamage in HALF
 			StatusEffects.S.CheckIfDefending(targetIsPlayer, targetNdx);
+
+			// Set mini party member animations
+			if (targetIsPlayer) {
+				_.UI.SetPartyMemberAnim("Idle", "Damage", targetNdx);
+			} else {
+				_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+			}
 
 			// Display Text
 			if (defenderHP > _.attackDamage) {

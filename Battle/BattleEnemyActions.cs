@@ -184,6 +184,9 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Not enough MP
 			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast Fireball...\n...But doesn't have enough MP to do so!");
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -203,6 +206,9 @@ public class BattleEnemyActions : MonoBehaviour {
 			} else {
 				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " cast Fireball, but the party deftly dodged out of the way!");
 			}
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -245,6 +251,9 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Not enough MP
 			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast Fireblast...\n...But doesn't have enough MP to do so!");
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -265,6 +274,9 @@ public class BattleEnemyActions : MonoBehaviour {
 				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " cast Fireblast, but the party deftly dodged out of the way!");
 			}
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -272,6 +284,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		} else {
 			// Shake Screen Anim
 			Battle.S.battleUIAnim.CrossFade("BattleUI_Shake", 0);
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Damage");
 
 			List<int> deadPlayers = new List<int>();
 
@@ -512,6 +527,9 @@ public class BattleEnemyActions : MonoBehaviour {
 					// Display text: item stolen
 					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " swiped a " + tItem.name + " from " + Party.S.stats[ndx].name + ".\n" + WordManager.S.GetRandomInterjection() + "!");
 				} else {
+					// Set mini party member animations
+					_.UI.SetPartyMemberAnim("Success");
+
 					// Audio: Deny
 					AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -519,6 +537,9 @@ public class BattleEnemyActions : MonoBehaviour {
 					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal a " + tItem.name + " from " + Party.S.stats[ndx].name + "...\n...but it can't be stolen!\n" + WordManager.S.GetRandomExclamation() + "!");
 				}
 			} else {
+				// Set mini party member animations
+				_.UI.SetPartyMemberAnim("Success");
+
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -557,6 +578,9 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		// Animation: Flicker party member
 		Battle.S.partyAnims[playerToAttack].CrossFade("Flicker", 0);
+
+		// Set mini party member animations
+		_.UI.SetPartyMemberAnim("Idle", "Damage", playerToAttack);
 
 		// Get and position Explosion game object
 		//GameObject explosion = ObjectPool.S.GetPooledObject("Explosion");
