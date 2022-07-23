@@ -234,7 +234,10 @@ public class StatusEffects : MonoBehaviour {
 			float highEnd = _.enemyStats[ndx].maxHP * 0.10f;
 			_.attackDamage = Mathf.Max(1, (int)Random.Range(lowEnd, highEnd));
 
-            Spells.S.battle.DamageEnemyAnimation(ndx, true, false);
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
+			Spells.S.battle.DamageEnemyAnimation(ndx, true, false);
 
             // Decrement HP
             GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);
