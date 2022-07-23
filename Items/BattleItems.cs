@@ -83,6 +83,9 @@ public class BattleItems : MonoBehaviour {
 		if (Party.S.stats[ndx].HP < Party.S.stats[ndx].maxHP) {
 			Heal(ndx, item, item.statEffectMinValue, item.statEffectMaxValue);
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 			// Display Text
 			if (amountToHeal >= maxAmountToHeal) {
 				_.dialogue.DisplayText("Used " + item.name + "!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
@@ -113,6 +116,9 @@ public class BattleItems : MonoBehaviour {
 
 			// Add 12-20 MP to TARGET Player's MP
 			GameManager.S.AddPlayerMP(ndx, amountToHeal);
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 			// Display Text
 			if (amountToHeal >= maxAmountToHeal) {
@@ -149,6 +155,9 @@ public class BattleItems : MonoBehaviour {
 				}
 			}
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Success");
+
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\nHealed ALL party members for an average of "
 				+ Utilities.S.CalculateAverage(totalAmountToHeal, _.partyQty + 1) + " HP!");
@@ -176,6 +185,9 @@ public class BattleItems : MonoBehaviour {
 			float lowEnd = Mathf.Max(1, Party.S.stats[ndx].maxHP * 0.06f);
 			float highEnd = Mathf.Max(1, Party.S.stats[ndx].maxHP * 0.10f);
 			Heal(ndx, item, (int)lowEnd, (int)highEnd);
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 			// Display Text
 			if (amountToHeal >= maxAmountToHeal) {
@@ -207,6 +219,9 @@ public class BattleItems : MonoBehaviour {
 			// Remove poison
 			StatusEffects.S.RemovePoisoned(true, ndx);
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
@@ -231,6 +246,9 @@ public class BattleItems : MonoBehaviour {
 			// Remove paralyzed
 			StatusEffects.S.RemoveParalyzed(true, ndx);
 
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
+
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
 
@@ -254,6 +272,9 @@ public class BattleItems : MonoBehaviour {
 		if (StatusEffects.S.CheckIfSleeping(true, ndx)) {
 			// Remove sleeping
 			StatusEffects.S.RemoveSleeping(true, ndx);
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 			// Display Text
 			_.dialogue.DisplayText("Used " + item.name + "!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
