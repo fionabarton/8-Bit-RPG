@@ -331,12 +331,7 @@ public class BattleItems : MonoBehaviour {
 	}
 
 	public void CantUseItemInBattle() {
-		//Items.S.menu.Deactivate();
-
-		// Deactivate PauseMessage
-		//PauseMessage.S.gameObject.SetActive(false);
-
-		_.playerActions.ButtonsInteractable(false, false, false, false, false, false, false, false, false, false);
+		_.playerActions.ButtonsDisableAll();
 
 		// Activate display message
 		_.UI.ActivateDisplayMessage();
