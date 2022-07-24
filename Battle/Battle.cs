@@ -292,25 +292,8 @@ public class Battle : MonoBehaviour {
 	public void FixedLoop() {
 		switch (mode) {
 			case eBattleMode.actionButtons:
-				// Set Target Cursor Position: player action buttons (fight, defend, item, run, etc.)
-				UI.ActionOptionButtonsCursorPosition(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject);
-
-				if (canUpdate) {
-					// Audio: Selection (when a new gameObject is selected)
-					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedForAudio);
-
-					canUpdate = false;
-				}
-				break;
 			case eBattleMode.canGoBackToFightButton:
 			case eBattleMode.selectPartyMember:
-				if (canUpdate) {
-					// Audio: Selection (when a new gameObject is selected)
-					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedForAudio);
-
-					canUpdate = false;
-				}
-				break;
 			case eBattleMode.itemMenu:
 			case eBattleMode.spellMenu:
 				if (canUpdate) {
@@ -319,7 +302,16 @@ public class Battle : MonoBehaviour {
 
 					canUpdate = false;
 				}
+				break;
+		}
 
+		switch (mode) {
+			case eBattleMode.actionButtons:
+				// Set Target Cursor Position: player action buttons (fight, defend, item, run, etc.)
+				UI.ActionOptionButtonsCursorPosition(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject);
+				break;
+			case eBattleMode.itemMenu:
+			case eBattleMode.spellMenu:
 				// Set buttons' text color
 				for (int i = 0; i < UI.optionButtonsCS.Count; i++) {
 					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == UI.optionButtonsGO[i]) {
