@@ -119,7 +119,7 @@ public class Spells : MonoBehaviour {
 
 		// if Battle
 		if (Blob.S.isBattling) {
-			Battle.S.playerActions.ButtonsInteractable(false, false, false, false, false, false, false, false, false, false);
+			Battle.S.playerActions.ButtonsDisableAll();
 
 			// Activate display message
 			Battle.S.UI.ActivateDisplayMessage();
