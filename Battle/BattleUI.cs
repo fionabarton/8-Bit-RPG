@@ -468,7 +468,8 @@ public class BattleUI : MonoBehaviour {
 		// Assign option slots names
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < _.enemyAmount) {
-				optionButtonsText[i].text = _.enemyStats[firstSlotNdx + i].name;
+				string ndx = (firstSlotNdx + i + 1).ToString();
+				optionButtonsText[i].text = ndx + ") " + _.enemyStats[firstSlotNdx + i].name;
 				amountButtonsText[i].text = "";
 			}
 		}
@@ -477,7 +478,8 @@ public class BattleUI : MonoBehaviour {
 		// Assign option slots names
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < Inventory.S.GetItemList().Count) {
-				optionButtonsText[i].text = Inventory.S.GetItemList()[firstSlotNdx + i].name;
+				string ndx = (firstSlotNdx + i + 1).ToString();
+				optionButtonsText[i].text = ndx + ") " + Inventory.S.GetItemList()[firstSlotNdx + i].name;
 				amountButtonsText[i].text = "x" + Inventory.S.GetItemCount(Inventory.S.GetItemList()[firstSlotNdx + i]).ToString(); ;
 			}
 		}
@@ -486,7 +488,8 @@ public class BattleUI : MonoBehaviour {
 		// Assign option slots names
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
 			if (firstSlotNdx + i < Party.S.stats[_.PlayerNdx()].spellNdx) {
-				optionButtonsText[i].text = Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + i].name;
+				string ndx = (firstSlotNdx + i + 1).ToString();
+				optionButtonsText[i].text = ndx + ") " + Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + i].name;
 				amountButtonsText[i].text =  Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + i].cost.ToString();
 			}
 		}
