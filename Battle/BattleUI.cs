@@ -541,4 +541,14 @@ public class BattleUI : MonoBehaviour {
 		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
 		Utilities.S.RemoveListeners(partyNameButtonsCS);
 	}
+
+	// Set the sorting layer of each battle cursor's sprite renderer
+	public void SetCursorSpriteSortingLayer(string layerName) {
+		for (int i = 0; i < cursors.Count; i++) {
+			SpriteRenderer sRend = cursors[i].GetComponent<SpriteRenderer>();
+			if (sRend) {
+				sRend.sortingLayerName = layerName;
+			}
+		}
+	}
 }
