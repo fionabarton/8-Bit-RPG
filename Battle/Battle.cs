@@ -304,7 +304,6 @@ public class Battle : MonoBehaviour {
 				break;
 			case eBattleMode.canGoBackToFightButton:
 			case eBattleMode.selectPartyMember:
-			//case eBattleMode.gearMenu:
 				if (canUpdate) {
 					// Audio: Selection (when a new gameObject is selected)
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedForAudio);
@@ -319,6 +318,17 @@ public class Battle : MonoBehaviour {
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedForAudio);
 
 					canUpdate = false;
+				}
+
+				// Set buttons' text color
+				for (int i = 0; i < UI.optionButtonsCS.Count; i++) {
+					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == UI.optionButtonsGO[i]) {
+						// Set selected button text color	
+						UI.optionButtonsGO[i].GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
+					} else {
+						// Set non-selected button text color
+						UI.optionButtonsGO[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+					}
 				}
 
 				// Set Target Cursor Position: Enemies or Party
@@ -411,6 +421,11 @@ public class Battle : MonoBehaviour {
 		// Switch mode (playerTurn or enemyTurn) based off of turnNdx
 		if (PlayerNdx() != -1) {
 			mode = eBattleMode.playerTurn;
+
+			// Rest option buttons' text color
+			for (int i = 0; i < UI.optionButtonsCS.Count; i++) {
+				UI.optionButtonsGO[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+			}
 		} else {
 			mode = eBattleMode.enemyTurn;
 		}

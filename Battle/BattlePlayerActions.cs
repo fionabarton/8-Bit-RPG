@@ -102,6 +102,11 @@ public class BattlePlayerActions : MonoBehaviour {
 		// Remove listeners
 		_.UI.RemoveAllListeners();
 
+		// Rest option buttons' text color
+		for (int i = 0; i < _.UI.optionButtonsCS.Count; i++) {
+			_.UI.optionButtonsGO[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+		}
+
 		_.UI.actionOptionsButtonsCursor.SetActive(true);
 		Utilities.S.SetActiveList(_.UI.partyNameButtonsCursors, false);
 
