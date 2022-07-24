@@ -191,7 +191,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		Battle.S.previousSelectedGameObject = actionButtonsGO[1];
 
 		if (Party.S.stats[_.PlayerNdx()].spellNdx > 0) {
-			ButtonsInteractable(false, false, false, false, false, true, true, true, true, true);
+			ButtonsInteractable(false, false, false, false, false, false, true, true, true, true, true);
 			Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
 			Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
@@ -240,7 +240,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		// If Player has an Item 
 		if (Inventory.S.GetItemList().Count > 0) {
-			ButtonsInteractable(false, false, false, false, false, true, true, true, true, true);
+			ButtonsInteractable(false, false, false, false, false, false, true, true, true, true, true);
 			Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
 			Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
@@ -306,12 +306,13 @@ public class BattlePlayerActions : MonoBehaviour {
 		_.mode = eBattleMode.gearMenu;
 	}
 
-	public void ButtonsInteractable(bool fight, bool spell, bool item, bool defend, bool run, bool oButton1, bool oButton2, bool oButton3, bool oButton4, bool oButton5) {
+	public void ButtonsInteractable(bool fight, bool spell, bool item, bool defend, bool gear, bool run, bool oButton1, bool oButton2, bool oButton3, bool oButton4, bool oButton5) {
 		actionButtonsCS[0].interactable = fight;
 		actionButtonsCS[1].interactable = spell;
 		actionButtonsCS[2].interactable = item;
-		actionButtonsCS[3].interactable = run;
-		actionButtonsCS[4].interactable = defend;
+		actionButtonsCS[3].interactable = defend;
+		actionButtonsCS[4].interactable = gear;
+		actionButtonsCS[5].interactable = run;
 
 		_.UI.optionButtonsCS[0].interactable = oButton1;
 		_.UI.optionButtonsCS[1].interactable = oButton1;
@@ -320,7 +321,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		_.UI.optionButtonsCS[4].interactable = oButton1;
 	}
 
-	public void ButtonsInitialInteractable() { ButtonsInteractable(true, true, true, true, true, false, false, false, false, false); }
+	public void ButtonsInitialInteractable() { ButtonsInteractable(true, true, true, true, true, true, false, false, false, false, false); }
 
-	public void ButtonsDisableAll() { ButtonsInteractable(false, false, false, false, false, false, false, false, false, false); }
+	public void ButtonsDisableAll() { ButtonsInteractable(false, false, false, false, false, false, false, false, false, false, false); }
 }
