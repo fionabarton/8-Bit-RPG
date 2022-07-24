@@ -52,6 +52,8 @@ public class ColorScreen : MonoBehaviour {
         Utilities.S.RemoveListeners(Battle.S.UI.partyNameButtonsCS);
         Utilities.S.RemoveListeners(Battle.S.UI.enemySpriteButtonsCS);
 
+        Battle.S.UI.SetCursorSpriteSortingLayer("UI");
+
         anim.Play("Clear Screen", 0, 0);
 
         // Create new animation event
@@ -89,6 +91,9 @@ public class ColorScreen : MonoBehaviour {
     /// </summary>
 
     public void Swell(int actionNdx = 0) {
+        // Set the sorting layer of each battle cursor's sprite renderer
+        Battle.S.UI.SetCursorSpriteSortingLayer("Above UI");
+
         // Function to call after animation is played
         switch (actionNdx) {
             case 0: // Party: Heal Spell
@@ -118,6 +123,9 @@ public class ColorScreen : MonoBehaviour {
         RemoveEvents();
     }
     public void Flicker(int actionNdx = 0) {
+        // Set the sorting layer of each battle cursor's sprite renderer
+        Battle.S.UI.SetCursorSpriteSortingLayer("Above UI");
+
         // Function to call after animation is played
         switch (actionNdx) {
             case 0: // Party: Fireball Spell
