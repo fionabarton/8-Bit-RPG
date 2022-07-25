@@ -195,7 +195,7 @@ public class OptionsMenu : MonoBehaviour {
 				PauseMessage.S.SetText(sliderDescriptions[i]);
 
 				// Set Cursor Position set to Selected Button
-				Utilities.S.PositionCursor(sliderTextGO[i], -125, 0, 0);
+				Utilities.S.PositionCursor(sliderTextGO[i], -105, 0, 0);
 
 				// Set selected button text color	
 				sliderTextGO[i].GetComponent<Text>().color = new Color32(205, 208, 0, 255);
