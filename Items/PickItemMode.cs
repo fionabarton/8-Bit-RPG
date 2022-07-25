@@ -112,7 +112,7 @@ public class PickItemMode : MonoBehaviour {
                 PauseMessage.S.SetText(Inventory.S.GetItemList()[i + itemScreen.firstSlotNdx].description);
 
                 // Set Cursor Position set to Selected Button
-                Utilities.S.PositionCursor(itemScreen.itemButtons[i].gameObject, -170, 0, 0);
+                Utilities.S.PositionCursor(itemScreen.itemButtons[i].gameObject, -175, 45, 0);
 
                 // Set selected button text color	
                 itemScreen.itemButtonsNameText[i].color = new Color32(205, 208, 0, 255);
