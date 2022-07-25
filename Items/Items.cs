@@ -67,7 +67,7 @@ public class Items : MonoBehaviour {
 
         // Wooden Sword
         items[8] = new Item("Wooden Sword", eItemType.Weapon, eItemStatEffect.STR, 12, 12, 6,
-        "Capable of inflicting moderate physical damage upon an enemy.\nAdds +12 to Strength." + "\n Value: 6 Gold", itemSprite[8]);
+        "Capable of inflicting moderate physical damage\nupon an enemy. Adds +12 to Strength." + "\n Value: 6 Gold", itemSprite[8]);
 
         // Ass Wand
         items[9] = new Item("Ass Wand", eItemType.Weapon, eItemStatEffect.WIS, 10, 10, 1,
