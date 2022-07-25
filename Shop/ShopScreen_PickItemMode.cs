@@ -33,11 +33,6 @@ public class ShopScreen_PickItemMode : MonoBehaviour {
 
 			// Pause game
 			GameManager.S.paused = true;
-			//Player.S.mode = ePlayerMode.idle;
-
-			// Activate PlayerButtons
-			//PlayerButtons.S.gameObject.SetActive(true);
-			//Utilities.S.ButtonsInteractable(PlayerButtons.S.buttonsCS, false);
 
 			// Activate Player Stats
 			shopScreen.displayPotentialStats.ActivatePotentialStats();
@@ -139,7 +134,7 @@ public class ShopScreen_PickItemMode : MonoBehaviour {
 				shopScreen.displayPotentialStats.DisplayPotentialStats(shopScreen.inventory[shopScreen.firstSlotNdx + i]);
 
 				// Cursor Position set to Selected Button
-				Utilities.S.PositionCursor(shopScreen.inventoryButtons[i].gameObject, -160, 0, 0);
+				Utilities.S.PositionCursor(shopScreen.inventoryButtons[i].gameObject, -165, -10, 0);
 
 				// Set selected button text color	
 				shopScreen.inventoryButtonsNameText[i].color = new Color32(205, 208, 0, 255);
