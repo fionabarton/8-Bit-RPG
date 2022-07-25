@@ -105,7 +105,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 					}
 
 					// Set cursor position to currently selected button
-					Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, 0, 0);
+					Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, -35, 0);
 
 					// Set selected button text color	
 					equipScreen.inventoryButtonsTxt[i].color = new Color32(205, 208, 0, 255);

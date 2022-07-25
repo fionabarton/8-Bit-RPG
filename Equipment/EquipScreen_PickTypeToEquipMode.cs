@@ -120,7 +120,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 				}
 
 				// Set cursor position to currently selected button
-				Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, 0, 0);
+				Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, -35, 0);
 			}
 		}
 	}
