@@ -68,8 +68,24 @@ public class PauseMenu : MonoBehaviour {
                 playerGO[i].SetActive(true);
             }
 
-            // Activate Cursor
-            ScreenCursor.S.cursorGO[0].SetActive(true);
+			// Set party stats UI positions
+			switch (Party.S.partyNdx) {
+				case 0:
+					Utilities.S.SetRectPosition(playerGO[0], 0, 328);
+					break;
+				case 1:
+					Utilities.S.SetRectPosition(playerGO[0], -200, 328);
+					Utilities.S.SetRectPosition(playerGO[1], 200, 328);
+					break;
+				case 2:
+					Utilities.S.SetRectPosition(playerGO[0], -400, 328);
+					Utilities.S.SetRectPosition(playerGO[1], 0, 328);
+					Utilities.S.SetRectPosition(playerGO[2], 400, 328);
+					break;
+			}
+
+			// Activate Cursor
+			ScreenCursor.S.cursorGO[0].SetActive(true);
 
             // Account for time that PauseScreen is not active
             timeWhenEnabled = Time.time;
