@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 
+// Handles creating character names via user keyboard input
 public class KeyboardInputMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public List<GameObject> buttonsGO;
@@ -15,8 +16,10 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 	public GameObject startingSelectedGO;
 
-	private string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvxyz0123456789()[]!?.,~@#$%^&*+-=_ \" \' / \\ :;";
+	// 0-25, 26-51, 52-61, 62-65, 66-69, 70-89
+	private string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789()[]!?.,~@#$%^&*+-=_\"'` :;/\\";
 
+	// 
 	private int dontCareNdx;
 	private List<string> dontCareNames = new List<string>() { "Butthead", "Mildew", "Gunt", "Love Gum", "Moon Unit" };
 
@@ -80,6 +83,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 			ScreenCursor.S.cursorGO[0].SetActive(true);
 		}
 
+		// Set cursor position and highlight selected button
 		if (canUpdate) {
 			for (int i = 0; i < buttonsGO.Count; i++) {
 				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == buttonsGO[i]) {
@@ -98,16 +102,34 @@ public class KeyboardInputMenu : MonoBehaviour {
 			}
 			canUpdate = false;
 		}
+
+		// Backspace
+		if (Input.GetButtonDown("SNES Y Button")) {
+			Backspace();
+		}
+
+		// Space
+		if (Input.GetKeyDown(KeyCode.Space)) {
+			PressedKey(85);
+		}
 	}
 
 	public void PressedKey(int ndx) {
-		for (int i = 0; i < characters.Length; i++) {
-			if(i == ndx) {
-				// Add user keyboard input to string
-				inputString += characters[ndx];
-				inputBoxText.text = inputString + GetRemainingChars();
+		if (inputString.Length < 15) {
+			for (int i = 0; i < characters.Length; i++) {
+				if (i == ndx) {
+					// Add user keyboard input to string
+					inputString += characters[ndx];
+					inputBoxText.text = inputString + GetRemainingChars();
+
+					// Audio: Confirm
+					AudioManager.S.PlaySFX(eSoundName.confirm);
+				}
 			}
-        }
+        } else {
+			// Audio: Deny
+			AudioManager.S.PlaySFX(eSoundName.deny);
+		}
 	}
 
 	public void DontCare() {
@@ -120,6 +142,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 		} else {
 			dontCareNdx = 0;
 		}
+
+		// Audio: Confirm
+		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
 
 	public void Backspace() {
@@ -128,14 +153,17 @@ public class KeyboardInputMenu : MonoBehaviour {
 			inputString = inputString.Remove(inputString.Length - 1);
 			inputBoxText.text = inputString + GetRemainingChars();
 		}
+
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.deny);
 	}
 
 	public void OK() {
 
     }
 
+	// Returns a string of remaining chars
 	public string GetRemainingChars() {
-		// Get a string of remaining chars
 		string remainingChars = "";
 		if (inputString.Length < 15) {
 			// Get amount of remaing space
