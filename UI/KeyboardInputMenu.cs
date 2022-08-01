@@ -12,8 +12,6 @@ public class KeyboardInputMenu : MonoBehaviour {
 	// Each slots represents one char 
 	public List<Text> charSlotsText;
 
-	public GameObject startingSelectedGO;
-
 	[Header("Set Dynamically")]
 	private string inputString = "";
 
@@ -54,12 +52,16 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
+		ScreenCursor.S.cursorGO[1].SetActive(true);
 
 		// Set Selected Gameobject (Keyboard Input Menu: A Button)
-		Utilities.S.SetSelectedGO(startingSelectedGO);
+		Utilities.S.SetSelectedGO(buttonsGO[0]);
 
 		// Initialize previously selected GameObject
-		previousSelectedGameObject = startingSelectedGO;
+		previousSelectedGameObject = buttonsGO[0];
+
+		// Set active char cursor position
+		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
 
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
@@ -128,6 +130,18 @@ public class KeyboardInputMenu : MonoBehaviour {
 					inputString += characters[ndx];
 					DisplayText(inputString + GetRemainingWhitespace());
 
+					if (inputString.Length < 15) {
+						// Set active char cursor position
+						Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+					} else {
+						// Deactivate cursor
+						ScreenCursor.S.cursorGO[1].SetActive(false);
+
+						// Set Selected Gameobject (Keyboard Input Menu: OK Button)
+						canUpdate = true;
+						Utilities.S.SetSelectedGO(buttonsGO[92]);
+					}
+
 					// Audio: Confirm
 					AudioManager.S.PlaySFX(eSoundName.confirm);
 				}
@@ -138,7 +152,28 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
+
+			//ScreenCursor.S.cursorGO[1].SetActive(false);
 		}
+	}
+
+	// Remove the last char from the displayed name
+	public void Backspace() {
+		if (inputString.Length > 0) {
+			// Remove last char from the string
+			inputString = inputString.Remove(inputString.Length - 1);
+			DisplayText(inputString + GetRemainingWhitespace());
+
+			// Set active char cursor position
+			ScreenCursor.S.cursorGO[1].SetActive(true);
+			Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+		} else {
+			// Input box shake animation
+			inputBoxAnim.CrossFade("Shake", 0);
+		}
+
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.deny);
 	}
 
 	// Sets the displayed name to a predetermined default name
@@ -158,22 +193,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
 
-	// Remove the last char from the displayed name
-	public void Backspace() {
-		if(inputString.Length > 0) {
-			// Remove last char from the string
-			inputString = inputString.Remove(inputString.Length - 1);
-			DisplayText(inputString + GetRemainingWhitespace());
-        } else {
-			// Input box shake animation
-			inputBoxAnim.CrossFade("Shake", 0);
-		}
-
-		// Audio: Deny
-		AudioManager.S.PlaySFX(eSoundName.deny);
-	}
-
 	public void OK() {
+		// Open sub menu (Is this name okay? Yes/No)
 
     }
 
