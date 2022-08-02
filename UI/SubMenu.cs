@@ -34,7 +34,7 @@ public class SubMenu : MonoBehaviour {
 	}
 
 	public void Loop() {
-		if ((!GameManager.S.paused && !isPauseSubMenu) || (GameManager.S.paused && isPauseSubMenu) || GameManager.S.currentScene == "Title_Screen") {
+		//if ((!GameManager.S.paused && !isPauseSubMenu) || (GameManager.S.paused && isPauseSubMenu) || GameManager.S.currentScene == "Title_Screen") {
 			// Reset canUpdate
 			if (Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f) {
 				canUpdate = true;
@@ -67,7 +67,7 @@ public class SubMenu : MonoBehaviour {
 				// Prevent contents of this if statement from being called until next user directional input
 				canUpdate = false;
 			}
-		}
+		//}
 	}
 
 	public void SetText(string option1 = "Yes", string option2 = "No", string option3 = "3rd", string option4 = "4th", int optionAmount = 2) {
@@ -123,7 +123,7 @@ public class SubMenu : MonoBehaviour {
 
 	public void ResetSettings() {
 		// Set order in hierarchy
-		gameObject.transform.SetAsFirstSibling();
+		//gameObject.transform.SetAsFirstSibling();
 
 		// Set position
 		Utilities.S.SetRectPosition(gameObject, -415, 80);

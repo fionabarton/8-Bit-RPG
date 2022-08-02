@@ -55,10 +55,10 @@ public class PauseMessage : MonoBehaviour {
 
 		// Optionally Activate Sub Menu
 		if (activateSubMenu) {
-			GameManager.S.pauseSubMenu.gameObject.SetActive(true);
+			GameManager.S.gameSubMenu.gameObject.SetActive(true);
 
 			// Update Delgate
-			UpdateManager.fixedUpdateDelegate += GameManager.S.pauseSubMenu.Loop;
+			UpdateManager.fixedUpdateDelegate += GameManager.S.gameSubMenu.Loop;
 		}
 
 		// Dialogue Finished
@@ -81,10 +81,10 @@ public class PauseMessage : MonoBehaviour {
 
 		// Optionally Activate Sub Menu
 		if (activateSubMenu) {
-			GameManager.S.pauseSubMenu.gameObject.SetActive(true);
+			GameManager.S.gameSubMenu.gameObject.SetActive(true);
 
 			// Update Delgate
-			UpdateManager.fixedUpdateDelegate += GameManager.S.pauseSubMenu.Loop;
+			UpdateManager.fixedUpdateDelegate += GameManager.S.gameSubMenu.Loop;
 		}
 	}
 }
