@@ -30,6 +30,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 	private Animator inputBoxAnim;
 
+	private bool subMenuIsActive;
+
 	private static KeyboardInputMenu _S;
 	public static KeyboardInputMenu S { get { return _S; } set { _S = value; } }
 
@@ -44,6 +46,12 @@ public class KeyboardInputMenu : MonoBehaviour {
 	}
 
 	public void Activate() {
+		// Reset text
+		inputString = "";
+		for(int i = 0; i < charSlotsText.Count; i++) {
+			charSlotsText[i].text = "";
+		}
+
 		canUpdate = true;
 
 		// Freeze player
@@ -56,12 +64,15 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Set Selected Gameobject (Keyboard Input Menu: A Button)
 		Utilities.S.SetSelectedGO(buttonsGO[0]);
-
+		
 		// Initialize previously selected GameObject
 		previousSelectedGameObject = buttonsGO[0];
 
 		// Set active char cursor position
 		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+
+		// Activate PauseMessage
+		PauseMessage.S.DisplayText("Yo.\nSo what's the name, ya little goon?");
 
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
@@ -73,6 +84,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Unfreeze player
 		GameManager.S.paused = false;
 		Blob.S.canMove = true;
+
+		// Deactivate PauseMessage
+		PauseMessage.S.gameObject.SetActive(false);
 
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
@@ -87,7 +101,6 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Reset canUpdate
 		if (Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f) {
 			canUpdate = true;
-			ScreenCursor.S.cursorGO[0].SetActive(true);
 		}
 
 		// Set cursor position and highlight selected button
@@ -103,21 +116,23 @@ public class KeyboardInputMenu : MonoBehaviour {
 					// Audio: Selection (when a new gameObject is selected)
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedGameObject);
 				} else {
-					// Set selected button text color	
+					// Set unselected button text color	
 					buttonsGO[i].gameObject.GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
 				}
 			}
 			canUpdate = false;
 		}
 
-		// Backspace input
-		if (Input.GetButtonDown("SNES Y Button") || Input.GetKeyDown(KeyCode.Backspace)) {
-			Backspace();
-		}
+        if (!subMenuIsActive) {
+			// Backspace input
+			if (Input.GetButtonDown("SNES Y Button") || Input.GetKeyDown(KeyCode.Backspace)) {
+				Backspace();
+			}
 
-		// Space input
-		if (Input.GetKeyDown(KeyCode.Space)) {
-			PressedKey(85);
+			// Space input
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				PressedKey(85);
+			}
 		}
 	}
 
@@ -142,6 +157,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 						Utilities.S.SetSelectedGO(buttonsGO[92]);
 					}
 
+					// Display text
+					PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you add that character!");
+
 					// Audio: Confirm
 					AudioManager.S.PlaySFX(eSoundName.confirm);
 				}
@@ -150,10 +168,11 @@ public class KeyboardInputMenu : MonoBehaviour {
 			// Input box shake animation
 			inputBoxAnim.CrossFade("Shake", 0);
 
-			// Audio: Deny
-			AudioManager.S.PlaySFX(eSoundName.deny);
+			// Audio: Damage
+			AudioManager.S.PlayRandomDamageSFX();
 
-			//ScreenCursor.S.cursorGO[1].SetActive(false);
+			// Display text
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't add anymore characters;\nthere's no more room!");
 		}
 	}
 
@@ -167,13 +186,22 @@ public class KeyboardInputMenu : MonoBehaviour {
 			// Set active char cursor position
 			ScreenCursor.S.cursorGO[1].SetActive(true);
 			Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+
+			// Audio: Deny
+			AudioManager.S.PlaySFX(eSoundName.deny);
+
+			// Display text
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you delete that character!");
 		} else {
 			// Input box shake animation
 			inputBoxAnim.CrossFade("Shake", 0);
-		}
 
-		// Audio: Deny
-		AudioManager.S.PlaySFX(eSoundName.deny);
+			// Audio: Damage
+			AudioManager.S.PlayRandomDamageSFX();
+
+			// Display text
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't delete anymore characters;\nthere's nothing left to delete!");
+		}
 	}
 
 	// Sets the displayed name to a predetermined default name
@@ -193,14 +221,79 @@ public class KeyboardInputMenu : MonoBehaviour {
 			dontCareNdx = 0;
 		}
 
+		// Display text
+		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nNice \"choice\", lazy bones!");
+
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
 
 	public void OK() {
-		// Open sub menu (Is this name okay? Yes/No)
+		subMenuIsActive = true;
 
-    }
+		// Audio: Confirm
+		AudioManager.S.PlaySFX(eSoundName.confirm);
+
+		// Deactivate cursors
+		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+
+		// Reset OK button text color	
+		buttonsGO[92].gameObject.GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+
+		PauseMessage.S.DisplayText("Are you sure about this name?\nWell, are ya?", false, true);
+		GameManager.S.gameSubMenu.SetText();
+
+		// Set OnClick Methods
+		Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
+		GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(delegate { Yes(1); });
+		GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
+
+		// Set button navigation
+		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
+		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
+	}
+
+	public void Yes(int ndx) {
+		// Set selected party member's name
+		Party.S.stats[ndx].name = inputString;
+
+		// Audio: Buff 1
+		AudioManager.S.PlaySFX(eSoundName.buff1);
+
+		subMenuIsActive = false;
+
+		// Display text
+		DialogueManager.S.ResetSettings();
+		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nThe name has been set!");
+
+		// Set Selected Gameobject
+		Utilities.S.SetSelectedGO(previousSelectedGameObject);
+
+		// Activate Cursor
+		ScreenCursor.S.cursorGO[0].SetActive(true);
+		ScreenCursor.S.cursorGO[1].SetActive(true);
+
+		canUpdate = true;
+	}
+
+	public void No() {
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.deny);
+
+		subMenuIsActive = false;
+
+		DialogueManager.S.ResetSettings();
+		PauseMessage.S.DisplayText("Oh, okay. That's cool.\nSo what's the name?");
+
+		// Set Selected Gameobject
+		Utilities.S.SetSelectedGO(previousSelectedGameObject);
+
+		// Activate Cursor
+		ScreenCursor.S.cursorGO[0].SetActive(true);
+		ScreenCursor.S.cursorGO[1].SetActive(true);
+
+		canUpdate = true;
+	}
 
 	// Returns a string of whitespace as long as the amount of remaining empty chars 
 	public string GetRemainingWhitespace() {
