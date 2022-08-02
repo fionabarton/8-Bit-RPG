@@ -182,6 +182,10 @@ public class KeyboardInputMenu : MonoBehaviour {
 		inputString = dontCareNames[dontCareNdx];
 		DisplayText(inputString + GetRemainingWhitespace());
 
+		// Set active char cursor position
+		ScreenCursor.S.cursorGO[1].SetActive(true);
+		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+
 		// Increment index
 		if (dontCareNdx < dontCareNames.Count - 1) {
 			dontCareNdx += 1;
