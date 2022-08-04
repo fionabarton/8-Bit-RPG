@@ -64,6 +64,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Loop() {
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
+				KeyboardInputMenu.S.Activate();
+			} else {
+				KeyboardInputMenu.S.Deactivate();
+			}
+        }
+
 		// Pause Screen input
 		if (!Items.S.menu.gameObject.activeInHierarchy &&
 			!Spells.S.menu.gameObject.activeInHierarchy &&
@@ -77,7 +85,15 @@ public class GameManager : MonoBehaviour {
 					if (!PauseMenu.S.gameObject.activeInHierarchy) {
 						if (Input.GetButtonDown("Pause")) {
 							PauseMenu.S.Pause();
-						}
+
+                            //AddSubtractPlayerHP(0, false, 12);
+                            //AddSubtractPlayerHP(1, false, 19);
+                            //AddSubtractPlayerHP(2, false, 20);
+
+                            //AddSubtractPlayerMP(0, false, 2);
+                            //AddSubtractPlayerMP(1, false, 2);
+                            //AddSubtractPlayerMP(2, false, 2);
+                        }
 					} else {
 						if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
 							PauseMenu.S.UnPause(true);
@@ -323,7 +339,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Update Health Bars
-		//ProgressBars.S.enemyHealthBarsCS[ndx].UpdateBar(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP);
+		ProgressBars.S.enemyHealthBarsCS[ndx].UpdateBar(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP);
 	}
 
 	public void AddEnemyHP(int ndx, int amount) {
