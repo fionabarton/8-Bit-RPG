@@ -7,8 +7,8 @@ public class FloatingScore : MonoBehaviour {
 	[Header ("Set in Inspector")]
 	public float 	speed = 1f;
 
-	[Header ("Set Dynamically")]
-	private bool	canScale;
+	[Header("Set Dynamically")]
+	private bool canScale;
 
 	void OnEnable(){
 		StartCoroutine("FixedUpdateCoroutine");
@@ -20,13 +20,14 @@ public class FloatingScore : MonoBehaviour {
 	}
 
 	public IEnumerator FixedUpdateCoroutine () {
-		Vector3 tPos = transform.localPosition;
-		tPos.y += speed * Time.fixedDeltaTime;
-		transform.localPosition = tPos;
+		//Vector3 tPos = transform.localPosition;
+		//tPos.y += speed * Time.fixedDeltaTime;
+		//transform.localPosition = tPos;
+		//Utilities.S.SetPosition(gameObject, transform.position.x, transform.position.y + (speed * Time.fixedDeltaTime));
 
 		Invoke ("ScaleUp", 1.0f);
 		if (canScale) {
-			transform.localScale += (Vector3.one * Time.fixedDeltaTime)/5;
+			transform.localScale += (Vector3.one * Time.fixedDeltaTime)/3;
 		}
 
 		yield return new WaitForFixedUpdate ();
