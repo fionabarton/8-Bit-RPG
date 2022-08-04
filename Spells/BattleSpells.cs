@@ -302,6 +302,9 @@ public class BattleSpells : MonoBehaviour {
 			// Subtract Enemy Health
 			GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);
 
+			// Display Floating Score
+			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+
 			if (_.enemyStats[ndx].HP < 1) {
 				Battle.S.end.EnemyDeath(ndx);
 			} else {
@@ -383,6 +386,9 @@ public class BattleSpells : MonoBehaviour {
 
 				// Add to to TotalAttackDamage (Used to Calculate AVERAGE Damage)
 				totalAttackDamage += _.attackDamage;
+
+				// Display Floating Score
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
 
 				// Shake Enemy Anim
 				if (!_.enemyStats[i].isDead) {
