@@ -312,6 +312,17 @@ public class BattleUI : MonoBehaviour {
 		}
 	}
 
+	//// Unused because of animator conflict ("Death" clip sets the sprite renderer's color)
+	//public void SetEnemyColor(int ndx) {
+	//	if (Utilities.S.GetPercentage(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP) >= 0.25f) {
+	//		_.enemySRends[ndx].color = new Color32(255, 255, 255, 255);
+	//	} else if (Battle.S.enemyStats[ndx].HP > 0 && Utilities.S.GetPercentage(Battle.S.enemyStats[ndx].HP, Battle.S.enemyStats[ndx].maxHP) < 0.25f) {
+	//		_.enemySRends[ndx].color = new Color32(229, 92, 15, 255);
+	//	} else {
+	//		_.enemySRends[ndx].color = new Color32(168, 7, 32, 255);
+	//	}
+	//}
+
 	public void PositionEnemySprites() {
 		// Set enemy sprites positions
 		switch (_.enemyAmount) {
@@ -319,27 +330,52 @@ public class BattleUI : MonoBehaviour {
 				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], 0, 0);
 				break;
 			case 2:
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -1.5f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], 1.5f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -1.625f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], 1.625f, 0);
 				break;
 			case 3:
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -3f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -3.25f, 0);
 				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], 0, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 3f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 3.25f, 0);
 				break;
 			case 4:
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -4.5f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -1.5f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 1.5f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 4.5f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -4.875f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -1.625f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 1.625f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 4.875f, 0);
 				break;
 			case 5:
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -6f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -3f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -6.5f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -3.25f, 0);
 				Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 0, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3f, 0);
-				Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3.25f, 0);
+				Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6.5f, 0);
 				break;
+				//case 1:
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], 0, 0);
+				//	break;
+				//case 2:
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -1.5f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], 1.5f, 0);
+				//	break;
+				//case 3:
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -3f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], 0, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 3f, 0);
+				//	break;
+				//case 4:
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -4.5f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -1.5f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 1.5f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 4.5f, 0);
+				//	break;
+				//case 5:
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -6f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -3f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 0, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3f, 0);
+				//	Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6f, 0);
+				//	break;
 		}
 
 		// Deactivate all enemy help bubbles sprites
@@ -350,6 +386,9 @@ public class BattleUI : MonoBehaviour {
             if (_.enemyStats[i].isCallingForHelp) {
 				_.UI.enemyHelpBubblesGO[i].SetActive(true);
 			}
+
+			// Update Health Bars
+			ProgressBars.S.enemyHealthBarsCS[i].UpdateBar(_.enemyStats[i].HP, _.enemyStats[i].maxHP);
 		}
 	}
 
