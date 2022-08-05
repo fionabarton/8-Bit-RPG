@@ -95,8 +95,8 @@ public class SubMenu : MonoBehaviour {
 				frameSpritePos.y = 0;
 				break;
 			case 3:
-				SetTextHelper(true, false, 200);
-				frameSpritePos.y = -25;
+				SetTextHelper(true, false, 220);
+				frameSpritePos.y = -35;
 				break;
 			case 4:
 				SetTextHelper(true, true, 250);
