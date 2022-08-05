@@ -124,47 +124,47 @@ public class BattleUI : MonoBehaviour {
 			switch (_.enemyAmount) {
 				case 1:
 					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 					}
 					break;
 				case 2:
 					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
 					}
 					break;
 				case 3:
 					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
 					}
 					break;
 				case 4:
 					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[3]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(4.5f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(4.875f, 2.5f);
 					}
 					break;
 				case 5:
 					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 					} else if (go == enemySpriteButtonsGO[3]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
 					} else if (go == enemySpriteButtonsGO[4]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(6f, 1.5f);
+						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(6.5f, 2.5f);
 					}
 					break;
 			}
@@ -183,29 +183,38 @@ public class BattleUI : MonoBehaviour {
 			switch (Party.S.partyNdx) {
 				case 0:
 					if (go == partyNameButtonsCS[0].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.8f);
 					}
 					break;
 				case 1:
 					if (go == partyNameButtonsCS[0].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(-2f, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(-2f, 5.8f);
 					} else if (go == partyNameButtonsCS[1].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(2f, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(2f, 5.8f);
 					}
 					break;
 				case 2:
 					if (go == partyNameButtonsCS[0].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(-4f, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(-4f, 5.8f);
 					} else if (go == partyNameButtonsCS[1].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.8f);
 					} else if (go == partyNameButtonsCS[2].gameObject) {
-						partyNameButtonsCursors[0].transform.localPosition = new Vector2(4f, 5.5f);
+						partyNameButtonsCursors[0].transform.localPosition = new Vector2(4f, 5.8f);
 					}
 					break;
 			}
 		}
 	}
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -4.875f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -1.625f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 1.625f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 4.875f, 0);
 
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -6.5f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -3.25f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 0, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3.25f, 0);
+	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6.5f, 0);
 	public void TargetAllEnemies() {
 		// Deactivate all cursors
 		Utilities.S.SetActiveList(enemySpriteButtonsCursors, false);
@@ -217,29 +226,29 @@ public class BattleUI : MonoBehaviour {
 		// Activate active cursors
 		switch (_.enemyAmount) {
 			case 1:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 1.5f);
+				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 				break;
 			case 2:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.5f, 1.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(1.5f, 1.5f);
+				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
+				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(1.625f, 2.5f);
 				break;
 			case 3:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3f, 1.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(0, 1.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(3f, 1.5f);
+				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
+				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(0, 2.5f);
+				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(3.25f, 2.5f);
 				break;
 			case 4:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.5f, 1.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-1.5f, 1.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(1.5f, 1.5f);
-				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(4.5f, 1.5f);
+				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
+				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-1.625f, 2.5f);
+				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(1.625f, 2.5f);
+				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(4.875f, 2.5f);
 				break;
 			case 5:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6f, 1.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-3f, 1.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(0, 1.5f);
-				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(3f, 1.5f);
-				enemySpriteButtonsCursors[4].transform.localPosition = new Vector2(6f, 1.5f);
+				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
+				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-3.25f, 2.5f);
+				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(0, 2.5f);
+				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(3.25f, 2.5f);
+				enemySpriteButtonsCursors[4].transform.localPosition = new Vector2(6.5f, 2.5f);
 				break;
 		}
 	}
@@ -253,33 +262,33 @@ public class BattleUI : MonoBehaviour {
 		// Position and activate active cursors
 		switch (Party.S.partyNdx) {
 			case 0:
-				partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.5f);
+				partyNameButtonsCursors[0].transform.localPosition = new Vector2(0, 5.8f);
 				break;
 			case 1:
                 if (!_.playerDead[0]) { 
-					partyNameButtonsCursors[0].transform.localPosition = new Vector2(-2f, 5.5f);
+					partyNameButtonsCursors[0].transform.localPosition = new Vector2(-2f, 5.8f);
                 } else {
 					partyNameButtonsCursors[0].SetActive(false);
 				}
 				if (!_.playerDead[1]) {
-					partyNameButtonsCursors[1].transform.localPosition = new Vector2(2f, 5.5f);
+					partyNameButtonsCursors[1].transform.localPosition = new Vector2(2f, 5.8f);
 				} else {
 					partyNameButtonsCursors[1].SetActive(false);
 				}
 				break;
 			case 2:
 				if (!_.playerDead[0]) {
-					partyNameButtonsCursors[0].transform.localPosition = new Vector2(-4f, 5.5f);
+					partyNameButtonsCursors[0].transform.localPosition = new Vector2(-4f, 5.8f);
 				} else {
 					partyNameButtonsCursors[0].SetActive(false);
 				}
 				if (!_.playerDead[1]) {
-					partyNameButtonsCursors[1].transform.localPosition = new Vector2(0, 5.5f);
+					partyNameButtonsCursors[1].transform.localPosition = new Vector2(0, 5.8f);
 				} else {
 					partyNameButtonsCursors[1].SetActive(false);
 				}
 				if (!_.playerDead[2]) {
-					partyNameButtonsCursors[2].transform.localPosition = new Vector2(4f, 5.5f);
+					partyNameButtonsCursors[2].transform.localPosition = new Vector2(4f, 5.8f);
 				} else {
 					partyNameButtonsCursors[2].SetActive(false);
 				}
