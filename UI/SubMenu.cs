@@ -91,8 +91,8 @@ public class SubMenu : MonoBehaviour {
 
 		switch (optionAmount) {
 			case 2:
-				SetTextHelper(false, false, 150);
-				frameSpritePos.y = 0;
+				SetTextHelper(false, false, 160);
+				frameSpritePos.y = -10;
 				break;
 			case 3:
 				SetTextHelper(true, false, 220);
