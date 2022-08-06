@@ -17,6 +17,9 @@ public class BattleDialogue : MonoBehaviour {
 	public int dialogueNdx = 99;
 	public List<string> message;
 
+	// Text box position
+	public RectTransform rtDialogueCanvas;
+
 	public void Initialize() {
 		// Reset Dialogue
 		dialogueFinished = true;
@@ -50,27 +53,30 @@ public class BattleDialogue : MonoBehaviour {
 	}
 
 	// Display a SINGLE string
-	public void DisplayText(string messageToDisplay) {
+	public void DisplayText(string messageToDisplay, float anchoredYPosition = -400) {
 		// Reset Dialogue
 		dialogueFinished = true;
 		dialogueNdx = 0;
 
 		// Convert message string into a list of strings
 		List<string> tMessage = new List<string> { messageToDisplay };
-		DisplayText(tMessage);
+		DisplayText(tMessage, anchoredYPosition);
 	}
 
 	// Display a LIST of strings
-	public void DisplayText(List<string> text) {
+	public void DisplayText(List<string> text, float anchoredYPosition = -400) {
 		StopAllCoroutines();
-		StartCoroutine(DisplayTextCo(text));
+		StartCoroutine(DisplayTextCo(text, anchoredYPosition));
 	}
-	IEnumerator DisplayTextCo(List<string> text) {
+	IEnumerator DisplayTextCo(List<string> text, float anchoredYPosition) {
 		// Deactivate Cursor
 		dialogueCursor.SetActive(false);
 
 		// Get amount of Dialogue Strings
 		dialogueNdx = text.Count;
+
+		// Position Text Box
+		rtDialogueCanvas.anchoredPosition = new Vector2(0, anchoredYPosition);
 
 		if (text.Count > 0) {
 			dialogueFinished = false;
