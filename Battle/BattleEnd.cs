@@ -263,7 +263,7 @@ public class BattleEnd : MonoBehaviour {
 
 	public List<int> membersToLevelUp = new List<int>();
 	public void LevelUp(int ndx) {
-		//levelUpMessage.Initialize(ndx);
+		levelUpMessage.Initialize(ndx);
 
 		// Audio: Buff 1
 		AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -283,7 +283,7 @@ public class BattleEnd : MonoBehaviour {
 
 		// If there are any more members that have levelled up...
 		if (membersToLevelUp.Count <= 0) {
-			//levelUpMessage.Initialize(ndx);
+			levelUpMessage.Initialize(ndx);
 
 			ReturnToWorldDelay();
 		}
@@ -294,7 +294,7 @@ public class BattleEnd : MonoBehaviour {
 		_.mode = eBattleMode.returnToWorld;
 	}
 	public void ReturnToWorld() {
-		//levelUpMessage.levelUpMessageGO.SetActive(false);
+		levelUpMessage.levelUpMessageGO.SetActive(false);
 
 		_.dialogue.dialogueNdx = 99;
 

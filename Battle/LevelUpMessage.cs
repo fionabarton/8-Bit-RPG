@@ -51,9 +51,9 @@ public class LevelUpMessage : MonoBehaviour {
 			Party.S.GetAGI(ndx, lvlNdx).ToString() : s += Party.S.GetAGI(ndx, lvlNdx).ToString();
 		statValues.text = s;
 
-		// Display what new spell was learned
+		// Display what new skill was learned
 		if (Party.S.GetSpellNdxUpgrade(ndx) > 0) {
-			s = "Learned  a new spell:\n" + Party.S.stats[ndx].spells[Party.S.stats[ndx].spellNdx].name + "!";
+			s = "Learned a new skill:\n" + Party.S.stats[ndx].spells[Party.S.stats[ndx].spellNdx].name + "!";
 		} else {
 			s = "Level increased\n" + "from " + Party.S.stats[ndx].previousLVL + " to " + Party.S.stats[ndx].LVL + "!";
 		}
