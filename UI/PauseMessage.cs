@@ -1,32 +1,34 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PauseMessage : MonoBehaviour {
-	[Header("Set Dynamically")]
-	private static PauseMessage _S;
-	public static PauseMessage S { get { return _S; } set { _S = value; } }
-
+	[Header("Set in Inspector")]
 	public Text message; // named "Text" in the Hierarchy/Inspector
 	public GameObject cursorGO;
 
+	// Text box position
+	public RectTransform rtDialogueCanvas;
+
 	[Header("Set Dynamically")]
 	public bool dialogueFinished;
+
+	private static PauseMessage _S;
+	public static PauseMessage S { get { return _S; } set { _S = value; } }
 
 	void Awake() {
 		S = this;
 	}
 
-	public void DisplayText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false) {
+	public void DisplayText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false, float anchoredYPosition = -424) {
 		gameObject.SetActive(true);
 
 		StopAllCoroutines();
 
 		StopCoroutine("DisplayTextCo");
-		StartCoroutine(DisplayTextCo(text, upperLeftAlignment, activateSubMenu));
+		StartCoroutine(DisplayTextCo(text, upperLeftAlignment, activateSubMenu, anchoredYPosition));
 	}
-	IEnumerator DisplayTextCo(string text, bool upperLeftAlignment, bool activateSubMenu = false) {
+	IEnumerator DisplayTextCo(string text, bool upperLeftAlignment, bool activateSubMenu = false, float anchoredYPosition = -424) {
 		// Deactivate Cursor
 		cursorGO.SetActive(false);
 
@@ -39,6 +41,9 @@ public class PauseMessage : MonoBehaviour {
 		} else {
 			message.alignment = TextAnchor.MiddleCenter;
 		}
+
+		// Position Text Box
+		rtDialogueCanvas.anchoredPosition = new Vector2(0, anchoredYPosition);
 
 		dialogueFinished = false;
 
@@ -67,7 +72,7 @@ public class PauseMessage : MonoBehaviour {
 
 	// Set Text Instantly 
 	// - No delay/stagger between displaying each word)
-	public void SetText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false) {
+	public void SetText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false, float anchoredYPosition = -400) {
 		StopCoroutine("DisplayTextCo");
 
 		// Set Text Alignment
@@ -76,6 +81,9 @@ public class PauseMessage : MonoBehaviour {
 		} else {
 			message.alignment = TextAnchor.MiddleCenter;
 		}
+
+		// Position Text Box
+		rtDialogueCanvas.anchoredPosition = new Vector2(0, anchoredYPosition);
 
 		message.text = text;
 
