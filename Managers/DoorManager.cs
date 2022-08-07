@@ -19,13 +19,14 @@ public class DoorManager : MonoBehaviour {
 		S = this;
 	}
 
-	// Called in RPG.cs
 	public void SetObjects () {
+		// Find this scene's "Doors" game object holder
 		GameObject tGO = GameObject.Find ("Doors");
 
 		if (tGO != null) {
 			tTransform = tGO.transform;
 
+			// For each door, check and set whether its locked 
 			foreach (Transform child in tTransform) {
 				DoorTrigger tDoor = child.gameObject.GetComponent<DoorTrigger> ();
 
@@ -37,7 +38,7 @@ public class DoorManager : MonoBehaviour {
 								// Switch eDoorMode
 								tDoor.doorMode = eDoorMode.open;
 								// Change Sprite
-								tDoor.sRend.sprite = tDoor.openDoorSprite;
+								tDoor.sRend.sprite = tDoor.closedDoorSprite;
 								// Disable Collider
 								tDoor.solidColl.enabled = false;
 							} 
