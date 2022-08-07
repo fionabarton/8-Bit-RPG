@@ -29,7 +29,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         mode = eShopkeeperMode.pickBuyOrSell;
 
         // Set Camera to Shopkeeper gameObject
-        //CamManager.S.ChangeTarget(gameObject, true);
+        CamManager.S.ChangeTarget(gameObject, true);
 
         // Set Text
         DialogueManager.S.DisplayText("<color=yellow><Shop Keeper></color> Wanna buy some hot junk? Or maybe you'd rather sell some hot junk instead? Hmmm?");
@@ -40,7 +40,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         // Don't activate Text Box Cursor 
         DialogueManager.S.dontActivateCursor = true;
         // Gray Out Text Box after Dialogue 
-        DialogueManager.S.grayOutTextBox = true;
+        //DialogueManager.S.grayOutTextBox = true;
 
         // Set OnClick Methods
         Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);

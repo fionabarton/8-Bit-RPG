@@ -54,6 +54,9 @@ public class DialogueTrigger : ActivateOnButtonPress {
 
 	// If Player has entered trigger, called OnButtonPress
 	protected override void Action() {
+		// Set Camera to DialogueTrigger gameObject
+		CamManager.S.ChangeTarget(gameObject, true);
+
 		// Display dialogue associated with the highest quest completed
 		switch (highestQuestCompleted()) {
 			case 0:
