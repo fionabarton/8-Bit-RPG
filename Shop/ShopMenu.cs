@@ -88,7 +88,7 @@ public class ShopMenu : MonoBehaviour {
 		UpdateManager.updateDelegate -= Loop;
 
 		// Set Camera to Player gameObject
-		//CamManager.S.ChangeTarget(Player.S.gameObject, true);
+		CamManager.S.ChangeTarget(Blob.S.gameObject, true);
 
 		// Broadcast event
 		EventManager.ShopScreenDeactivated();
