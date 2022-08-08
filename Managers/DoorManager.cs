@@ -34,9 +34,8 @@ public class DoorManager : MonoBehaviour {
 					for (int i = 0; i < isUnlocked.Count; i++) {
 						if (tDoor.ndx == i) {
 							if (isUnlocked [i]) {
-
 								// Switch eDoorMode
-								tDoor.doorMode = eDoorMode.open;
+								tDoor.doorMode = eDoorMode.closed;
 								// Change Sprite
 								tDoor.sRend.sprite = tDoor.closedDoorSprite;
 								// Disable Collider
