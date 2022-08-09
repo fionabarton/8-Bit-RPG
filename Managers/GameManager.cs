@@ -11,10 +11,6 @@ public class GameManager : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public string firstScene;
 
-	// BATTLE
-	public GameObject battleUIGO; // UI
-	public GameObject battleGameObjects; // Player(s), Enemy(s), Scenery etc.
-
 	public bool canInput;
 
 	public SubMenu gameSubMenu;
@@ -44,23 +40,14 @@ public class GameManager : MonoBehaviour {
 		} else {
 			Destroy(gameObject);
 		}
-
-		//// Load First Scene
-		//SceneManager.LoadScene(firstScene);
 	}
 
 	void Start() {
-		AudioManager.S.PlaySong(eSongName.never);
+        // Load First Scene
+        LoadLevel(firstScene);
 
-		// Load First Scene
-		//SceneManager.LoadScene(firstScene);
-		//LoadLevel(firstScene);
-
-		//LoadSettings();
-		//StartCoroutine("LoadSettingsCo");
-
-		// Add Loop() to UpdateManager
-		UpdateManager.updateDelegate += Loop;
+        // Add Loop() to UpdateManager
+        UpdateManager.updateDelegate += Loop;
 	}
 
 	public void Loop() {
@@ -72,19 +59,19 @@ public class GameManager : MonoBehaviour {
 			}
         }
 
-		// Pause Screen input
-		if (!Items.S.menu.gameObject.activeInHierarchy &&
-			!Spells.S.menu.gameObject.activeInHierarchy &&
-			!EquipMenu.S.gameObject.activeInHierarchy &&
+        // Pause Screen input
+        if (!Items.S.menu.gameObject.activeInHierarchy &&
+            !Spells.S.menu.gameObject.activeInHierarchy &&
+            !EquipMenu.S.gameObject.activeInHierarchy &&
             !ShopMenu.S.gameObject.activeInHierarchy &&
             !OptionsMenu.S.gameObject.activeInHierarchy) {
-			//!SaveMenu.S.gameObject.activeInHierarchy) {
+            //!SaveMenu.S.gameObject.activeInHierarchy) {
 
-			if (!Blob.S.isBattling) {
-				if (currentScene != "Title_Screen") {
-					if (!PauseMenu.S.gameObject.activeInHierarchy) {
-						if (Input.GetButtonDown("Pause")) {
-							PauseMenu.S.Pause();
+            if (!Blob.S.isBattling) {
+                if (currentScene != "Title_Screen") {
+                    if (!PauseMenu.S.gameObject.activeInHierarchy) {
+                        if (Input.GetButtonDown("Pause")) {
+                            PauseMenu.S.Pause();
 
                             //AddSubtractPlayerHP(0, false, 12);
                             //AddSubtractPlayerHP(1, false, 19);
@@ -94,14 +81,14 @@ public class GameManager : MonoBehaviour {
                             //AddSubtractPlayerMP(1, false, 2);
                             //AddSubtractPlayerMP(2, false, 2);
                         }
-					} else {
-						if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-							PauseMenu.S.UnPause(true);
-						}
-					}
-				}
-			}
-		}
+                    } else {
+                        if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+                            PauseMenu.S.UnPause(true);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 	// Load Level
@@ -128,8 +115,8 @@ public class GameManager : MonoBehaviour {
 
 		// Camera
 		CamManager.S.camMode = eCamMode.followAll;
-		//CamManager.S.ChangeTarget(Player.S.gameObject, false);
-		Camera.main.orthographicSize = 5;
+		CamManager.S.ChangeTarget(Blob.S.gameObject, false);
+		Camera.main.orthographicSize = 6;
 
 		// Dectivate battle UI and gameobjects
 		Battle.S.UI.battleMenu.SetActive(false);
@@ -145,7 +132,7 @@ public class GameManager : MonoBehaviour {
 		EquipMenu.S.Deactivate();
         OptionsMenu.S.Deactivate();
         //SaveMenu.S.Deactivate();
-        //ShopMenu.S.Deactivate();
+        ShopMenu.S.Deactivate();
         //TitleScreen.S.Deactivate();
 
         // Deactivate Sub Menus
@@ -172,24 +159,16 @@ public class GameManager : MonoBehaviour {
 			case "Title_Screen":
 				AudioManager.S.PlaySong(eSongName.zelda);
 				break;
-			case "Town_1":
-			case "Area_1":
+			case "Playground":
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
-			case "Overworld_1":
-			case "Area_2":
+			case "New Scene":
+				//AudioManager.S.PlaySong(eSongName.nineteenForty);
+				//AudioManager.S.PlaySong(eSongName.soap);
 				AudioManager.S.PlaySong(eSongName.things);
 				break;
 			case "Battle":
 				AudioManager.S.PlaySong(eSongName.ninja);
-				break;
-			case "Shop_1":
-			case "Motel_1":
-			case "Area_3":
-				AudioManager.S.PlaySong(eSongName.soap);
-				break;
-			case "Area_5":
-				AudioManager.S.PlaySong(eSongName.gMinor);
 				break;
 			default:
 				break;
@@ -197,61 +176,12 @@ public class GameManager : MonoBehaviour {
 
 		// Set up Player, Camera, etc. for Scene 
 		switch (currentScene) {
-			// Menus
-			case "Title_Screen":
-			// Battle
-			case "Battle":
-			// Arcade
-			case "PacMan":
-			case "SpaceInvaders":
-			case "WhackAMole":
-			case "CraneMachine":
-			case "LuckyHit":
-			case "QTE":
-			// Platformer
-			case "__PreLoadSMB":
-			case "_Levels":
-			case "_White-Box":
-				// Deactivate Player gameObject
-				Player.S.gameObject.SetActive(false);
-
-				// Freeze Camera
-				CamManager.S.camMode = eCamMode.freezeCam;
-
-				// Reset Cam Position 
-				Vector3 tPos = Vector3.zero;
-				tPos.z = -10;
-				CamManager.S.transform.position = tPos;
-
-				// Handle more specific settings
-				switch (currentScene) {
-					case "Title_Screen":
-						//TitleScreen.S.Activate();
-						break;
-					case "Battle":
-						// Enable BATTLE UI & GameObjects
-						battleUIGO.SetActive(true);
-						battleGameObjects.SetActive(true);
-
-						// Initialize Battle (reset input bools, set turn initiative, update battle UI Text)
-						Battle.S.InitializeBattle();
-						break;
-					case "PacMan":
-						// Camera
-						Camera.main.orthographicSize = 7;
-						break;
-					case "LuckyHit":
-						// Camera
-						Camera.main.orthographicSize = 10;
-						break;
-				}
-				break;
 			default:
 				//// Set Player Position to Respawn Position
-				//Player.S.gameObject.transform.position = Player.S.respawnPos;
+				Blob.S.gameObject.transform.position = Blob.S.respawnPos;
 
-				//Player.S.gameObject.SetActive(true);
-				//Player.S.canMove = true;
+				//Blob.S.gameObject.SetActive(true);
+				Blob.S.canMove = true;
 
 				// Freeze Camera
 				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
@@ -260,7 +190,7 @@ public class GameManager : MonoBehaviour {
 
 				} else {
 					// Set camera to Player position
-					Camera.main.transform.position = Player.S.gameObject.transform.position;
+					Camera.main.transform.position = Blob.S.gameObject.transform.position;
 				}
 				break;
 		}
