@@ -38,6 +38,8 @@ public class SpellMenu : MonoBehaviour {
 	// Prevents instantly registering input when the first or last slot is selected
 	private bool verticalAxisIsInUse;
 	private bool firstOrLastSlotSelected;
+	
+	public int previousSelectedNdx;
 
 	public PickWhichSpellsToDisplay pickWhichSpellsToDisplay;
 	public PickSpell pickSpell;
@@ -247,12 +249,28 @@ public class SpellMenu : MonoBehaviour {
 				}
 			}
 
-			// Check if first or last slot is selected
-			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[0].gameObject
-			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count-1].gameObject) {
-				firstOrLastSlotSelected = true;
-			} else {
-				firstOrLastSlotSelected = false;
+			//// Check if first or last slot is selected
+			//if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[0].gameObject
+			// || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count-1].gameObject) {
+			//	firstOrLastSlotSelected = true;
+			//} else {
+			//	firstOrLastSlotSelected = false;
+			//}
+
+			// Check if current selected gameObject is not the previous selected gameObject
+			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != previousSelectedSpellGO) {
+				// Check if first or last slot is selected
+				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[0].gameObject
+				 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count - 1].gameObject) {
+					firstOrLastSlotSelected = true;
+					verticalAxisIsInUse = true;
+
+					// Allows scrolling when the vertical axis is held down in 0.2 seconds
+					Invoke("VerticalAxisScrollDelay", 0.2f);
+				} else {
+					firstOrLastSlotSelected = false;
+				}
+
 			}
 		}
 	}
@@ -309,15 +327,21 @@ public class SpellMenu : MonoBehaviour {
 
 			// Set Selected GameObject 
 			// If previousSelectedGameObject is enabled...
-			if (previousSelectedSpellGO.activeInHierarchy && GameManager.S.currentScene != "Battle") {
+			if (previousSelectedSpellGO.activeInHierarchy && !Blob.S.isBattling) {
 				// Select previousSelectedGameObject
 				Utilities.S.SetSelectedGO(previousSelectedSpellGO);
-			} else {
-				// Set previously selected GameObject
-				previousSelectedSpellGO = spellsButtons[0].gameObject;
 
-				// Select first spell in the list
-				Utilities.S.SetSelectedGO(spellsButtons[0].gameObject);
+				// Set previously selected GameObject
+				Battle.S.previousSelectedForAudio = previousSelectedSpellGO;
+			} else {
+				//// Set previously selected GameObject
+				//previousSelectedSpellGO = spellsButtons[0].gameObject;
+
+				//// Select first spell in the list
+				//Utilities.S.SetSelectedGO(spellsButtons[0].gameObject);
+
+				// Select previous itemButton in the list
+				Utilities.S.SetSelectedGO(spellsButtons[previousSelectedNdx].gameObject);
 			}
 
 			// Activate Cursor
@@ -352,6 +376,8 @@ public class SpellMenu : MonoBehaviour {
 
 				// Audio: Selection (when a new gameObject is selected)
 				Utilities.S.PlayButtonSelectedSFX(ref previousSelectedSpellGO);
+				// Cache Selected Gameobject's index 
+				previousSelectedNdx = i;
 			} else {
 				// Set non-selected button text color
 				spellsButtonNameText[i].color = new Color32(255, 255, 255, 255);
