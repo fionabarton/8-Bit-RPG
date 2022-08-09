@@ -22,7 +22,7 @@ public class Followers : MonoBehaviour {
 	public List<bool> facingRights;
 
 	// Cache and set followers' move points 
-	public void SetFollowerMovePoints(Transform movePoint, bool facingRight) {
+	public void AddFollowerMovePoints(Transform movePoint, bool facingRight) {
 		// Cache move point and facingRight
 		movePoints.Insert(0, movePoint.position);
 		facingRights.Insert(0, facingRight);
@@ -57,12 +57,14 @@ public class Followers : MonoBehaviour {
 	}
 
 	// Cache and set animations for all followers
-	public void SetFollowerAnimations(string animationToAdd) {
+	public void AddFollowerAnimations(string animationToAdd) {
 		// Cache animation to add
 		animations.Insert(0, animationToAdd);
 
 		// Set followers' animations
 		if (animations.Count > 3) {
+			SetOrderInLayer();
+
 			followerAnims[1].CrossFade(animations[3], 0);
 			animations.RemoveAt(animations.Count - 1);
 		}
@@ -73,26 +75,28 @@ public class Followers : MonoBehaviour {
 
 	// Set the order in layer for all party members based on their y-pos
 	public void SetOrderInLayer() {
-		// Get each party member's y-pos
-		List<float> yPositions = new List<float>();
-		for (int i = 0; i < partyTransforms.Count; i++) {
-			yPositions.Add(partyTransforms[i].position.y);
-		}
+		if (movePoints.Count > 2) {
+			// Get each party member's y-pos
+			List<float> yPositions = new List<float>();
+			for (int i = 0; i < partyTransforms.Count; i++) {
+				yPositions.Add(partyTransforms[i].position.y);
+			}
 
-		// Set highest party member order
-		float minValue = yPositions.Min();
-		int minIndex = yPositions.IndexOf(minValue);
-		partySRends[minIndex].sortingOrder = 2;
+			// Set highest party member order
+			float minValue = yPositions.Min();
+			int minIndex = yPositions.IndexOf(minValue);
+			partySRends[minIndex].sortingOrder = 2;
 
-		// Set lowest party member order
-		float maxValue = yPositions.Max();
-		int maxIndex = yPositions.IndexOf(maxValue);
-		partySRends[maxIndex].sortingOrder = 0;
+			// Set lowest party member order
+			float maxValue = yPositions.Max();
+			int maxIndex = yPositions.IndexOf(maxValue);
+			partySRends[maxIndex].sortingOrder = 0;
 
-		// Set middle party member order
-		for (int i = 0; i < yPositions.Count; i++) {
-			if (i != minIndex && i != maxIndex) {
-				partySRends[i].sortingOrder = 1;
+			// Set middle party member order
+			for (int i = 0; i < yPositions.Count; i++) {
+				if (i != minIndex && i != maxIndex) {
+					partySRends[i].sortingOrder = 1;
+				}
 			}
 		}
 	}
