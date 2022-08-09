@@ -193,12 +193,19 @@ public class ItemMenu : MonoBehaviour {
 				}
 			}
 
-			// Check if first or last slot is selected
-			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[0].gameObject
-			 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[itemButtons.Count-1].gameObject) {
-				firstOrLastSlotSelected = true;
-			} else {
-				firstOrLastSlotSelected = false;
+			// Check if current selected gameObject is not the previous selected gameObject
+			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != previousSelectedGameObject) {
+				// Check if first or last slot is selected
+				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[0].gameObject
+				 || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == itemButtons[itemButtons.Count - 1].gameObject) {
+					firstOrLastSlotSelected = true;
+					verticalAxisIsInUse = true;
+
+					// Allows scrolling when the vertical axis is held down in 0.2 seconds
+					Invoke("VerticalAxisScrollDelay", 0.2f);
+				} else {
+					firstOrLastSlotSelected = false;
+				}
 			}
 		}
 	}
