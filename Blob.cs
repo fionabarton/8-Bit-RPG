@@ -27,6 +27,9 @@ public class Blob : MonoBehaviour {
 	public float		destination;
 	public bool			alreadyTriggered; // Prevents triggering multiple triggers
 
+	// Respawn
+	public Vector3		respawnPos;
+
 	// Battle variables
 	public bool			isBattling = false;
 	public bool			canEncounter = true;
@@ -54,10 +57,6 @@ public class Blob : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-		// Add Loop() and FixedLoop() to UpdateManager
-		UpdateManager.updateDelegate += Loop;
-		UpdateManager.fixedUpdateDelegate += FixedLoop;
-
 		anim = GetComponent<Animator>();
 		sRend = GetComponent<SpriteRenderer>();
 		flicker = GetComponent<Flicker>();
@@ -69,6 +68,10 @@ public class Blob : MonoBehaviour {
 		movePoint.parent = null;
 		followers.followerMovePoints[0].parent = null;
 		followers.followerMovePoints[1].parent = null;
+
+		// Add Loop() and FixedLoop() to UpdateManager
+		UpdateManager.updateDelegate += Loop;
+		UpdateManager.fixedUpdateDelegate += FixedLoop;
 	}
 
     void Loop() {
@@ -108,9 +111,6 @@ public class Blob : MonoBehaviour {
 
 						// Cache and set all follower's animations
 						followers.SetFollowerAnimations("Walk_Side");
-
-						// Set the order in layer for all party members based on their y-pos
-						followers.SetOrderInLayer();
 					}
 
 					// Set trigger position
@@ -143,9 +143,6 @@ public class Blob : MonoBehaviour {
 							// Cache and set all follower's animations
 							followers.SetFollowerAnimations("Walk_Down");
 						}
-
-						// Set the order in layer for all party members based on their y-pos
-						followers.SetOrderInLayer();
 					}
 
 					if (Input.GetAxisRaw("Vertical") > 0) {
