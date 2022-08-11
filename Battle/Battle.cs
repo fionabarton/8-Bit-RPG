@@ -148,6 +148,21 @@ public class Battle : MonoBehaviour {
 							PlayerTurn();
 						}
 						break;
+					case eBattleMode.qteInitialize:
+						qte.Loop();
+
+						if (Input.GetButtonDown("SNES Y Button")) {
+							//playerAnimator[animNdx].CrossFade("Idle", 0);
+
+							// Audio: Deny
+							AudioManager.S.PlaySFX(eSoundName.deny);
+
+							playerActions.FightButton();
+						}
+						break;
+					case eBattleMode.qte:
+						qte.Loop();
+						break;
 					case eBattleMode.itemMenu:
 						// On vertical input, scroll the item list when the first or last slot is selected
 						UI.ScrollList(Inventory.S.GetItemList().Count, true);
@@ -286,6 +301,9 @@ public class Battle : MonoBehaviour {
 					}
 				}
 				break;
+			case eBattleMode.qte:
+				qte.BlockLoop();
+				break;
 		}
 	}
 
@@ -325,6 +343,12 @@ public class Battle : MonoBehaviour {
 
 				// Set Target Cursor Position: Enemies or Party
 				UI.ActionOptionButtonsCursorPosition(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject);
+				break;
+		}
+
+		switch (mode) {
+			case eBattleMode.qte:
+				qte.FixedLoop();
 				break;
 		}
 	}

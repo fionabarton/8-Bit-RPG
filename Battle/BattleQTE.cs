@@ -7,6 +7,9 @@ public class BattleQTE : MonoBehaviour {
 	// QTE Progress bar
 	public ProgressBar healthBar;
 
+	public List<Animator> QTEInputSprites = new List<Animator>();
+
+	[Header("Set Dynamically")]
 	// QTE Mode/Type
 	public int qteType = 2; // 0: Mash, 1: Hold, 2: Sequence, 3: Stop, 4: Block
 
@@ -45,9 +48,6 @@ public class BattleQTE : MonoBehaviour {
 	// Index of the party member that is blocking
 	public int blockerNdx;
 
-	public List<Animator> QTEInputSprites = new List<Animator>();
-
-	[Header("Set Dynamically")]
 	private Battle _;
 
 	void Start() {
@@ -171,17 +171,18 @@ public class BattleQTE : MonoBehaviour {
 				break;
 			case 4: /////////// BLOCK ///////////
 					// Activate Text
-				_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(true);
+				//_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(true);
 
 				// Reset Strings
-				_.dialogue.displayMessageTextTop.text = "";
+				//_.dialogue.displayMessageTextTop.text = "";
 				inputString = "";
 				goalString = "";
 
 				// Set Goal (only ONE input)
 				int directionToType = Random.Range(0, 4);
 				goalString += directionToType.ToString();
-				_.dialogue.displayMessageTextTop.text = "Press " + ConvertDirections(goalString[0]) + " to\nBLOCK!";
+				//_.dialogue.displayMessageTextTop.text = "Press " + ConvertDirections(goalString[0]) + " to\nBLOCK!";
+				//_.dialogue.DisplayText("Press " + ConvertDirections(goalString[0]) + " to\nBLOCK!");
 
 				// Set Timer
 				tooLateTime = 1.5f;
@@ -190,10 +191,10 @@ public class BattleQTE : MonoBehaviour {
 				// Display Arrow Sprite
 				QTEInputSprites[0].gameObject.SetActive(true);
 				switch (directionToType) {
-					case 0: QTEInputSprites[0].CrossFade("QTEInputSprite_Right", 0); break;
-					case 1: QTEInputSprites[0].CrossFade("QTEInputSprite_Up", 0); break;
-					case 2: QTEInputSprites[0].CrossFade("QTEInputSprite_Left", 0); break;
-					case 3: QTEInputSprites[0].CrossFade("QTEInputSprite_Down", 0); break;
+					case 0: QTEInputSprites[0].CrossFade("Arrow_Right", 0); break;
+					case 1: QTEInputSprites[0].CrossFade("Arrow_Up", 0); break;
+					case 2: QTEInputSprites[0].CrossFade("Arrow_Left", 0); break;
+					case 3: QTEInputSprites[0].CrossFade("Arrow_Down", 0); break;
 				}
 				break;
 		}
@@ -398,14 +399,16 @@ public class BattleQTE : MonoBehaviour {
 		}
 
 		// Reset first input sprite position (for blocking)
-		QTEInputSprites[0].gameObject.transform.position = new Vector2(0, 2.7f);
+		//QTEInputSprites[0].gameObject.transform.position = new Vector2(0, 2.7f);
+		QTEInputSprites[0].gameObject.transform.localPosition = new Vector2(0, 0.5f);
 
 		// Floating score to indicate bonus points
 
 		if (goodOrBad) {
 			if (qteType != 4) {
 				// POSITIVE Result Message
-				_.dialogue.displayMessageTextTop.text = "<color=#00FF00>NICE!</color>";
+				//_.dialogue.displayMessageTextTop.text = "<color=#00FF00>NICE!</color>";
+				_.dialogue.DisplayText("<color=#00FF00>NICE!</color>");
 
 				// Animation: QTE SUCCESS
 				//_.playerAnimator[_.animNdx].CrossFade("QTE_Success", 0);
@@ -443,21 +446,24 @@ public class BattleQTE : MonoBehaviour {
 					}
 					break;
 				case 2: /////////// SEQUENCE ///////////	
-					_.qteBonusDamage = (int)1.5f * Party.S.stats[_.PlayerNdx()].LVL;
+					_.qteBonusDamage = (int)(1.5f * Party.S.stats[_.PlayerNdx()].LVL);
 					break;
 				case 4: /////////// BLOCK ///////////	
 						// Calculate HP bonus 
-					int amountToHeal = (int)1.5f * Party.S.stats[blockerNdx].LVL;
+					int amountToHeal = (int)(1.5f * Party.S.stats[blockerNdx].LVL);
 
 					// Add HP to Player that is blocking
 					GameManager.S.AddPlayerHP(blockerNdx, amountToHeal);
 
-                    // Get and position Poof game object
-                    //GameObject poof = ObjectPool.S.GetPooledObject("Poof");
-                    //ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[blockerNdx]);
+					// Get and position Poof game object
+					//GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+					//ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[blockerNdx]);
 
-                    // Display Floating Score
-                    GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[blockerNdx].gameObject, amountToHeal.ToString(), Color.green);
+					// Set mini party member animations
+					_.UI.playerAnims[blockerNdx].CrossFade("Success", 0);
+
+					// Display Floating Score
+					GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[blockerNdx].gameObject, amountToHeal.ToString(), Color.green);
 
                     // Audio: Confirm
                     AudioManager.S.PlaySFX(eSoundName.confirm);
@@ -466,7 +472,8 @@ public class BattleQTE : MonoBehaviour {
 		} else {
 			if (qteType != 4) {
 				// NEGATIVE Result Message
-				_.dialogue.displayMessageTextTop.text = "<color=#FF0000FF>FAIL!</color>";
+				//_.dialogue.displayMessageTextTop.text = "<color=#FF0000FF>FAIL!</color>";
+				_.dialogue.DisplayText("<color=#FF0000FF>FAIL!</color>");
 
 				// Animation: QTE FAIL
 				//_.playerAnimator[_.animNdx].CrossFade("QTE_Fail", 0);
@@ -481,7 +488,7 @@ public class BattleQTE : MonoBehaviour {
 			_.playerActions.AttackEnemy(_.targetNdx);
 		} else {
 			// Deactivate Battle Text
-			_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
+			//_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
 
 			_.NextTurn();
 		}
@@ -492,10 +499,10 @@ public class BattleQTE : MonoBehaviour {
 	string ConvertDirections(char letter) {
 		string word = "";
 		switch (letter) {
-			case '0': word = "Right "; break;
-			case '1': word = "Up "; break;
-			case '2': word = "Left "; break;
-			case '3': word = "Down "; break;
+			case '0': word = "Right"; break;
+			case '1': word = "Up"; break;
+			case '2': word = "Left"; break;
+			case '3': word = "Down"; break;
 		}
 		return word;
 	}
@@ -524,10 +531,10 @@ public class BattleQTE : MonoBehaviour {
 
 		// Set animation
 		switch (directionNdx - 48) {
-			case 0: QTEInputSprites[spriteNdx].CrossFade("QTEInputSprite_Right", 0); break;
-			case 1: QTEInputSprites[spriteNdx].CrossFade("QTEInputSprite_Up", 0); break;
-			case 2: QTEInputSprites[spriteNdx].CrossFade("QTEInputSprite_Left", 0); break;
-			case 3: QTEInputSprites[spriteNdx].CrossFade("QTEInputSprite_Down", 0); break;
+			case 0: QTEInputSprites[spriteNdx].CrossFade("Arrow_Right", 0); break;
+			case 1: QTEInputSprites[spriteNdx].CrossFade("Arrow_Up", 0); break;
+			case 2: QTEInputSprites[spriteNdx].CrossFade("Arrow_Left", 0); break;
+			case 3: QTEInputSprites[spriteNdx].CrossFade("Arrow_Down", 0); break;
 		}
 
 		// Set sprite positions
@@ -574,7 +581,8 @@ public class BattleQTE : MonoBehaviour {
 					if (inputString[0] != goalString[0]) { // 1st char of string
 						Result(false);
 					} else {
-						_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]);
+						//_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]);
+						_.dialogue.DisplayText("<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]));
 
 						// Audio: Confirm
 						AudioManager.S.PlaySFX(eSoundName.confirm);
@@ -586,7 +594,8 @@ public class BattleQTE : MonoBehaviour {
 							if (inputString[0] != goalString[0]) { // 1st char of string
 								Result(false);
 							} else {
-								_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]) + ConvertDirections(goalString[2]);
+								//_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]) + ConvertDirections(goalString[2]);
+								_.dialogue.DisplayText("<color=#00FF00>" + ConvertDirections(goalString[0]) + "</color>" + ConvertDirections(goalString[1]) + ConvertDirections(goalString[2]));
 
 								// Audio: Confirm
 								AudioManager.S.PlaySFX(eSoundName.confirm);
@@ -596,7 +605,8 @@ public class BattleQTE : MonoBehaviour {
 							if (inputString[1] != goalString[1]) { // 2nd char of string
 								Result(false);
 							} else {
-								_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + ConvertDirections(goalString[1]) + "</color>" + ConvertDirections(goalString[2]);
+								//_.dialogue.displayMessageTextTop.text = "<color=#00FF00>" + ConvertDirections(goalString[0]) + ConvertDirections(goalString[1]) + "</color>" + ConvertDirections(goalString[2]);
+								_.dialogue.DisplayText("<color=#00FF00>" + ConvertDirections(goalString[0]) + ConvertDirections(goalString[1]) + "</color>" + ConvertDirections(goalString[2]));
 
 								// Audio: Confirm
 								AudioManager.S.PlaySFX(eSoundName.confirm);
