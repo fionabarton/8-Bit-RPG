@@ -11,7 +11,8 @@ public class OptionsMenu : MonoBehaviour {
 		"Set the master volume!",
 		"Set the background music volume!",
 		"Set the sound effects volume!",
-		"Set the rate at which text is displayed!" };
+		"Set the rate at which text is displayed!",
+		"Enable Quick Time Events (QTE) in battle!"};
 
 	[Header("Set Dynamically")]
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
@@ -63,12 +64,19 @@ public class OptionsMenu : MonoBehaviour {
 		} else {
 			textSpeed = 0.05f;
 		}
+		if (PlayerPrefs.HasKey("QTE Enabled")) {
+			sliders[4].value = PlayerPrefs.GetInt("QTE Enabled");
+			EnableQTE((int)sliders[4].value, false);
+		} else {
+			EnableQTE(1, false);
+		}
 
 		// Adds a listener to each slider and invokes a method when the value changes
 		sliders[0].onValueChanged.AddListener(delegate { SetMasterVolume(); });
 		sliders[1].onValueChanged.AddListener(delegate { SetBGMVolume(); });
 		sliders[2].onValueChanged.AddListener(delegate { SetSFXVolume(); });
 		sliders[3].onValueChanged.AddListener(delegate { SetTextSpeed(); });
+		sliders[4].onValueChanged.AddListener(delegate { EnableQTE((int)sliders[4].value); });
 
 		Deactivate();
 	}
@@ -95,7 +103,6 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void Deactivate(bool playSound = false) {
-		//if (!Blob.S.isBattling) {
 		if (GameManager.S.currentScene != "Title_Screen") {
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
@@ -187,6 +194,26 @@ public class OptionsMenu : MonoBehaviour {
 
 		// Display text
 		PauseMessage.S.DisplayText("With the 'Text Speed' set at this value, text will be displayed on screen this quickly!");
+
+		// Audio: Selection
+		AudioManager.S.masterVolSelection.Play();
+	}
+
+	public void EnableQTE(int value, bool playSFX = true) {
+		// Set the volume of all SFXs to the value of its slider
+		if (value == 1) {
+			Battle.S.qteEnabled = true;
+		} else {
+			Battle.S.qteEnabled = false;
+		}
+
+		// Save settings
+		PlayerPrefs.SetInt("QTE Enabled", (int)sliders[4].value);
+
+        // Audio: Selection
+        if (playSFX) {
+			AudioManager.S.masterVolSelection.Play();
+		}
 	}
 
 	public void SetCursorPosition() {
