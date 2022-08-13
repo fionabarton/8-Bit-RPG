@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -108,7 +107,7 @@ public class BattleSpells : MonoBehaviour {
 		}
 
 		// Add to TARGET Player's HP
-		GameManager.S.AddPlayerHP(ndx, amountToHeal);
+		GameManager.S.AddPlayerHP(ndx, amountToHeal, true);
 
 		CurePlayerAnimation(ndx, true, amountToHeal);
 	}
@@ -773,12 +772,6 @@ public class BattleSpells : MonoBehaviour {
         if (displayFloatingScore) {
             GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), Color.green);
         }
-
-		//// Set anim
-		//_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-
-		// Animation: Flicker party member
-		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
 	}
 
     public void DamageEnemyAnimation(int ndx, bool displayFloatingScore = false, bool playPlayerAnim = true, bool playDamageSFX = true) {
