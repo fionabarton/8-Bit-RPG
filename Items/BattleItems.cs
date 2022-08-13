@@ -65,7 +65,7 @@ public class BattleItems : MonoBehaviour {
 		}
 
 		// Add to TARGET Player's HP
-		GameManager.S.AddPlayerHP(ndx, amountToHeal);
+		GameManager.S.AddPlayerHP(ndx, amountToHeal, true);
 
 		CurePlayerAnimation(ndx, true, amountToHeal);
 	}
@@ -358,11 +358,5 @@ public class BattleItems : MonoBehaviour {
                 GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[ndx].gameObject, scoreAmount.ToString(), new Color32(39, 201, 255, 255));
             }
         }
-
-		//// Set anim
-		//_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-
-		// Animation: Flicker party member
-		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
 	}
 }
