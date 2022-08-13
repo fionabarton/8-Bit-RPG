@@ -67,19 +67,21 @@ public class GameManager : MonoBehaviour {
             !OptionsMenu.S.gameObject.activeInHierarchy) {
             //!SaveMenu.S.gameObject.activeInHierarchy) {
 
-            if (!Blob.S.isBattling) {
+            if (!Player.S.isBattling) {
                 if (currentScene != "Title_Screen") {
                     if (!PauseMenu.S.gameObject.activeInHierarchy) {
                         if (Input.GetButtonDown("Pause")) {
                             PauseMenu.S.Pause();
 
-                            //AddSubtractPlayerHP(0, false, 12);
-                            //AddSubtractPlayerHP(1, false, 19);
-                            //AddSubtractPlayerHP(2, false, 20);
+       //                     AddSubtractPlayerHP(0, false, 12);
+       //                     AddSubtractPlayerHP(1, false, 19);
+       //                     AddSubtractPlayerHP(2, false, 20);
 
-                            //AddSubtractPlayerMP(0, false, 2);
-                            //AddSubtractPlayerMP(1, false, 2);
-                            //AddSubtractPlayerMP(2, false, 2);
+       //                     AddSubtractPlayerMP(0, false, 2);
+       //                     AddSubtractPlayerMP(1, false, 2);
+       //                     AddSubtractPlayerMP(2, false, 2);
+
+							//PauseMenu.S.UpdateGUI();
                         }
                     } else {
                         if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
@@ -115,7 +117,7 @@ public class GameManager : MonoBehaviour {
 
 		// Camera
 		CamManager.S.camMode = eCamMode.followAll;
-		CamManager.S.ChangeTarget(Blob.S.gameObject, false);
+		CamManager.S.ChangeTarget(Player.S.gameObject, false);
 		Camera.main.orthographicSize = 6;
 
 		// Dectivate battle UI and gameobjects
@@ -177,11 +179,10 @@ public class GameManager : MonoBehaviour {
 		// Set up Player, Camera, etc. for Scene 
 		switch (currentScene) {
 			default:
-				//// Set Player Position to Respawn Position
-				Blob.S.gameObject.transform.position = Blob.S.respawnPos;
+				// Set Player Position to Respawn Position
+				Player.S.gameObject.transform.position = Player.S.respawnPos;
 
-				//Blob.S.gameObject.SetActive(true);
-				Blob.S.canMove = true;
+				Player.S.canMove = true;
 
 				// Freeze Camera
 				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
@@ -190,7 +191,7 @@ public class GameManager : MonoBehaviour {
 
 				} else {
 					// Set camera to Player position
-					Camera.main.transform.position = Blob.S.gameObject.transform.position;
+					Camera.main.transform.position = Player.S.gameObject.transform.position;
 				}
 				break;
 		}
@@ -210,7 +211,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ************ Add/Subtract PLAYER HP ************ \\
-	public void AddSubtractPlayerHP(int ndx, bool addOrSubtract, int amount) {
+	public void AddSubtractPlayerHP(int ndx, bool addOrSubtract, int amount, bool playerFlickerClip = false) {
 		if (addOrSubtract) { Party.S.stats[ndx].HP += amount; } else { Party.S.stats[ndx].HP -= amount; }
 
 		// Prevent going above Max HP & below Min HP
@@ -220,21 +221,22 @@ public class GameManager : MonoBehaviour {
 			Party.S.stats[ndx].HP = 0;
 		}
 
-		Battle.S.UI.UpdatePartyStats(ndx);
+		// Update party stats and stat frame animations
+		Battle.S.UI.UpdatePartyStats(ndx, playerFlickerClip);
 
 		// Update Health Bars
 		//ProgressBars.S.playerHealthBarsCS[ndx].UpdateBar(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP);
 	}
 
-	public void AddPlayerHP(int ndx, int amount) {
-		AddSubtractPlayerHP(ndx, true, amount);
+	public void AddPlayerHP(int ndx, int amount, bool playerFlickerClip = false) {
+		AddSubtractPlayerHP(ndx, true, amount, playerFlickerClip);
 	}
-	public void SubtractPlayerHP(int ndx, int amount) {
-		AddSubtractPlayerHP(ndx, false, amount);
+	public void SubtractPlayerHP(int ndx, int amount, bool playerFlickerClip = false) {
+		AddSubtractPlayerHP(ndx, false, amount, playerFlickerClip);
 	}
 
 	// ************ Add/Subtract PLAYER MP ************ \\
-	public void AddSubtractPlayerMP(int ndx, bool addOrSubtract, int amount) {
+	public void AddSubtractPlayerMP(int ndx, bool addOrSubtract, int amount, bool playerFlickerClip = false) {
 		if (addOrSubtract) { Party.S.stats[ndx].MP += amount; } else { Party.S.stats[ndx].MP -= amount; }
 
 		// Prevent going above Max MP & below Min MP
@@ -244,7 +246,8 @@ public class GameManager : MonoBehaviour {
 			Party.S.stats[ndx].MP = 0;
 		}
 
-		Battle.S.UI.UpdatePartyStats(ndx);
+		// Update party stats and stat frame animations
+		Battle.S.UI.UpdatePartyStats(ndx, playerFlickerClip);
 
 		// Update Magic Bars
 		//ProgressBars.S.playerMagicBarsCS[ndx].UpdateBar(Party.S.stats[ndx].MP, Party.S.stats[ndx].maxMP, false);
