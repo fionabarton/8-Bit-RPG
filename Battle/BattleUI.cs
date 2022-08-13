@@ -19,6 +19,12 @@ public class BattleUI : MonoBehaviour {
 	public List<Text> partyStatsHeader;
 	public List<Button> partyNameButtonsCS;
 
+	// Mini party member images
+	public List<Animator> miniPartyAnims;
+
+	// Party member text box sprite frames 
+	public List<Animator> partyTextBoxSpriteAnims;
+
 	// Option buttons
 	public List<GameObject> optionButtonsGO;
 	public List<Button> optionButtonsCS;
@@ -39,9 +45,6 @@ public class BattleUI : MonoBehaviour {
 	public GameObject actionOptionsButtonsCursor;
 	public List<GameObject> enemySpriteButtonsCursors = new List<GameObject>();
 	public List<GameObject> partyNameButtonsCursors = new List<GameObject>();
-
-	// Mini party member images
-	public List<Animator> playerAnims;
 
 	[Header("Set Dynamically")]
 	// Caches what index of the inventory is currently stored in the first item slot
@@ -296,28 +299,55 @@ public class BattleUI : MonoBehaviour {
 		}
 	}
 
-	public void UpdatePartyStats(int ndx) {
+	public void UpdatePartyStats(int ndx, bool playerFlickerClip = false) {
 		partyStatsText[ndx].text =
 			Party.S.stats[ndx].HP.ToString() + "/" + Party.S.stats[ndx].maxHP.ToString() +
 			"\n" + Party.S.stats[ndx].MP.ToString() + "/" + Party.S.stats[ndx].maxMP.ToString() +
 			"\n" + Party.S.stats[ndx].LVL.ToString();
 
-		// Set text and textBoxSprite color
-		if(Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) >= 0.25f) {
-			partyStatsText[ndx].color = new Color32(255, 255, 255, 255);
-			partyNameText[ndx].color = new Color32(255, 255, 255, 255);
-			partyStatsHeader[ndx].color = new Color32(255, 255, 255, 255);
-			partyStartsTextBoxSprite[ndx].color = new Color32(255, 255, 255, 255);
-		} else if (Party.S.stats[ndx].HP > 0 && Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) < 0.25f) {
-			partyStatsText[ndx].color = new Color32(229, 92, 15, 255);
-			partyNameText[ndx].color = new Color32(229, 92, 15, 255);
-			partyStatsHeader[ndx].color = new Color32(229, 92, 15, 255);
-			partyStartsTextBoxSprite[ndx].color = new Color32(229, 92, 15, 255);
+        if (!playerFlickerClip) {
+			// Set party member text box sprite frames animation speed
+			if (_.PlayerNdx() == ndx) {
+				_.partyStatAnims[ndx].speed = 1;
+			} else {
+				_.partyStatAnims[ndx].speed = 0;
+			}
+
+			// Set text and textBoxSprite color
+			if (Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) >= 0.25f) {
+				if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+					_.partyStatAnims[ndx].Play("White Idle", -1, 0);
+				}
+			} else if (Party.S.stats[ndx].HP > 0 && Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) < 0.25f) {
+				if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+					_.partyStatAnims[ndx].Play("Orange Idle", -1, 0);
+				}
+			} else {
+				if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+					_.partyStatAnims[ndx].Play("Red Idle", -1, 0);
+				}
+			}
 		} else {
-			partyStatsText[ndx].color = new Color32(168, 7, 32, 255);
-			partyNameText[ndx].color = new Color32(168, 7, 32, 255);
-			partyStatsHeader[ndx].color = new Color32(168, 7, 32, 255);
-			partyStartsTextBoxSprite[ndx].color = new Color32(168, 7, 32, 255);
+			SetPartyFlickerAnim(ndx);
+		}
+	}
+
+	public void SetPartyFlickerAnim(int ndx) {
+		_.partyStatAnims[ndx].speed = 1;
+
+		// Set text and textBoxSprite color
+		if (Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) >= 0.25f) {
+			if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+				_.partyStatAnims[ndx].Play("White Flicker", -1, 0);
+			}
+		} else if (Party.S.stats[ndx].HP > 0 && Utilities.S.GetPercentage(Party.S.stats[ndx].HP, Party.S.stats[ndx].maxHP) < 0.25f) {
+			if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+				_.partyStatAnims[ndx].Play("Orange Flicker", -1, 0);
+			}
+		} else {
+			if (_.partyStatAnims[ndx].gameObject.activeInHierarchy) {
+				_.partyStatAnims[ndx].Play("Red Flicker", -1, 0);
+			}
 		}
 	}
 
@@ -569,13 +599,13 @@ public class BattleUI : MonoBehaviour {
 	// Sets the mini party members' animations
 	public void SetPartyMemberAnim(string animName = "Idle", string selectedMemberAnimName = "Walk", int selectedMemberNdx = -1) {
 		// Set all party member animations
-		for (int i = 0; i < playerAnims.Count; i++) {
-			if (playerAnims[i].gameObject.activeInHierarchy) {
+		for (int i = 0; i < miniPartyAnims.Count; i++) {
+			if (miniPartyAnims[i].gameObject.activeInHierarchy) {
 				if(i != selectedMemberNdx) {
 					if (Party.S.stats[i].HP > 0) {
-						playerAnims[i].CrossFade(animName, 0);
+						miniPartyAnims[i].CrossFade(animName, 0);
 					} else {
-						playerAnims[i].CrossFade("Fail", 0);
+						miniPartyAnims[i].CrossFade("Fail", 0);
 					}
 				}
 			}
@@ -583,7 +613,7 @@ public class BattleUI : MonoBehaviour {
 
 		// Set target member animation
 		if(selectedMemberNdx != -1) {
-			playerAnims[selectedMemberNdx].CrossFade(selectedMemberAnimName, 0);
+			miniPartyAnims[selectedMemberNdx].CrossFade(selectedMemberAnimName, 0);
 		}
 	}
 

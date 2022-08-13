@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class BattleEnemyActions : MonoBehaviour {
 	private Battle _;
@@ -24,7 +23,7 @@ public class BattleEnemyActions : MonoBehaviour {
 										Party.S.stats[playerToAttack].HP, true, playerToAttack);
 
 		// Subtract Player Health
-		GameManager.S.SubtractPlayerHP(playerToAttack, _.attackDamage);
+		GameManager.S.SubtractPlayerHP(playerToAttack, _.attackDamage, true);
 
 		// Play attack animations, SFX, and spawn objects
 		PlaySingleAttackAnimsAndSFX(playerToAttack);
@@ -34,28 +33,50 @@ public class BattleEnemyActions : MonoBehaviour {
 		if (Party.S.stats[playerToAttack].HP < 1) {
 			_.end.PlayerDeath(playerToAttack);
 		} else {
-			//// If not sleeping or paralyzed...attempt to block!
-			//if (!StatusEffects.S.CheckIfParalyzed(true, playerToAttack) &&
-			//	!StatusEffects.S.CheckIfSleeping(true, playerToAttack)) {
-			//	// Index of the party member that is blocking
-			//	_.qte.blockerNdx = playerToAttack;
+            //// If not sleeping or paralyzed...attempt to block!
+            //if (!StatusEffects.S.CheckIfParalyzed(true, playerToAttack) &&
+            //	!StatusEffects.S.CheckIfSleeping(true, playerToAttack)) {
+            //	// Index of the party member that is blocking
+            //	_.qte.blockerNdx = playerToAttack;
 
-			//	// Set qteType to Block
-			//	_.qte.qteType = 4;
+            //	// Set qteType to Block
+            //	_.qte.qteType = 4;
 
-			//	// Enable progress bar/timer 
-			//	_.qte.Initialize();
+            //	// Enable progress bar/timer 
+            //	_.qte.Initialize();
 
-			//	// Set battleMode to QTE
-			//	_.mode = eBattleMode.qte;
-			//} else {
-			//	// Deactivate Battle Text
-			//	_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
+            //	// Set battleMode to QTE
+            //	_.mode = eBattleMode.qte;
+            //} else {
+            //	// Deactivate Battle Text
+            //	_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
 
-			//	_.NextTurn();
-			//}
+            //	_.NextTurn();
+            //}
+            if (_.qteEnabled) {
+				// If not sleeping or paralyzed...attempt to block!
+				if (!StatusEffects.S.CheckIfParalyzed(true, playerToAttack) &&
+					!StatusEffects.S.CheckIfSleeping(true, playerToAttack)) {
+					// Index of the party member that is blocking
+					_.qte.blockerNdx = playerToAttack;
 
-			_.NextTurn();
+					// Set qteType to Block
+					_.qte.qteType = 4;
+
+					// Enable progress bar/timer 
+					_.qte.Initialize();
+
+					// Set battleMode to QTE
+					_.mode = eBattleMode.qte;
+				} else {
+					// Deactivate Battle Text
+					_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
+
+					_.NextTurn();
+				}
+			} else {
+				_.NextTurn();
+			}
 		}
 	}
 
@@ -222,7 +243,7 @@ public class BattleEnemyActions : MonoBehaviour {
 			_.attackDamage = Random.Range(8, 12);
 
 			// Subtract Player Health
-			GameManager.S.SubtractPlayerHP(playerToAttack, _.attackDamage);
+			GameManager.S.SubtractPlayerHP(playerToAttack, _.attackDamage, true);
 
 			// Play attack animations, SFX, and spawn objects
 			PlaySingleAttackAnimsAndSFX(playerToAttack);
@@ -315,7 +336,7 @@ public class BattleEnemyActions : MonoBehaviour {
 				}
 
 				// Subtract Player Health
-				GameManager.S.SubtractPlayerHP(i, _.attackDamage);
+				GameManager.S.SubtractPlayerHP(i, _.attackDamage, true);
 
 				// Add to to TotalAttackDamage (Used to Calculate AVERAGE Damage)
 				totalAttackDamage += _.attackDamage;
@@ -416,7 +437,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 
 		// Clone and add EnemyStats
-		var clone = Instantiate(Blob.S.enemyStats[enemyNdx]);
+		var clone = Instantiate(Player.S.enemyStats[enemyNdx]);
 		_.enemyStats.Add(clone);
 
 		int ndx = _.enemyStats.Count - 1;
@@ -559,11 +580,6 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Play attack animations, SFX, and spawn objects
 	public void PlaySingleAttackAnimsAndSFX(int playerToAttack, bool playEnemyAnim = true, bool displayFloatingScore = true) {
-		// Animation: Enemy ATTACK in center
-		//if (playEnemyAnim) {
-		//	_.enemyAnimator[_.animNdx].CrossFade("Attack", 0);
-		//}
-
 		// If player doesn't have a status ailment...
 		//if (!StatusEffects.S.HasStatusAilment(true, playerToAttack)) {
 		//	// Animation: Player Damage
@@ -575,9 +591,6 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		// Animation: Shake Screen
 		Battle.S.battleUIAnim.CrossFade("BattleUI_Shake", 0);
-
-		// Animation: Flicker party member
-		Battle.S.partyAnims[playerToAttack].CrossFade("Flicker", 0);
 
 		// Set mini party member animations
 		_.UI.SetPartyMemberAnim("Idle", "Damage", playerToAttack);

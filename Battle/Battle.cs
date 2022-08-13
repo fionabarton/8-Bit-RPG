@@ -10,7 +10,7 @@ public class Battle : MonoBehaviour {
 	public List<SpriteRenderer> enemySRends;
 
 	///////////////////////////////// ANIMATORS /////////////////////////////////
-	public List<Animator> partyAnims;
+	public List<Animator> partyStatAnims;
 	public List<Animator> enemyAnims;
 
 	// Shakes the canvas back and forth
@@ -386,6 +386,11 @@ public class Battle : MonoBehaviour {
 		// Reset playerActions.buttonsCS text color
 		Utilities.S.SetTextColor(playerActions.actionButtonsCS, new Color32(39, 201, 255, 255));
 
+		// Reset party member stat frames' animator speed
+		for (int i = 0; i < partyStatAnims.Count; i++) {
+			partyStatAnims[i].speed = 0;
+		}
+
 		// Set Mode
 		mode = eBattleMode.actionButtons;
 
@@ -559,6 +564,11 @@ public class Battle : MonoBehaviour {
 
 		// Set enemy sprites positions
 		UI.PositionEnemySprites();
+
+		// Set party member text box sprite frames 
+		for (int i = 0; i < partyStatAnims.Count; i++) {
+			UI.UpdatePartyStats(i);
+		}
 	}
 
 	bool HasAilment(string name, bool isPlayer, int ndx) {
