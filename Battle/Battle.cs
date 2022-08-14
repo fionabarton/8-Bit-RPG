@@ -165,7 +165,7 @@ public class Battle : MonoBehaviour {
 						break;
 					case eBattleMode.itemMenu:
 						// On vertical input, scroll the item list when the first or last slot is selected
-						UI.ScrollList(Inventory.S.GetItemList().Count, true);
+						UI.ScrollList(Inventory.S.GetBattleItemList().Count, true);
 
 						if (Input.GetButtonDown("SNES Y Button")) {
 							playerActions.GoBackToActionButtons();

@@ -517,6 +517,7 @@ public class BattleUI : MonoBehaviour {
 		}
 	}
 
+	// Assign on button click effects
 	public void AssignEnemyEffect() {
 		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
 		for (int i = 0; i < _.enemyAmount; i++) {
@@ -530,7 +531,7 @@ public class BattleUI : MonoBehaviour {
 		for (int i = 0; i < optionButtonsCS.Count; i++) {
 			// Add listener to option button
 			int copy = i;
-			optionButtonsCS[copy].onClick.AddListener(delegate { Items.S.menu.ConsumeItem(Inventory.S.GetItemList()[firstSlotNdx + copy]); });
+			optionButtonsCS[copy].onClick.AddListener(delegate { Items.S.menu.ConsumeItem(Inventory.S.GetBattleItemList()[firstSlotNdx + copy]); });
 		}
 	}
 	public void AssignSpellEffect() {
@@ -542,6 +543,7 @@ public class BattleUI : MonoBehaviour {
 		}
 	}
 
+	// Assign slot name text
 	public void AssignEnemyNames() {
 		// Assign option slots names
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
@@ -555,10 +557,11 @@ public class BattleUI : MonoBehaviour {
 	public void AssignItemNames() {
 		// Assign option slots names
 		for (int i = 0; i < optionButtonsGO.Count; i++) {
-			if (firstSlotNdx + i < Inventory.S.GetItemList().Count) {
+			if (firstSlotNdx + i < Inventory.S.GetBattleItemList().Count) {
 				string ndx = (firstSlotNdx + i + 1).ToString();
-				optionButtonsText[i].text = ndx + ") " + Inventory.S.GetItemList()[firstSlotNdx + i].name;
-				amountButtonsText[i].text = "x" + Inventory.S.GetItemCount(Inventory.S.GetItemList()[firstSlotNdx + i]).ToString(); ;
+				optionButtonsText[i].text = ndx + ") " + Inventory.S.GetBattleItemList()[firstSlotNdx + i].name;
+				amountButtonsText[i].text = "x" + Inventory.S.GetItemCount(Inventory.S.GetBattleItemList()[firstSlotNdx + i]).ToString();
+				//Inventory.S.GetItemList()[firstSlotNdx + i].type = 
 			}
 		}
 	}
