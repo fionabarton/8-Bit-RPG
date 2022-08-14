@@ -90,6 +90,22 @@ public class Inventory : MonoBehaviour {
         return list;
     }
 
+    // Return a List of all the Dictionary keys useable in battle
+    public List<Item> GetBattleItemList() {
+        // Get list of ALL item keys
+        List<Item> allItemKeys = new List<Item>(items.Keys);
+
+        // Get list of CONSUMABLE item keys
+        List<Item> consumablesItemKeys = new List<Item>();
+        for (int i = 0; i < allItemKeys.Count; i++) {
+            if(allItemKeys[i].type == eItemType.Consumable) {
+                consumablesItemKeys.Add(allItemKeys[i]);
+            }
+        }
+
+        return consumablesItemKeys;
+    }
+
     // Return how many of that item are in inventory
     public int GetItemCount(Item name) {
         if (items.ContainsKey(name)) {
