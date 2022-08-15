@@ -29,7 +29,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
-			if (!Blob.S.isBattling) {
+			if (!Player.S.isBattling) {
 				PauseMessage.S.DisplayText("You don't have any items of this type to equip!");
             } else {
 				Battle.S.dialogue.DisplayText("You don't have any items of this type to equip!");
@@ -98,14 +98,18 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 			for (int i = 0; i < SortItems.S.tItems.Count; i++) {
 				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.inventoryButtons[i].gameObject) {
 					// Display item's description
-					if (!Blob.S.isBattling) {
+					if (!Player.S.isBattling) {
 						PauseMessage.S.SetText(SortItems.S.tItems[i].description);
 					} else {
 						Battle.S.dialogue.SetText(SortItems.S.tItems[i].description);
 					}
 
 					// Set cursor position to currently selected button
-					Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, -35, 0);
+					if (!Player.S.isBattling) {
+						Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, -35, 0);
+					} else {
+						Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, 40, 0);
+					}
 
 					// Set selected button text color	
 					equipScreen.inventoryButtonsTxt[i].color = new Color32(205, 208, 0, 255);

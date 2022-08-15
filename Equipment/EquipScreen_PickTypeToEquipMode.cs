@@ -37,7 +37,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 
-        if (Blob.S.isBattling) {
+        if (Player.S.isBattling) {
 			equipScreen.DisplayCurrentEquipmentNames(ndx);
 			equipScreen.DisplayCurrentStats(ndx);
 		}
@@ -85,7 +85,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		// Go back to pickPartyMember mode
 		if (PauseMessage.S.dialogueFinished) { 
 			if (Input.GetButtonDown("SNES Y Button")) {
-                if (!Blob.S.isBattling) {
+                if (!Player.S.isBattling) {
 					EquipMenu.S.pickPartyMemberMode.SetUp(equipScreen);
 
 					// Reset equippedButtons text color
@@ -113,14 +113,18 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		for (int i = 0; i <= equipScreen.equippedButtons.Count - 1; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.equippedButtons[i].gameObject) {
 				// Display item's description
-                if (!Blob.S.isBattling) {
+                if (!Player.S.isBattling) {
 					PauseMessage.S.SetText(equipScreen.playerEquipment[playerNdx][i].description);
 				} else {
 					Battle.S.dialogue.SetText(equipScreen.playerEquipment[playerNdx][i].description);
 				}
 
 				// Set cursor position to currently selected button
-				Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, -35, 0);
+				if (!Player.S.isBattling) {
+					Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, -35, 0);
+				} else {
+					Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, 40, 0);
+				}
 			}
 		}
 	}

@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class EquipMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
@@ -16,6 +14,9 @@ public class EquipMenu : MonoBehaviour {
 	// Inventory Buttons (dynamic list of different types of items to be equipped (list of either weapon, armor, etc.))
 	public List<Button> inventoryButtons;
 	public List<Text> inventoryButtonsTxt;
+
+	// Rect transform (for positioning game object)
+	public RectTransform rectTrans;
 
 	[Header("Set Dynamically")]
 	public int playerNdx = 0;
@@ -83,10 +84,13 @@ public class EquipMenu : MonoBehaviour {
 		equipStatsEffect.AddItemEffect(2, Items.S.items[21]);
 	}
 
-	public void Activate() {
+	public void Activate(float anchoredYPosition = -25) {
 		gameObject.SetActive(true);
 
 		playerNdx = 0;
+
+		// Position game object
+		rectTrans.anchoredPosition = new Vector2(0, anchoredYPosition);
 
 		// Ensures first slots are selected when screen enabled
 		pickTypeToEquipMode.previousSelectedGameObject = equippedButtons[0].gameObject;
@@ -98,7 +102,7 @@ public class EquipMenu : MonoBehaviour {
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
-		if (!Blob.S.isBattling) {
+		if (!Player.S.isBattling) {
 			DisplayCurrentEquipmentNames(0);
 
 			// Set up for pick party member mode
@@ -131,7 +135,7 @@ public class EquipMenu : MonoBehaviour {
 
 	public void Deactivate(bool playSound = false) {
 		// Go back to Pause Screen
-		if (!Blob.S.isBattling) {
+		if (!Player.S.isBattling) {
 			// Activate Cursor
 			ScreenCursor.S.cursorGO[0].SetActive(true);
 
@@ -198,7 +202,7 @@ public class EquipMenu : MonoBehaviour {
 	}
 
 	public void GoBackToPickTypeToEquipMode(string inputName, int soundNdx) {
-		if (!Blob.S.isBattling) {
+		if (!Player.S.isBattling) {
 			if (PauseMessage.S.dialogueFinished) {
 				if (Input.GetButtonDown(inputName)) {
 					GoBackToPickTypeToEquipModeHelper(soundNdx);
@@ -237,7 +241,7 @@ public class EquipMenu : MonoBehaviour {
 
 	// Display member's name and current stats
 	public void DisplayCurrentStats(int playerNdx) {
-		titleText.text = "Spells: " + "<color=white>" + Party.S.stats[playerNdx].name + "</color>";
+		titleText.text = "Gear: " + "<color=white>" + Party.S.stats[playerNdx].name + "</color>";
 		equipStatsEffect.currentAttributeAmounts.text = Party.S.stats[playerNdx].STR + "\n" + Party.S.stats[playerNdx].DEF + "\n" + Party.S.stats[playerNdx].WIS + "\n" + Party.S.stats[playerNdx].AGI;
 		equipStatsEffect.potentialStats.text = "";
 	}
@@ -275,7 +279,7 @@ public class EquipMenu : MonoBehaviour {
 		// Equip new item
 		playerEquipment[playerNdx][(int)item.type] = item;
 
-		if (!Blob.S.isBattling) {
+		if (!Player.S.isBattling) {
 			PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " equipped " + item.name + "!");
 
 			PauseMenu.S.playerAnims[playerNdx].CrossFade("Success", 0);
