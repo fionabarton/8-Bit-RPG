@@ -294,7 +294,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		_.UI.RemoveAllListeners();
 
-		EquipMenu.S.Activate();
+		EquipMenu.S.Activate(50);
 
 		// Activate display message
 		_.UI.ActivateDisplayMessage();
