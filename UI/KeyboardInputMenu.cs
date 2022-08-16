@@ -56,11 +56,12 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Freeze player
 		GameManager.S.paused = true;
-		Blob.S.canMove = false;
+		Player.S.canMove = false;
 
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 		ScreenCursor.S.cursorGO[1].SetActive(true);
+		ScreenCursor.S.ResetAnimClip();
 
 		// Set Selected Gameobject (Keyboard Input Menu: A Button)
 		Utilities.S.SetSelectedGO(buttonsGO[0]);
@@ -83,7 +84,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 	public void Deactivate() {
 		// Unfreeze player
 		GameManager.S.paused = false;
-		Blob.S.canMove = true;
+		Player.S.canMove = true;
 
 		// Deactivate PauseMessage
 		PauseMessage.S.gameObject.SetActive(false);
@@ -185,6 +186,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 			// Set active char cursor position
 			ScreenCursor.S.cursorGO[1].SetActive(true);
+			ScreenCursor.S.ResetAnimClip();
 			Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
 
 			// Audio: Deny
@@ -212,6 +214,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Set active char cursor position
 		ScreenCursor.S.cursorGO[1].SetActive(true);
+		ScreenCursor.S.ResetAnimClip();
 		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
 
 		// Increment index
@@ -272,6 +275,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 		ScreenCursor.S.cursorGO[1].SetActive(true);
+		ScreenCursor.S.ResetAnimClip();
 
 		canUpdate = true;
 	}
@@ -291,6 +295,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 		ScreenCursor.S.cursorGO[1].SetActive(true);
+		ScreenCursor.S.ResetAnimClip();
 
 		canUpdate = true;
 	}
