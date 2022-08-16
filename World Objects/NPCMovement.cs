@@ -39,40 +39,42 @@ public class NPCMovement : MonoBehaviour {
 	public IEnumerator FixedUpdateCoroutine() {
 		// If not paused, and there isn't any dialogue being displayed...
 		if (!GameManager.S.paused && !DialogueManager.S.TextBoxSpriteGO.activeInHierarchy) {
-            if (isWalking) {
-				// Move gameObject towards movePoint
-				transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
+			if (!Player.S.isBattling) {
+				if (isWalking) {
+					// Move gameObject towards movePoint
+					transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
 
-				// If gameObject has reached movePoint, wait
-				if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
-					Wait();
-				}
-            } else {
-				// Decrement timer
-				timer -= Time.deltaTime;
+					// If gameObject has reached movePoint, wait
+					if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
+						Wait();
+					}
+				} else {
+					// Decrement timer
+					timer -= Time.deltaTime;
 
-				// If timer < 0, get a new direction and start moving
-				if (timer < 0) {
-					// Get new random direction
-					walkDirection = Random.Range(0, 4);
+					// If timer < 0, get a new direction and start moving
+					if (timer < 0) {
+						// Get new random direction
+						walkDirection = Random.Range(0, 4);
 
-					// Move movePoint and start moving towards it 
-					switch (walkDirection) {
-						case 0:
-							CheckIfWalkDirectionIsValid(new Vector3(1 / 2f, 0f, 0f));
-							break;
-						case 1:
-							CheckIfWalkDirectionIsValid(new Vector3(0f, 1 / 2f, 0f));
-							break;
-						case 2:
-							CheckIfWalkDirectionIsValid(new Vector3(-1 / 2f, 0f, 0f));
-							break;
-						case 3:
-							CheckIfWalkDirectionIsValid(new Vector3(0f, -1 / 2f, 0f));
-							break;
+						// Move movePoint and start moving towards it 
+						switch (walkDirection) {
+							case 0:
+								CheckIfWalkDirectionIsValid(new Vector3(1 / 2f, 0f, 0f));
+								break;
+							case 1:
+								CheckIfWalkDirectionIsValid(new Vector3(0f, 1 / 2f, 0f));
+								break;
+							case 2:
+								CheckIfWalkDirectionIsValid(new Vector3(-1 / 2f, 0f, 0f));
+								break;
+							case 3:
+								CheckIfWalkDirectionIsValid(new Vector3(0f, -1 / 2f, 0f));
+								break;
+						}
 					}
 				}
-            }
+			}
         }
 		yield return new WaitForFixedUpdate();
 		StartCoroutine("FixedUpdateCoroutine");
