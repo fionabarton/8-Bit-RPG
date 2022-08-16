@@ -13,6 +13,7 @@ public class ScreenCursor : MonoBehaviour {
     [Header("Set in Inspector")]
     public List<GameObject> cursorGO = new List<GameObject>();
     public List<RectTransform> rectTrans = new List<RectTransform>();
+    public List<Animator> anims = new List<Animator>();
 
     void Awake() {
         S = this;
@@ -21,5 +22,14 @@ public class ScreenCursor : MonoBehaviour {
     private void Start() {
         // Deactivate screen cursors
         Utilities.S.SetActiveList(cursorGO, false);
+    }
+
+    // Play all animators from the first animation frame
+    public void ResetAnimClip() {
+        for(int i = 0; i < anims.Count; i++) {
+            if (anims[i].gameObject.activeInHierarchy) {
+                anims[i].Play("Cursor", -1, 0);
+            }
+        }
     }
 }
