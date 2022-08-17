@@ -20,6 +20,9 @@ public class PauseMenu : MonoBehaviour {
 	public List<Button> playerNameButtons;
 	public List<Animator> playerAnims;
 
+	// Stat frame animators
+	public List<Animator> statFrameAnims;
+
 	[Header("Set Dynamically")]
 	// Stats
 	public int seconds;
@@ -184,7 +187,7 @@ public class PauseMenu : MonoBehaviour {
 
         // Freeze player
         GameManager.S.paused = true;
-		Blob.S.canMove = false;
+		Player.S.canMove = false;
 
         // Activate PauseMessage
         PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
@@ -199,7 +202,7 @@ public class PauseMenu : MonoBehaviour {
 	public void UnPause(bool playSound = false) {
 		// Unfreeze player
 		GameManager.S.paused = false;
-		Blob.S.canMove = true;
+		Player.S.canMove = true;
 
         // Deactivate PauseMessage
         PauseMessage.S.gameObject.SetActive(false);
@@ -237,11 +240,11 @@ public class PauseMenu : MonoBehaviour {
 
 	// Display Time, Steps, & Gold
 	void Time_Steps_Gold_TXT() {
-        if (Blob.S) {
+        if (Player.S) {
             // Time
             fileStatsNumText.text = GetTime() + "\n" +
             // Steps Count
-            Blob.S.stepCount + "\n" +
+            Player.S.stepCount + "\n" +
             // Gold
             Party.S.gold;
 		}
@@ -262,15 +265,25 @@ public class PauseMenu : MonoBehaviour {
 
 	// Sets the menu's mini party member sprites' animations and text color
 	// - Target party member is selected AUTOMATICALLY
-	public void SetSelectedMemberAnim(string animName) {
+	public void SetSelectedMemberAnim(string animName, bool setStatFrameAnim = false) {
 		for (int i = 0; i < playerNameButtons.Count; i++) {
 			if (playerNameButtons[i].gameObject.activeInHierarchy) {
 				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == playerNameButtons[i].gameObject) {
 					playerAnims[i].CrossFade(animName, 0);
-					playerNameText[i].color = new Color32(205, 208, 0, 255);
+
+                    if (setStatFrameAnim) {
+						if (animName == "Idle") {
+							statFrameAnims[i].CrossFade(animName, 0);
+						} else {
+							statFrameAnims[i].CrossFade("Flash", 0);
+						}
+					}
 				} else {
 					playerAnims[i].CrossFade("Idle", 0);
-					playerNameText[i].color = new Color32(255, 255, 255, 255);
+
+					if (setStatFrameAnim) {
+						statFrameAnims[i].CrossFade("Idle", 0);
+					}
 				}
 			}
 		}
@@ -278,28 +291,28 @@ public class PauseMenu : MonoBehaviour {
 
 	// Sets the menu's mini party member sprites' animations and text color
 	// - Target party member is selected MANUALLY
-	public void SetSelectedMemberAnim(string animName, int ndx) {
-		// Set all party members' anims and text color
+	public void SetSelectedMemberAnim(string animName, int playerNdx) {
+		// Set all party members' anims
 		for (int i = 0; i < playerNameButtons.Count; i++) {
 			if (playerNameButtons[i].gameObject.activeInHierarchy) {
 				playerAnims[i].CrossFade("Idle", 0);
-				playerNameText[i].color = new Color32(255, 255, 255, 255);
 			}
 		}
 
-		// Set target anim and text color
-		playerAnims[ndx].CrossFade(animName, 0);
-		playerNameText[ndx].color = new Color32(205, 208, 0, 255);
+		// Set target anim 
+		playerAnims[playerNdx].CrossFade(animName, 0);
 	}
 
-	// Activate the animation and text color of the previously selected party member
-	public void SetPreviousSelectedPlayerAnimAndColor(GameObject previousGO) {
-		if (previousGO == playerNameButtons[0].gameObject) {
-			SetSelectedMemberAnim("Walk", 0);
-		} else if (previousGO == playerNameButtons[1].gameObject) {
-			SetSelectedMemberAnim("Walk", 1);
-		} else if (previousGO == playerNameButtons[2].gameObject) {
-			SetSelectedMemberAnim("Walk", 2);
+	// Play the previously played animation clip of the selected party member
+	public void SetPreviousSelectedPlayerAnimAndColor(string animName, int playerNdx) {
+		for (int i = 0; i < playerNameButtons.Count; i++) {
+			if (playerNameButtons[i].gameObject.activeInHierarchy) {
+				if (i == playerNdx) {
+					playerAnims[i].CrossFade(animName, 0);
+				} else {
+					playerAnims[i].CrossFade("Idle", 0);
+				}
+			}
 		}
 	}
 }
