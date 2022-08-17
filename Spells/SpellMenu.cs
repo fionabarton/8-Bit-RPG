@@ -125,7 +125,7 @@ public class SpellMenu : MonoBehaviour {
 		}
 
 		// Set party animations to idle
-		PauseMenu.S.SetSelectedMemberAnim("Idle");
+		PauseMenu.S.SetSelectedMemberAnim("Idle", true);
 
 		// Remove Loop() from Update Delgate
 		UpdateManager.updateDelegate -= Loop;
@@ -249,14 +249,6 @@ public class SpellMenu : MonoBehaviour {
 				}
 			}
 
-			//// Check if first or last slot is selected
-			//if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[0].gameObject
-			// || UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == spellsButtons[spellsButtons.Count-1].gameObject) {
-			//	firstOrLastSlotSelected = true;
-			//} else {
-			//	firstOrLastSlotSelected = false;
-			//}
-
 			// Check if current selected gameObject is not the previous selected gameObject
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != previousSelectedSpellGO) {
 				// Check if first or last slot is selected
@@ -282,9 +274,6 @@ public class SpellMenu : MonoBehaviour {
 
 	void GoBackToPickSpellMode() {
 		if (PauseMessage.S.dialogueFinished) {
-			// Activate the animation and text color of the previously selected party member
-			PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor(previousSelectedPlayerGO);
-
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
@@ -292,6 +281,9 @@ public class SpellMenu : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
 			LoadSpells(playerNdx); // Go Back
+
+			// Play the previously played animation clip of the selected party member
+			PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor("Walk", playerNdx);
 		}
 	}
 
@@ -327,7 +319,7 @@ public class SpellMenu : MonoBehaviour {
 
 			// Set Selected GameObject 
 			// If previousSelectedGameObject is enabled...
-			if (previousSelectedSpellGO.activeInHierarchy && !Blob.S.isBattling) {
+			if (previousSelectedSpellGO.activeInHierarchy && !Player.S.isBattling) {
 				// Select previousSelectedGameObject
 				Utilities.S.SetSelectedGO(previousSelectedSpellGO);
 
@@ -470,7 +462,7 @@ public class SpellMenu : MonoBehaviour {
 	public void UseSpell(Spell spell) {
 		canUpdate = true;
 
-		if (Blob.S.isBattling) { // if Battle
+		if (Player.S.isBattling) { // if Battle
 			if (spell.name == "Heal") {
 				Spells.S.battle.AddFunctionToButton(Spells.S.battle.AttemptHealSinglePartyMember, "Heal which party member?", spell);
 			} else if (spell.name == "Fireball") {

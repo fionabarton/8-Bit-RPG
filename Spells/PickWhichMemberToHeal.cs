@@ -13,10 +13,7 @@ public class PickWhichMemberToHeal : MonoBehaviour {
 
 	public void Loop(SpellMenu spellScreen) {
 		if (spellScreen.canUpdate) {
-			Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 60, 3);
-
-			// Set selected member animation to walk
-			PauseMenu.S.SetSelectedMemberAnim("Walk");
+			Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 110, 3);
 
 			// Audio: Selection (when a new gameObject is selected)
 			Utilities.S.PlayButtonSelectedSFX(ref previousSelectedPlayerGO);
@@ -26,13 +23,13 @@ public class PickWhichMemberToHeal : MonoBehaviour {
 
 		if (PauseMessage.S.dialogueFinished) {
 			if (Input.GetButtonDown("SNES Y Button")) {
-				// Activate the animation and text color of the previously selected party member
-				PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor(spellScreen.previousSelectedPlayerGO);
-
 				// Audio: Deny
 				AudioManager.S.PlaySFX(eSoundName.deny);
 
 				spellScreen.LoadSpells(spellScreen.playerNdx); // Go Back
+
+				// Play the previously played animation clip of the selected party member
+				PauseMenu.S.SetPreviousSelectedPlayerAnimAndColor("Walk", spellScreen.playerNdx);
 			}
 		}
 	}
