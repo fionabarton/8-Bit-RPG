@@ -28,7 +28,7 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 			PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { equipScreen.pickTypeToEquipMode.SetUp(2, equipScreen, 6); });
 
 			// Position Cursor
-			Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[equipScreen.playerNdx].gameObject, 0, 60, 3);
+			Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[equipScreen.playerNdx].gameObject, 0, 110, 3);
 
 			// Display Text
 			PauseMessage.S.DisplayText("Assign whose equipment?!");
@@ -40,7 +40,7 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 		if (equipScreen.canUpdate) {
 			if (EquipMenu.S.previousSelectedGameObject != UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject) {
 				// Position Cursor
-				Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 60, 3);
+				Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 0, 110, 3);
 
 				// Display currently selected Member's Stats/Equipment 
 				for (int i = 0; i < PauseMenu.S.playerNameButtons.Count; i++) {
@@ -55,7 +55,7 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 			}
 
 			// Set selected member animation to walk
-			PauseMenu.S.SetSelectedMemberAnim("Walk");
+			PauseMenu.S.SetSelectedMemberAnim("Walk", true);
 		}
 
 		// Deactivate EquipScreen

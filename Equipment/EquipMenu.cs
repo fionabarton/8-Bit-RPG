@@ -147,7 +147,7 @@ public class EquipMenu : MonoBehaviour {
 			Utilities.S.SetSelectedGO(PauseMenu.S.buttonGO[2]);
 
 			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
+			PauseMenu.S.SetSelectedMemberAnim("Idle", true);
 
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
