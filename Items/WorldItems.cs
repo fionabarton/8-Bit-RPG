@@ -34,25 +34,16 @@ public class WorldItems : MonoBehaviour {
 
 		// If multiple targets
 		if (!item.multipleTargets) {
-			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
-
 			Items.S.menu.mode = eItemMenuMode.pickPartyMember;
 		} else {
 			for (int i = 0; i <= Party.S.partyNdx; i++) {
 				// Set cursor positions
-				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3, i);
-
-				// Set party member animations to walk
-				PauseMenu.S.playerAnims[i].CrossFade("Walk", 0);
+				Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 110, 3, i);
 
 				// Activate cursors
 				ScreenCursor.S.cursorGO[i].SetActive(true);
+				ScreenCursor.S.ResetAnimClip();
 			}
-
-			// Set button colors
-			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(205, 208, 0, 255));
-
 			Items.S.menu.mode = eItemMenuMode.pickAllPartyMembers;
 		}
 	}
@@ -81,9 +72,6 @@ public class WorldItems : MonoBehaviour {
 		} else {
             // Display Text
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to use this potion!");
-
-			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -116,9 +104,6 @@ public class WorldItems : MonoBehaviour {
             // Display Text
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full magic...\n...no need to use this potion!");
 
-			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
-
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
@@ -149,7 +134,7 @@ public class WorldItems : MonoBehaviour {
             PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this potion!");
 
 			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
+			//PauseMenu.S.SetSelectedMemberAnim("Idle");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);

@@ -217,9 +217,6 @@ public class ItemMenu : MonoBehaviour {
 
 	void GoBackToPickItemMode() {
 		if (PauseMessage.S.dialogueFinished) {
-			// Set party animations to idle
-			PauseMenu.S.SetSelectedMemberAnim("Idle");
-
 			// Reset button colors
 			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 200));
 
@@ -262,7 +259,7 @@ public class ItemMenu : MonoBehaviour {
 		if (Inventory.S.items.ContainsKey(item)) {
 			canUpdate = true;
 
-			if (Blob.S.isBattling) { // if Battle
+			if (Player.S.isBattling) { // if Battle
 				if (item.name == "Health Potion") {
 					Items.S.battle.AddFunctionToButton(Items.S.battle.HPPotion, "Use potion on which party member?", item);
 				} else if (item.name == "Magic Potion") {
