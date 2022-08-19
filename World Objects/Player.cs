@@ -97,6 +97,9 @@ public class Player : MonoBehaviour {
 
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
+				// Set each party member's sprite's order in layer
+				followers.SetOrderInLayer();
+
 				// Horizontal input detected
 				if (Mathf.Abs(Input.GetAxisRaw("Horizontal")) == 1f) {
 					// If potential new movePoint position doesn't overlap with any bounds...
@@ -113,7 +116,7 @@ public class Player : MonoBehaviour {
 						CheckForRandomEncounter();
 
 						CheckForPoisonDamage();
-
+						
 						// Cache and set all follower's animations
 						followers.AddFollowerAnimations("Walk_Side");
 					}
