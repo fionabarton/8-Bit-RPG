@@ -73,15 +73,15 @@ public class GameManager : MonoBehaviour {
                         if (Input.GetButtonDown("Pause")) {
                             PauseMenu.S.Pause();
 
-       //                     AddSubtractPlayerHP(0, false, 12);
-       //                     AddSubtractPlayerHP(1, false, 19);
-       //                     AddSubtractPlayerHP(2, false, 20);
+                            //AddSubtractPlayerHP(0, false, 12);
+                            //AddSubtractPlayerHP(1, false, 19);
+                            //AddSubtractPlayerHP(2, false, 20);
 
-       //                     AddSubtractPlayerMP(0, false, 2);
-       //                     AddSubtractPlayerMP(1, false, 2);
-       //                     AddSubtractPlayerMP(2, false, 2);
+                            //AddSubtractPlayerMP(0, false, 2);
+                            //AddSubtractPlayerMP(1, false, 2);
+                            //AddSubtractPlayerMP(2, false, 2);
 
-							//PauseMenu.S.UpdateGUI();
+                            //PauseMenu.S.UpdateGUI();
                         }
                     } else {
                         if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
@@ -102,6 +102,11 @@ public class GameManager : MonoBehaviour {
 		InteractableCursor.S.Deactivate();
 
 		canInput = false;
+
+		//
+		Player.S.coll.enabled = false;
+		//Player.S.colliders[1].enabled = false;
+		//Utilities.S.SetActiveList(Player.S.colliders, false);
 
 		SceneManager.LoadScene(levelToLoad);
 		StartCoroutine("LoadSettingsCo");
@@ -200,6 +205,10 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(0.05f);
 
 		canInput = true;
+
+		//
+		Player.S.coll.enabled = true;
+		//Player.S.colliders[1].enabled = true;
 
 		// Deactivate Black Screen
 		ColorScreen.S.anim.Play("Clear Screen", 0, 0);
