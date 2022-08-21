@@ -16,6 +16,7 @@ public class Player : MonoBehaviour {
 	public Flicker			flicker;
 	public EnemyManager		enemyManager;
 	public Followers		followers;
+	public BoxCollider2D	coll;
 
 	const float			walkSpeed = 3f;
 	const float			runSpeed = 6f;
@@ -61,6 +62,7 @@ public class Player : MonoBehaviour {
 		flicker = GetComponent<Flicker>();
 		enemyManager = GetComponent<EnemyManager>();
 		followers = GetComponent<Followers>();
+		coll = GetComponent<BoxCollider2D>();
 	}
 
     void Start() {
