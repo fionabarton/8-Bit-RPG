@@ -66,7 +66,7 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 					spellScreen.DeactivateUnusedSpellsSlots(i);
 					spellScreen.DisplaySpellsDescriptions(i);
 					spellScreen.AssignSpellsNames(i);
-					Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 60, 3);
+					Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 110, 3);
 					titleText.text = "Spells: " + "<color=white>" + Party.S.stats[i].name + "</color>";
 
 					// Audio: Selection (when a new gameObject is selected)
@@ -75,7 +75,7 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 			}
 
 			// Set selected member animation to walk
-			PauseMenu.S.SetSelectedMemberAnim("Walk");
+			PauseMenu.S.SetSelectedMemberAnim("Walk", true);
 
 			spellScreen.canUpdate = false;
 		}

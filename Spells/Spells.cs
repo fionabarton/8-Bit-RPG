@@ -118,7 +118,7 @@ public class Spells : MonoBehaviour {
 		AudioManager.S.PlaySFX(eSoundName.deny);
 
 		// if Battle
-		if (Blob.S.isBattling) {
+		if (Player.S.isBattling) {
 			Battle.S.playerActions.ButtonsDisableAll();
 
 			// Activate display message
