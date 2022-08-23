@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour {
 
 	public List<EnemyStats> GetEnemies(int locationNdx) {
         // Clear enemy list
-        Blob.S.enemyStats.Clear();
+        Player.S.enemyStats.Clear();
 
         // Declare local variables
         List<EnemyStats> tEnemies = new List<EnemyStats>();

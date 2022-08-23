@@ -152,7 +152,7 @@ public class CutsceneManager : MonoBehaviour
                             DialogueManager.S.DisplayText(message);
                             break;
                         case 5: // Change Cam Target
-                            CamManager.S.ChangeTarget(Player.S.gameObject, true);
+                            //CamManager.S.ChangeTarget(Player.S.gameObject, true);
                             break;
                         case 6: // Add Item to Inventory & Display Dialogue  
                             Inventory.S.AddItemToInventory(Items.S.GetItem(eItem.mpPotion));
@@ -288,8 +288,8 @@ public class CutsceneManager : MonoBehaviour
 
     // Freeze Player
     public void FreezePlayer() {
-        Player.S.canMove = false;
-        Player.S.mode = eRPGMode.idle;
+        //Player.S.canMove = false;
+        //Player.S.mode = eRPGMode.idle;
     }
 
     // Start Battle 

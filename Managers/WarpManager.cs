@@ -168,30 +168,30 @@ public class WarpManager : MonoBehaviour {
 
 		if (!warpToNewScene) {
 			// Set PlayerPos to destinationPos
-			Blob.S.gameObject.transform.position = destinationPos;
-			Blob.S.followers.followersGO[0].transform.position = destinationPos;
-			Blob.S.followers.followersGO[1].transform.position = destinationPos;
+			Player.S.gameObject.transform.position = destinationPos;
+			Player.S.followers.followersGO[0].transform.position = destinationPos;
+			Player.S.followers.followersGO[1].transform.position = destinationPos;
 		} else {
 			// Set PlayerRespawnPos to destinationPos
-			Blob.S.respawnPos = destinationPos;
-			Blob.S.followers.followersGO[0].transform.position = destinationPos;
-			Blob.S.followers.followersGO[1].transform.position = destinationPos;
+			Player.S.respawnPos = destinationPos;
+			Player.S.followers.followersGO[0].transform.position = destinationPos;
+			Player.S.followers.followersGO[1].transform.position = destinationPos;
 		}
 
 		// Set player move point position
-		Blob.S.movePoint.position = destinationPos;
-		Blob.S.followers.followerMovePoints[0].transform.position = destinationPos;
-		Blob.S.followers.followerMovePoints[1].transform.position = destinationPos;
+		Player.S.movePoint.position = destinationPos;
+		Player.S.followers.followerMovePoints[0].transform.position = destinationPos;
+		Player.S.followers.followerMovePoints[1].transform.position = destinationPos;
 
 		// Clear cached follower properties
-		Blob.S.followers.movePoints.Clear();
-		Blob.S.followers.animations.Clear();
-		Blob.S.followers.facingRights.Clear();
+		Player.S.followers.movePoints.Clear();
+		Player.S.followers.animations.Clear();
+		Player.S.followers.facingRights.Clear();
 
         // Reset sorting orders
-        Blob.S.followers.partySRends[0].sortingOrder = 1;
-        Blob.S.followers.partySRends[1].sortingOrder = 0;
-        Blob.S.followers.partySRends[2].sortingOrder = 2;
+        Player.S.followers.partySRends[0].sortingOrder = 1;
+        Player.S.followers.partySRends[1].sortingOrder = 0;
+        Player.S.followers.partySRends[2].sortingOrder = 2;
 
 		// Camera Settings
 		if (camFollows) {
@@ -210,7 +210,7 @@ public class WarpManager : MonoBehaviour {
 			// Deactivate Black Screen
 			ColorScreen.S.anim.Play("Clear Screen", 0, 0);
 			// Unfreeze Player
-			Blob.S.canMove = true;
+			Player.S.canMove = true;
 		} else {
             // Load Scene
             GameManager.S.LoadLevel(sceneName);
