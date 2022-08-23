@@ -79,7 +79,7 @@ public class ShopMenu : MonoBehaviour {
 
 		// Unpause
 		GameManager.S.paused = false;
-		Blob.S.canMove = true;
+		Player.S.canMove = true;
 
 		// Deactivate PauseMessage and PlayerButtons
 		PauseMessage.S.gameObject.SetActive(false);
@@ -88,7 +88,7 @@ public class ShopMenu : MonoBehaviour {
 		UpdateManager.updateDelegate -= Loop;
 
 		// Set Camera to Player gameObject
-		CamManager.S.ChangeTarget(Blob.S.gameObject, true);
+		CamManager.S.ChangeTarget(Player.S.gameObject, true);
 
 		// Broadcast event
 		EventManager.ShopScreenDeactivated();
