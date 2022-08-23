@@ -460,7 +460,7 @@ public class BattleQTE : MonoBehaviour {
 					//ObjectPool.S.PosAndEnableObj(poof, _.playerSprite[blockerNdx]);
 
 					// Set mini party member animations
-					_.UI.playerAnims[blockerNdx].CrossFade("Success", 0);
+					_.UI.miniPartyAnims[blockerNdx].CrossFade("Success", 0);
 
 					// Display Floating Score
 					GameManager.S.InstantiateFloatingScore(_.UI.partyStartsTextBoxSprite[blockerNdx].gameObject, amountToHeal.ToString(), Color.green);

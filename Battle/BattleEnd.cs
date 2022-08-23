@@ -169,11 +169,8 @@ public class BattleEnd : MonoBehaviour {
 		// Audio: Death
 		AudioManager.S.PlaySFX(eSoundName.death);
 
-		// Animation: Flicker party member
-		Battle.S.partyAnims[ndx].CrossFade("Flicker", 0);
-
 		// Animation: Death party member
-		_.UI.playerAnims[ndx].CrossFade("Death", 0);
+		_.UI.miniPartyAnims[ndx].CrossFade("Death", 0);
 
 		// Remove all status ailments 
 		StatusEffects.S.RemoveAllStatusAilments(true, ndx);
@@ -333,14 +330,14 @@ public class BattleEnd : MonoBehaviour {
 		_.mode = eBattleMode.actionButtons;
 
 		// Unfreeze player
-		Blob.S.canMove = true;
-		Blob.S.alreadyTriggered = false;
+		Player.S.canMove = true;
+		Player.S.alreadyTriggered = false;
 
-		Blob.S.movePoint.position = Blob.S.transform.position;
+		Player.S.movePoint.position = Player.S.transform.position;
 
-		Blob.S.isBattling = false;
+		Player.S.isBattling = false;
 
 		// Get new enemies based on current location
-		Blob.S.enemyStats = Blob.S.enemyManager.GetEnemies(Blob.S.locationNdx);
+		Player.S.enemyStats = Player.S.enemyManager.GetEnemies(Player.S.locationNdx);
 	}
 }
