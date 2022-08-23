@@ -91,7 +91,7 @@ public class DialogueTrigger : ActivateOnButtonPress {
             UpdateManager.updateDelegate -= ThisLoop;
         }
 
-        if (Input.GetButtonDown("SNES A Button")) {
+        if (Input.GetButtonDown("SNES B Button")) {
 			if (firstButtonPressed) {
 				if (!GameManager.S.paused) {
 					// If the list of dialogue has multiple elements/lines...
@@ -131,7 +131,7 @@ public class DialogueTrigger : ActivateOnButtonPress {
 	protected override void OnTriggerEnter2D(Collider2D coll) {
         if (enabled) {
 			if (coll.gameObject.CompareTag("PlayerTrigger")) {
-				if (!Blob.S.alreadyTriggered) {
+				if (!Player.S.alreadyTriggered) {
 					base.OnTriggerEnter2D(coll);
 
 					// Add ThisLoop() to Update Delgate

@@ -27,11 +27,11 @@ public class ActivateOnButtonPress : MonoBehaviour {
 
     protected virtual void OnTriggerEnter2D(Collider2D coll) {
         if (!triggerHasBeenDeactivated) {
-            if (!Blob.S.alreadyTriggered) {
+            if (!Player.S.alreadyTriggered) {
                 if (!GameManager.S.paused) {
                     if (coll.gameObject.CompareTag("PlayerTrigger")) {
                         // Prevents triggering multiple triggers
-                        Blob.S.alreadyTriggered = true;
+                        Player.S.alreadyTriggered = true;
 
                         // Activate Interactable Trigger
                         if (activateInteractableCursor) {
@@ -62,7 +62,7 @@ public class ActivateOnButtonPress : MonoBehaviour {
             EventManager.OnShopScreenDeactivated -= ResetTrigger;
 
             // Prevents triggering multiple triggers
-            Blob.S.alreadyTriggered = false;
+            Player.S.alreadyTriggered = false;
         }
     }
 
@@ -70,11 +70,11 @@ public class ActivateOnButtonPress : MonoBehaviour {
         if (!triggerHasBeenDeactivated) {
             if (!GameManager.S.paused) {
                 if (GameManager.S.canInput) {
-                    if (!Blob.S.isBattling) {
+                    if (!Player.S.isBattling) {
                         // If there hasn't been any input yet...
                         if (!firstButtonPressed) {
                             // ...Activate on button press
-                            if (Input.GetButtonDown("SNES A Button")) {
+                            if (Input.GetButtonDown("SNES B Button")) {
                                 Action();
                                 firstButtonPressed = true;
                                 InteractableCursor.S.Deactivate();
@@ -84,7 +84,7 @@ public class ActivateOnButtonPress : MonoBehaviour {
                         // Reset trigger
                         if (canBeReset) {
                             if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
-                                if (Input.GetButtonDown("SNES A Button")) {
+                                if (Input.GetButtonDown("SNES B Button")) {
                                     ResetTrigger();
                                 }
                             }
