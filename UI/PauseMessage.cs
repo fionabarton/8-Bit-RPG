@@ -72,7 +72,7 @@ public class PauseMessage : MonoBehaviour {
 
 	// Set Text Instantly 
 	// - No delay/stagger between displaying each word)
-	public void SetText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false, float anchoredYPosition = -400) {
+	public void SetText(string text, bool upperLeftAlignment = false, bool activateSubMenu = false, float anchoredYPosition = -424) {
 		StopCoroutine("DisplayTextCo");
 
 		// Set Text Alignment
