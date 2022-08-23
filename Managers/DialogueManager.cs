@@ -7,27 +7,25 @@ public class DialogueManager : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public GameObject	TextBoxSpriteGO;
 	public GameObject 	cursorGO;
+	public RectTransform	rtDialogueCanvas;
 
-	[Header ("Set Dynamically")]
-	// Singleton
+	[Header("Set Dynamically")]
+	private Text dialogueTextCS;
+	private GameObject dialogueTextGO;
+
+	private string[] dialogueWords;
+	private string dialogueSentences;
+
+	public bool dialogueFinished = false;
+
+	public int ndx;
+
+	public bool activateSubMenu;
+	public bool dontActivateCursor;
+	public bool grayOutTextBox;
+
 	private static DialogueManager _S;
 	public static DialogueManager S { get { return _S; } set { _S = value; } }
-
-	private Text 		dialogueTextCS;
-	private GameObject 	dialogueTextGO;
-
-	private string[]	dialogueWords;
-	private string      dialogueSentences;
-
-	public bool 		dialogueFinished = false;
-
-	public int 			ndx;
-
-	public bool			activateSubMenu;
-	public bool 		dontActivateCursor;
-	public bool 		grayOutTextBox;
-
-	public RectTransform	rtDialogueCanvas;
 
 	// Indexes of lines of dialogue that have center/middle alignment.
 	// If it's empty, alignment defaults to top/left.
@@ -46,7 +44,7 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	public void ThisLoop() {
-		if (Input.GetButtonDown("SNES A Button")) {
+		if (Input.GetButtonDown("SNES B Button")) {
 			if (!GameManager.S.paused) {
 				// Deactivate Text Box (On Button Press)
 				if (dialogueFinished && ndx <= 0) {
@@ -62,9 +60,9 @@ public class DialogueManager : MonoBehaviour {
 
 		// Deactivate text box
 		DeactivateTextBox();
-		
+
 		// Set Camera to Player gameObject
-		//CamFollow.S.ChangeTarget(Blob.S.gameObject, true);
+		CamManager.S.ChangeTarget(Player.S.gameObject, true);
 	}
 
 	// Display a SINGLE string
@@ -115,7 +113,7 @@ public class DialogueManager : MonoBehaviour {
 		}
 
 		// Freeze Player
-		Blob.S.canMove = false;
+		Player.S.canMove = false;
 
 		// Split text argument w/ blank space
 		dialogueWords = text[0].Split (' ');
@@ -184,7 +182,7 @@ public class DialogueManager : MonoBehaviour {
 		ResetSettings();
 
 		// Unfreeze Player
-		Blob.S.canMove = canMove;
+		Player.S.canMove = canMove;
 
 		// Overworld Player Stats
 		//Blob.S.playerUITimer = Time.time + 1.5f;
