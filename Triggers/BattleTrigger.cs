@@ -10,15 +10,15 @@ public class BattleTrigger : ActivateOnCollision {
 
     protected override void Action() {
         // Enable random encounters
-        Blob.S.canEncounter = canEncounter;
+        Player.S.canEncounter = canEncounter;
 
         // Set encounter rate
-        Blob.S.encounterRate = encounterRate;
+        Player.S.encounterRate = encounterRate;
 
         // Set location
-        Blob.S.locationNdx = locationNdx;
+        Player.S.locationNdx = locationNdx;
         
         // Get/set enemies based on location
-        Blob.S.enemyStats = Blob.S.enemyManager.GetEnemies(locationNdx);
+        Player.S.enemyStats = Player.S.enemyManager.GetEnemies(locationNdx);
     }
 }

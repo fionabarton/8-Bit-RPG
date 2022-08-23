@@ -21,6 +21,9 @@ public class ChestTrigger : ActivateOnButtonPress {
 	public bool				chestIsOpen;
 
 	protected override void Action() {
+		// Set Camera to Chest gameObject
+		CamManager.S.ChangeTarget(gameObject, true);
+
 		if (!chestIsOpen) {
 			OpenChest();
 

@@ -71,6 +71,6 @@ public class DoorTrigger : ActivateOnButtonPress {
 		triggerHasBeenDeactivated = true;
 
 		// Set Camera to Player gameObject
-		CamManager.S.ChangeTarget(Blob.S.gameObject, true);
+		CamManager.S.ChangeTarget(Player.S.gameObject, true);
 	}
 }
