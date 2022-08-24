@@ -41,7 +41,7 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 				spellScreen.previousSelectedSpellGO = spellScreen.spellsButtons[0].gameObject;
 
 				// Display Text
-				PauseMessage.S.DisplayText("Use whose spells?!");
+				PauseMessage.S.DisplayText("Use whose skills?!");
 
 				// Switch ScreenMode 
 				spellScreen.mode = eSpellScreenMode.pickWhichSpellsToDisplay;
@@ -67,7 +67,7 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 					spellScreen.DisplaySpellsDescriptions(i);
 					spellScreen.AssignSpellsNames(i);
 					Utilities.S.PositionCursor(PauseMenu.S.playerNameButtons[i].gameObject, 0, 110, 3);
-					titleText.text = "Spells: " + "<color=white>" + Party.S.stats[i].name + "</color>";
+					titleText.text = "Skills: " + "<color=white>" + Party.S.stats[i].name + "</color>";
 
 					// Audio: Selection (when a new gameObject is selected)
 					Utilities.S.PlayButtonSelectedSFX(ref spellScreen.previousSelectedPlayerGO);

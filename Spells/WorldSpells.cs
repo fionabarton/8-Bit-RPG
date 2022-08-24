@@ -32,7 +32,7 @@ public class WorldSpells : MonoBehaviour {
 
 			Spells.S.menu.canUpdate = true;
 		} else {
-			Spells.S.CantUseSpell("Not enough MP to cast this spell!");
+			Spells.S.CantUseSpell("Not enough MP to use this skill!");
 			return;
 		}
 
@@ -69,16 +69,16 @@ public class WorldSpells : MonoBehaviour {
 
 			// Display Text
 			if (Party.S.stats[ndx].HP >= Party.S.stats[ndx].maxHP) {
-				PauseMessage.S.DisplayText("Used Heal Spell!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
+				PauseMessage.S.DisplayText("Used Heal Skill!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 			} else {
-				PauseMessage.S.DisplayText("Used Heal Spell!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
+				PauseMessage.S.DisplayText("Used Heal Skill!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
 			}
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
 			// Display Text
-			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to cast this spell!");
+			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " already at full health...\n...no need to use this skill!");
 
             // Audio: Deny
             AudioManager.S.PlaySFX(eSoundName.deny);
@@ -104,13 +104,13 @@ public class WorldSpells : MonoBehaviour {
 			GameManager.S.SubtractPlayerMP(Spells.S.menu.playerNdx, 2);
 
 			// Display Text
-			PauseMessage.S.DisplayText("Used Detoxify Spell!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
+			PauseMessage.S.DisplayText("Used Detoxify Skill!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
 			// Display Text
-			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to cast this spell!");
+			PauseMessage.S.DisplayText(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this skill!");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -143,7 +143,7 @@ public class WorldSpells : MonoBehaviour {
 			// Audio: Confirm
 			AudioManager.S.PlaySFX(eSoundName.confirm);
 		} else {
-			Spells.S.CantUseSpell("Not enough MP to cast this spell!");
+			Spells.S.CantUseSpell("Not enough MP to use this skill!");
 		}
 	}
 
@@ -178,7 +178,7 @@ public class WorldSpells : MonoBehaviour {
 			}
 
 			// Display Text
-			PauseMessage.S.DisplayText("Used Heal All Spell!\nHealed ALL party members for an average of "
+			PauseMessage.S.DisplayText("Used Heal All Skill!\nHealed ALL party members for an average of "
 				+ Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.stats.Count) + " HP!");
 
             // Set animations to success
@@ -190,7 +190,7 @@ public class WorldSpells : MonoBehaviour {
             AudioManager.S.PlaySFX(eSoundName.buff1);
 		} else {
 			// Display Text
-			PauseMessage.S.DisplayText("The party is already at full health...\n...no need to cast this spell!");
+			PauseMessage.S.DisplayText("The party is already at full health...\n...no need to use this skill!");
 
             // Set party animations to idle
             for (int i = 0; i <= Party.S.partyNdx; i++) {

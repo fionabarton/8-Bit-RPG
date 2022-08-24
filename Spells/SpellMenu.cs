@@ -301,7 +301,7 @@ public class SpellMenu : MonoBehaviour {
 
 		// Empty Inventory
 		if (Party.S.stats[playerNdx].spellNdx == 0) {
-			PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " knows no spells, fool!");
+			PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " knows no skills, fool!");
 
 			canUpdate = true;
 			// Switch ScreenMode
@@ -488,7 +488,7 @@ public class SpellMenu : MonoBehaviour {
 			} else if (spell.name == "Steal") {
 				Spells.S.battle.AddFunctionToButton(Spells.S.battle.AttemptStealSinglePartyMember, "Attempt to steal an item from which enemy?", spell);
 			} else {
-				Spells.S.CantUseSpell("Can't use this spell during battle!");
+				Spells.S.CantUseSpell("Can't use this skill during battle!");
 			}
 		} else { // if Overworld
 			if (spell.name == "Heal") {
@@ -500,7 +500,7 @@ public class SpellMenu : MonoBehaviour {
 			} else if (spell.name == "Detoxify") {
 				Spells.S.world.AddFunctionToButton(Spells.S.world.DetoxifySelectedPartyMember, "Detoxify which poisoned party member?", spell);
 			} else {
-				Spells.S.CantUseSpell("You ain't battlin' no one, so ya can't use this spell!");
+				Spells.S.CantUseSpell("You ain't battlin' no one, so ya can't use this skill!");
 			}
 		}
 	}

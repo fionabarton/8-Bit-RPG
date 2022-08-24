@@ -80,7 +80,7 @@ public class BattleSpells : MonoBehaviour {
 				}
 			}
 		} else {
-			Spells.S.CantUseSpell("Not enough MP to cast this spell!");
+			Spells.S.CantUseSpell("Not enough MP to use this skill!");
 			return;
 		}
 	}
@@ -126,7 +126,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(Party.S.stats[ndx].name + " already at full health...\n...no need to cast this spell!");
+			SpellIsNotUseful(Party.S.stats[ndx].name + " already at full health...\n...no need to use this skill!");
 		}
 	}
 
@@ -144,9 +144,9 @@ public class BattleSpells : MonoBehaviour {
 
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
-			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 		} else {
-			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
 		}
 
 		// Audio: Buff 1
@@ -165,7 +165,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.PlayClip("Swell", 2);
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful("The party is already at full health...\n...no need to cast this spell!");
+			SpellIsNotUseful("The party is already at full health...\n...no need to use this skill!");
 		}
 	}
 
@@ -190,7 +190,7 @@ public class BattleSpells : MonoBehaviour {
 		_.UI.SetPartyMemberAnim("Success");
 
 		// Display Text
-		_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed ALL party members for an average of "
+		_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHealed ALL party members for an average of "
 			+ Utilities.S.CalculateAverage(totalAmountToHeal, _.partyQty + 1) + " HP!");
 
 		// Audio: Buff 1
@@ -234,9 +234,9 @@ public class BattleSpells : MonoBehaviour {
 
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
-			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 		} else {
-			_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
 		}
 
 		// Audio: Buff 1
@@ -271,9 +271,9 @@ public class BattleSpells : MonoBehaviour {
 			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
 
 			if (UnityEngine.Random.value <= 0.5f) {
-				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the spell... but missed " + _.enemyStats[ndx].name + " completely!");
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the skill... but missed " + _.enemyStats[ndx].name + " completely!");
 			} else {
-				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " cast the spell, but " + _.enemyStats[ndx].name + " deftly dodged out of the way!");
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " used the skill, but " + _.enemyStats[ndx].name + " deftly dodged out of the way!");
 			}
 
 			// Audio: Deny
@@ -308,7 +308,7 @@ public class BattleSpells : MonoBehaviour {
 				Battle.S.end.EnemyDeath(ndx);
 			} else {
 				// Deactivate Spells Screen then Enemy Turn
-				_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHit " + _.enemyStats[ndx].name + " for " + _.attackDamage + " HP!");
+				_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit " + _.enemyStats[ndx].name + " for " + _.attackDamage + " HP!");
 
 				// Audio: Fireball
 				AudioManager.S.PlaySFX(eSoundName.fireball);
@@ -342,9 +342,9 @@ public class BattleSpells : MonoBehaviour {
 			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
 
 			if (UnityEngine.Random.value <= 0.5f) {
-				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the spell... but missed those goons completely!");
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted the skill... but missed those goons completely!");
 			} else {
-				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " cast the spell, but these dummies you're fighting deftly dodged out of the way!");
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " used the skill, but these dummies you're fighting deftly dodged out of the way!");
 			}
 
 			// Audio: Deny
@@ -405,7 +405,7 @@ public class BattleSpells : MonoBehaviour {
 
 			// If no one is killed...
 			if (deadEnemies.Count <= 0) {
-				_.dialogue.DisplayText("Used " + spell.name + " Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
+				_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
 
 				// Audio: Fireblast
 				AudioManager.S.PlaySFX(eSoundName.fireblast);
@@ -430,19 +430,19 @@ public class BattleSpells : MonoBehaviour {
 		// Display different text whether the enemy has stolen anything
 		if (hasStolenItems) {
 			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy felled; stolen items are returned!"); break;
-				case 2: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies felled; stolen items are returned!"); break;
-				case 3: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies felled; stolen items are returned!"); break;
-				case 4: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies felled; stolen items are returned!"); break;
-				case 5: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies felled; stolen items are returned!"); break;
+				case 1: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy felled; stolen items are returned!"); break;
+				case 2: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies felled; stolen items are returned!"); break;
+				case 3: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies felled; stolen items are returned!"); break;
+				case 4: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies felled; stolen items are returned!"); break;
+				case 5: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies felled; stolen items are returned!"); break;
 			}
 		} else {
 			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy has been felled!"); break;
-				case 2: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies have been felled!"); break;
-				case 3: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies have been felled!"); break;
-				case 4: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies have been felled!"); break;
-				case 5: _.dialogue.DisplayText("Used Fire BLAST Spell!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies have been felled!"); break;
+				case 1: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy has been felled!"); break;
+				case 2: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies have been felled!"); break;
+				case 3: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies have been felled!"); break;
+				case 4: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies have been felled!"); break;
+				case 5: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies have been felled!"); break;
 			}
 		}
 
@@ -470,7 +470,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to cast this spell!");
+			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this skill!");
 		}
 	}
 
@@ -488,7 +488,7 @@ public class BattleSpells : MonoBehaviour {
 		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 		// Display Text
-		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
+		_.dialogue.DisplayText("Used " + spell.name + " Skill!\n" + Party.S.stats[ndx].name + " is no longer poisoned!");
 
 		CurePlayerAnimation(ndx, false);
 
@@ -512,7 +512,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of paralysis...\n...no need to cast this spell!");
+			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of paralysis...\n...no need to use this skill!");
 		}
 	}
 
@@ -530,7 +530,7 @@ public class BattleSpells : MonoBehaviour {
 		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 		// Display Text
-		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
+		_.dialogue.DisplayText("Used " + spell.name + " Skill!\n" + Party.S.stats[ndx].name + " is no longer paralyzed!");
 
 		CurePlayerAnimation(ndx, false);
 
@@ -554,7 +554,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(Party.S.stats[ndx].name + " is not sleeping...\n...no need to cast this spell!");
+			SpellIsNotUseful(Party.S.stats[ndx].name + " is not sleeping...\n...no need to use this skill!");
 		}
 	}
 
@@ -572,7 +572,7 @@ public class BattleSpells : MonoBehaviour {
 		_.UI.SetPartyMemberAnim("Idle", "Success", ndx);
 
 		// Display Text
-		_.dialogue.DisplayText("Used " + spell.name + " Spell!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
+		_.dialogue.DisplayText("Used " + spell.name + " Skill!\n" + Party.S.stats[ndx].name + " is no longer sleeping!");
 
 		CurePlayerAnimation(ndx, false);
 
@@ -595,7 +595,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of poison...\n...no need to cast this spell!");
+			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of poison...\n...no need to use this skill!");
 		}
 	}
 	public void PoisonSingle(int ndx, Spell spell) {
@@ -623,7 +623,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of paralysis...\n...no need to cast this spell!");
+			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of paralysis...\n...no need to use this skill!");
 		}
 	}
 	public void ParalyzeSingle(int ndx, Spell spell) {
@@ -651,7 +651,7 @@ public class BattleSpells : MonoBehaviour {
 			ColorScreen.S.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
-			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of sleep...\n...no need to cast this spell!");
+			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of sleep...\n...no need to use this skill!");
 		}
 	}
 	public void SleepSingle(int ndx, Spell spell) {
