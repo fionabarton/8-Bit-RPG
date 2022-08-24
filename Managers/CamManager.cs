@@ -53,20 +53,20 @@ public class CamManager : MonoBehaviour {
 						destination.y = camPosY;
 						break;
 					case eCamMode.followAll:
-						destination = targetTrans.localPosition;
+						destination = targetTrans.position;
 						break;
 				}
 
 				// Interpolate from the current Camera position towards Destination
 				if (canLerp) {
-					destination = Vector3.SmoothDamp(transform.localPosition, destination, ref velocity, easing);
+					destination = Vector3.SmoothDamp(transform.position, destination, ref velocity, easing);
 				}
 
 				// Keeps Pos.Z at -10
 				destination.z = camPosZ;
 
 				// Set the Camera Pos to destination
-				transform.localPosition = destination;
+				transform.position = destination;
 			}
 		}
 	}
@@ -80,6 +80,18 @@ public class CamManager : MonoBehaviour {
 			if (tGO) {
 				targetTrans = tGO.transform;
 			}
+
+			//Transform parentTrans = tGO.transform.parent;
+
+			//// Change Target
+			//if (parentTrans) {
+			//	targetTrans = parentTrans;
+
+			//} else {
+			//	if (tGO) {
+			//		targetTrans = tGO.transform;
+			//	}
+			//}
 
 			// If this is a step in an cutscene, move to the next step
 			CutsceneManager.S.stepDone = true;
