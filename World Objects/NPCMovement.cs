@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -12,6 +11,7 @@ public class NPCMovement : MonoBehaviour {
 	public LayerMask bounds;
 	public LayerMask playerBounds;
 
+	// Min and max values for how long to wait 
 	public Vector2 waitDuration = new Vector2(0.75f, 1.25f);
 
 	[Header("Set Dynamically")]
@@ -83,17 +83,17 @@ public class NPCMovement : MonoBehaviour {
 	// If no bounds in nextMovePointPos, move movePoint and start moving towards it.
 	// Otherwise, get a new direction and try again 
 	void CheckIfWalkDirectionIsValid(Vector3 nextMovePointPos) {
-		// If no bounds in this direction
-		if (!Physics2D.OverlapCircle(movePoint.position + nextMovePointPos, 0.2f, bounds) &&
-			!Physics2D.OverlapCircle(movePoint.position + nextMovePointPos, 0.5f, playerBounds)) {
-			// Move movePoint in that direction
-			movePoint.position += nextMovePointPos;
-			// Start moving the NPC towards the movePoint
-			Walk();
-		} else {
-			// Reset walkDirection and try again
-			walkDirection = Random.Range(0, 4);
-		}
+        // If no bounds in this direction
+        if (!Physics2D.OverlapCircle(movePoint.position + nextMovePointPos, 0.2f, bounds) &&
+            !Physics2D.OverlapCircle(movePoint.position + nextMovePointPos, 0.5f, playerBounds)) {
+            // Move movePoint in that direction
+            movePoint.position += nextMovePointPos;
+            // Start moving the NPC towards the movePoint
+            Walk();
+        } else {
+            // Reset walkDirection and try again
+            walkDirection = Random.Range(0, 4);
+        }
 	}
 
 	public void Walk() {
