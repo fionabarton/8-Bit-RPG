@@ -337,7 +337,7 @@ public class BattleSpells : MonoBehaviour {
 
 		// 5% chance to Miss/Dodge...
 		// ...but 25% chance if Defender WIS is more than Attacker's 
-		if (UnityEngine.Random.value <= 0.10f || (_.enemyStats[0].WIS > Party.S.stats[_.PlayerNdx()].WIS && UnityEngine.Random.value < 0.10f)) {
+		if (UnityEngine.Random.value <= 0.05f || (_.enemyStats[0].WIS > Party.S.stats[_.PlayerNdx()].WIS && UnityEngine.Random.value < 0.10f)) {
 			// Set mini party member animations
 			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
 
@@ -412,13 +412,13 @@ public class BattleSpells : MonoBehaviour {
 
 				_.NextTurn();
 			} else {
-				EnemiesDeath(deadEnemies, totalAttackDamage);
+				EnemiesDeath(deadEnemies, totalAttackDamage, "Used Fire BLAST Skill!");
 			}
 		}
 	}
 
 	// Handle enemy deaths
-	public void EnemiesDeath(List<int> deadEnemies, int totalAttackDamage) {
+	public void EnemiesDeath(List<int> deadEnemies, int totalAttackDamage, string message) {
 		bool hasStolenItems = false;
 		for (int i = 0; i < deadEnemies.Count; i++) {
 			// Check if any enemy has stolen an item from the party
@@ -430,19 +430,19 @@ public class BattleSpells : MonoBehaviour {
 		// Display different text whether the enemy has stolen anything
 		if (hasStolenItems) {
 			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy felled; stolen items are returned!"); break;
-				case 2: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies felled; stolen items are returned!"); break;
-				case 3: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies felled; stolen items are returned!"); break;
-				case 4: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies felled; stolen items are returned!"); break;
-				case 5: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies felled; stolen items are returned!"); break;
+				case 1: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy felled; stolen items are returned!"); break;
+				case 2: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies felled; stolen items are returned!"); break;
+				case 3: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies felled; stolen items are returned!"); break;
+				case 4: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies felled; stolen items are returned!"); break;
+				case 5: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies felled; stolen items are returned!"); break;
 			}
 		} else {
 			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy has been felled!"); break;
-				case 2: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies have been felled!"); break;
-				case 3: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies have been felled!"); break;
-				case 4: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies have been felled!"); break;
-				case 5: _.dialogue.DisplayText("Used Fire BLAST Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies have been felled!"); break;
+				case 1: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy has been felled!"); break;
+				case 2: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies have been felled!"); break;
+				case 3: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies have been felled!"); break;
+				case 4: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies have been felled!"); break;
+				case 5: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies have been felled!"); break;
 			}
 		}
 
