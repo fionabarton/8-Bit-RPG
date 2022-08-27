@@ -518,12 +518,20 @@ public class BattleUI : MonoBehaviour {
 	}
 
 	// Assign on button click effects
-	public void AssignEnemyEffect() {
+	public void AssignAttackEnemyEffect() {
 		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
 		for (int i = 0; i < _.enemyAmount; i++) {
 			// Add listener to option button
 			int copy = i;
 			enemySpriteButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.ClickedAttackEnemy(copy); });
+		}
+	}
+	public void AssignAttackAllEnemiesEffect() {
+		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
+		for (int i = 0; i < _.enemyAmount; i++) {
+			// Add listener to option button
+			int copy = i;
+			enemySpriteButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.AttackAllEnemies(); });
 		}
 	}
 	public void AssignItemEffect() {
