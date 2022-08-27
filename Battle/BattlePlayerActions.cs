@@ -27,6 +27,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		ButtonsDisableAll();
 
 		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, true);
+		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
 		_.UI.firstSlotNdx = 0;
 
@@ -38,13 +39,7 @@ public class BattlePlayerActions : MonoBehaviour {
 			_.UI.enemySpriteButtonsGO[i].SetActive(true);
 		}
 
-		// Assign option slots effect
-		_.UI.AssignEnemyEffect();
-
 		_.UI.actionOptionsButtonsCursor.SetActive(false);
-
-		// Set the first and last button’s navigation 
-		Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
 
 		// Set selected gameObject
 		Utilities.S.SetSelectedGO(_.UI.enemySpriteButtonsGO[0]);
@@ -54,9 +49,24 @@ public class BattlePlayerActions : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.confirm);
 		}
 
-		// Switch Mode
-		_.mode = eBattleMode.canGoBackToFightButton;
-	}
+        if (!EquipMenu.S.playerEquipment[_.PlayerNdx()][0].multipleTargets) {
+			// Assign option slots effect
+			_.UI.AssignAttackEnemyEffect();
+
+			// Switch Mode
+			_.mode = eBattleMode.canGoBackToFightButton;
+
+			// Set the first and last button’s navigation 
+			Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
+		} else {
+			// Assign option slots effect
+			_.UI.AssignAttackAllEnemiesEffect();
+
+			// Switch Mode
+			_.mode = eBattleMode.selectAll;
+			_.UI.TargetAllEnemies();
+		}
+    }
 
 	public void ClickedAttackEnemy(int ndx) {
 		_.targetNdx = ndx;
@@ -64,7 +74,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		AttackEnemy(ndx);
 
-		// Remove listeners
+		// Remove all listeners
 		_.UI.RemoveAllListeners();
 	}
 
@@ -94,6 +104,106 @@ public class BattlePlayerActions : MonoBehaviour {
 			_.end.EnemyDeath(ndx);
 		} else {
 			_.NextTurn();
+		}
+	}
+
+	public void AttackAllEnemies() {
+		// Remove all listeners
+		_.UI.RemoveAllListeners();
+
+		// Reset Attack Damage
+		_.attackDamage = 0;
+
+		// Activate display message
+		_.UI.ActivateDisplayMessage();
+
+		// 5% chance to Miss/Dodge...
+		if (Random.value <= 0.05f) {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
+
+			if (Random.value <= 0.5f) {
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " attempted to attack all the bad guys... but missed!");
+			} else {
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " missed the mark! All the bad guys dodged out of the way!");
+			}
+
+			// Audio: Deny
+			AudioManager.S.PlaySFX(eSoundName.deny);
+
+			_.NextTurn();
+		} else {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
+
+			List<int> deadEnemies = new List<int>();
+
+			// Cache AttackDamage. When more than one Defender, prevents splitting it in 1/2 more than once.
+			int tAttackDamage = _.attackDamage;
+
+			// Used to Calculate AVERAGE Damage
+			int totalAttackDamage = 0;
+
+			int attackerLVL = Party.S.stats[_.PlayerNdx()].LVL;
+
+			// 5% chance for Critical Hit
+			// Doubles the amount of damage dice to be rolled
+			if (Random.value < 0.05f) {
+				attackerLVL *= 2;
+			}
+
+			// Loop through enemies
+			for (int i = 0; i < _.enemyAmount; i++) {
+				// For each level, roll one die & add its value to attackDamage
+				for (int j = 0; j < attackerLVL; j++) {
+					_.attackDamage += Random.Range(1, 4);
+				}
+
+				// Apply modifiers (attacker's STR & defenders DEF)
+				_.attackDamage += Party.S.stats[_.PlayerNdx()].STR;
+				_.attackDamage -= _.enemyStats[i].DEF;
+
+				// If DEFENDING, cut AttackDamage in HALF
+				StatusEffects.S.CheckIfDefending(false, i);
+
+				if (_.attackDamage < 0) {
+					_.attackDamage = 0;
+				}
+
+				// Subtract Enemy Heath
+				GameManager.S.SubtractEnemyHP(i, _.attackDamage);
+
+				// Add to to TotalAttackDamage (Used to Calculate AVERAGE Damage)
+				totalAttackDamage += _.attackDamage;
+
+				// Display Floating Score
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
+
+				// Shake Enemy Anim
+				if (!_.enemyStats[i].isDead) {
+					_.enemyAnims[i].CrossFade("Damage", 0);
+				}
+
+				// If DEFENDING, Reset AttackDamage for next Enemy
+				_.attackDamage = tAttackDamage;
+
+				// If Enemy HP < 0... DEAD!
+				if (_.enemyStats[i].HP < 1 && !_.enemyStats[i].isDead) {
+					deadEnemies.Add(i);
+				}
+			}
+
+			// If no one is killed...
+			if (deadEnemies.Count <= 0) {
+				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " got'em!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
+
+				// Audio: Fireblast
+				AudioManager.S.PlaySFX(eSoundName.fireblast);
+
+				_.NextTurn();
+			} else {
+				Spells.S.battle.EnemiesDeath(deadEnemies, totalAttackDamage, Party.S.stats[_.PlayerNdx()].name + " got'em!");
+			}
 		}
 	}
 
