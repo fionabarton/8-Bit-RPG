@@ -69,8 +69,8 @@ public class Items : MonoBehaviour {
         items[8] = new Item("Wooden Sword", eItemType.Weapon, eItemStatEffect.STR, 12, 12, 6,
         "Capable of inflicting moderate physical damage\nupon an enemy. Adds +12 to Strength." + "\n Value: 6 Gold", itemSprite[8]);
 
-        // Ass Wand
-        items[9] = new Item("Ass Wand", eItemType.Weapon, eItemStatEffect.WIS, 10, 10, 1,
+        // Paper Wand
+        items[9] = new Item("Paper Wand", eItemType.Weapon, eItemStatEffect.WIS, 10, 10, 1,
         "Capable of inflicting light magic damage upon an enemy.\nAdds +10 to Wisdom." + "\n Value: 1 Gold", itemSprite[9]);
 
         // Berry
@@ -144,6 +144,10 @@ public class Items : MonoBehaviour {
         // Wake Potion
         items[27] = new Item("Wake Potion", eItemType.Consumable, eItemStatEffect.nothing, 0, 0, 5,
         "Wakes up a sleeping party member." + "\n Value: 5 Gold", itemSprite[27]);
+
+        // Simon's Whip
+        items[28] = new Item("Simon's Whip", eItemType.Weapon, eItemStatEffect.STR, 1, 1, 10,
+        "A whip that strikes all enemies.\nAdds +1 to Strength." + "\n Value: 10 Gold", itemSprite[28], true, true);
     }
 
     public Item GetItem(eItem itemNdx) {
