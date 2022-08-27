@@ -18,10 +18,11 @@ public enum eEquipScreenMode { pickPartyMember, pickTypeToEquip, noInventory, pi
 public enum eGroundType { desert, dirt, grass, sand, snow };
 
 public enum eItem {
-    hpPotion, mpPotion, paperSword, crap, nothing, paperArmor, paperHelmet, paperOther, woodenSword,
-    paperWand, berry, smallKey, bug1, bug2, bug3, bug4, bug5, bug6,
-    defaultWeapon, defaultArmor, defaultHelmet, defaultAccessory,
-    healAllPotion, warpPotion, revivePotion, detoxifyPotion
+    hpPotion, mpPotion, paperSword, crap, nothing, paperArmor, paperHelmet, paperOther, woodenSword, // 0-8
+    paperWand, berry, smallKey, bug1, bug2, bug3, bug4, bug5, bug6, // 9-17
+    defaultWeapon, defaultArmor, defaultHelmet, defaultAccessory, // 18-21
+    healAllPotion, warpPotion, revivePotion, detoxifyPotion, mobilizePotion, wakePotion, // 22-27
+    simonsWhip // 28
 };
 public enum eItemMenuMode { pickItem, pickPartyMember, pickAllPartyMembers, usedItem, pickWhereToWarp };
 public enum eItemStatEffect { HP, MP, STR, DEF, WIS, AGI, nothing };
