@@ -28,6 +28,7 @@ public class Inventory : MonoBehaviour {
         AddItemToInventory(Items.S.items[27]);
         //AddItemToInventory(Items.S.items[27]);
         AddItemToInventory(Items.S.items[28]);
+        AddItemToInventory(Items.S.items[29]);
         AddItemToInventory(Items.S.items[0]);
         AddItemToInventory(Items.S.items[0]);
         AddItemToInventory(Items.S.items[1]);
