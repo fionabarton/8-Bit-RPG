@@ -148,6 +148,10 @@ public class Items : MonoBehaviour {
         // Simon's Whip
         items[28] = new Item("Simon's Whip", eItemType.Weapon, eItemStatEffect.STR, 1, 1, 10,
         "A whip that strikes all enemies.\nAdds +1 to Strength." + "\n Value: 10 Gold", itemSprite[28], true, true);
+
+        // Mega Whip
+        items[29] = new Item("Mega Whip", eItemType.Weapon, eItemStatEffect.STR, 5, 5, 50,
+        "A mega whip that blasts all enemies.\nAdds +5 to Strength." + "\n Value: 50 Gold", itemSprite[29], true, true);
     }
 
     public Item GetItem(eItem itemNdx) {
