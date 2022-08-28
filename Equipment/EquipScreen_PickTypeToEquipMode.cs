@@ -65,11 +65,8 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 						}
 					}
 
-					// Assign item names to buttons
-					for (int j = 0; j < SortItems.S.tItems.Count; j++) {
-						string ndx = (j + 1).ToString();
-						equipScreen.inventoryButtonsTxt[j].text = ndx + ") " + SortItems.S.tItems[j].name;
-					}
+					// Assign names to inventory slot buttons' text
+					equipScreen.AssignInventorySlotNames();
 
 					// Audio: Selection (when a new gameObject is selected)
 					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedGameObject);

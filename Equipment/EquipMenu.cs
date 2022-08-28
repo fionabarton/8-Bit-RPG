@@ -226,6 +226,9 @@ public class EquipMenu : MonoBehaviour {
 			inventoryButtons[i].gameObject.SetActive(false);
 		}
 
+		// Reset firstSlotNdx
+		pickItemToEquipMode.firstSlotNdx = 0;
+
 		// Set Up pickTypeToEquip mode
 		pickTypeToEquipMode.SetUp(playerNdx, S, soundNdx);
 
@@ -251,6 +254,16 @@ public class EquipMenu : MonoBehaviour {
 		// Set Button Text
 		for (int i = 0; i < equippedButtonsTxt.Count; i++) {
 			equippedButtonsTxt[i].text = playerEquipment[playerNdx][i].name;
+		}
+	}
+
+	// Assign names to inventory slot buttons' text
+	public void AssignInventorySlotNames() {
+		for (int j = 0; j < SortItems.S.tItems.Count; j++) {
+			if (j < inventoryButtonsTxt.Count) {
+				string ndx = (j + 1 + pickItemToEquipMode.firstSlotNdx).ToString();
+				inventoryButtonsTxt[j].text = (ndx) + ") " + SortItems.S.tItems[j + pickItemToEquipMode.firstSlotNdx].name;
+			}
 		}
 	}
 
