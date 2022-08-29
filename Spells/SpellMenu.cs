@@ -68,6 +68,7 @@ public class SpellMenu : MonoBehaviour {
 		previousSelectedSpellGO = spellsButtons[0].gameObject;
 
 		firstSlotNdx = 0;
+		firstOrLastSlotSelected = true;
 
 		pickWhichSpellsToDisplay.Setup(Spells.S.menu);
 
