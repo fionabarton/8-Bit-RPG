@@ -33,8 +33,8 @@ public class BattleUI : MonoBehaviour {
 	public List<Text> amountButtonsText;
 
 	// Enemy sprites/buttons
-	public List<GameObject> enemySpriteButtonsGO;
-	public List<Button> enemySpriteButtonsCS;
+	public List<GameObject> enemyButtonsGO;
+	public List<Button> enemyButtonsCS;
 	public List<GameObject> enemyHelpBubblesGO;
 
 	// Player whose turn it is
@@ -43,7 +43,7 @@ public class BattleUI : MonoBehaviour {
 	// Cursors
 	public List<GameObject> cursors = new List<GameObject>();
 	public GameObject actionOptionsButtonsCursor;
-	public List<GameObject> enemySpriteButtonsCursors = new List<GameObject>();
+	public List<GameObject> enemyButtonsCursors = new List<GameObject>();
 	public List<GameObject> partyNameButtonsCursors = new List<GameObject>();
 
 	[Header("Set Dynamically")]
@@ -66,7 +66,7 @@ public class BattleUI : MonoBehaviour {
 		playerActionButtonsGO.SetActive(true);
 		displayMessageGO.SetActive(false);
 		actionOptionsButtonsCursor.SetActive(true);
-		Utilities.S.SetActiveList(enemySpriteButtonsCursors, false);
+		Utilities.S.SetActiveList(enemyButtonsCursors, false);
 		Utilities.S.SetActiveList(partyNameButtonsCursors, false);
 	}
 
@@ -74,7 +74,7 @@ public class BattleUI : MonoBehaviour {
 		displayMessageGO.SetActive(true);
 		playerActionButtonsGO.SetActive(false);
 		actionOptionsButtonsCursor.SetActive(false);
-		Utilities.S.SetActiveList(enemySpriteButtonsCursors, false);
+		Utilities.S.SetActiveList(enemyButtonsCursors, false);
 		Utilities.S.SetActiveList(partyNameButtonsCursors, false);
 	}
 
@@ -117,57 +117,57 @@ public class BattleUI : MonoBehaviour {
 
 	public void EnemySpriteButtonCursorPosition(GameObject go) {
 		// Activate Cursor
-		if (!enemySpriteButtonsCursors[0].activeInHierarchy) {
-			enemySpriteButtonsCursors[0].SetActive(true);
+		if (!enemyButtonsCursors[0].activeInHierarchy) {
+			enemyButtonsCursors[0].SetActive(true);
 		}
 
 		// Position Cursor & Set Anim
-		if (enemySpriteButtonsCursors[0].activeInHierarchy) {
+		if (enemyButtonsCursors[0].activeInHierarchy) {
 			// Set positions
 			switch (_.enemyAmount) {
 				case 1:
-					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
+					if (go == enemyButtonsGO[0]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 					}
 					break;
 				case 2:
-					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
+					if (go == enemyButtonsGO[0]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
+					} else if (go == enemyButtonsGO[1]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
 					}
 					break;
 				case 3:
-					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
-					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
+					if (go == enemyButtonsGO[0]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
+					} else if (go == enemyButtonsGO[1]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
+					} else if (go == enemyButtonsGO[2]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
 					}
 					break;
 				case 4:
-					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[3]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(4.875f, 2.5f);
+					if (go == enemyButtonsGO[0]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
+					} else if (go == enemyButtonsGO[1]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
+					} else if (go == enemyButtonsGO[2]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(1.625f, 2.5f);
+					} else if (go == enemyButtonsGO[3]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(4.875f, 2.5f);
 					}
 					break;
 				case 5:
-					if (go == enemySpriteButtonsGO[0]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[1]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[2]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
-					} else if (go == enemySpriteButtonsGO[3]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
-					} else if (go == enemySpriteButtonsGO[4]) {
-						enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(6.5f, 2.5f);
+					if (go == enemyButtonsGO[0]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
+					} else if (go == enemyButtonsGO[1]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
+					} else if (go == enemyButtonsGO[2]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
+					} else if (go == enemyButtonsGO[3]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(3.25f, 2.5f);
+					} else if (go == enemyButtonsGO[4]) {
+						enemyButtonsCursors[0].transform.localPosition = new Vector2(6.5f, 2.5f);
 					}
 					break;
 			}
@@ -220,38 +220,38 @@ public class BattleUI : MonoBehaviour {
 	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6.5f, 0);
 	public void TargetAllEnemies() {
 		// Deactivate all cursors
-		Utilities.S.SetActiveList(enemySpriteButtonsCursors, false);
+		Utilities.S.SetActiveList(enemyButtonsCursors, false);
 
 		for(int i = 0; i < _.enemyAmount; i++) {
-			enemySpriteButtonsCursors[i].SetActive(true);
+			enemyButtonsCursors[i].SetActive(true);
 		}
 
 		// Activate active cursors
 		switch (_.enemyAmount) {
 			case 1:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
+				enemyButtonsCursors[0].transform.localPosition = new Vector2(0, 2.5f);
 				break;
 			case 2:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(1.625f, 2.5f);
+				enemyButtonsCursors[0].transform.localPosition = new Vector2(-1.625f, 2.5f);
+				enemyButtonsCursors[1].transform.localPosition = new Vector2(1.625f, 2.5f);
 				break;
 			case 3:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(0, 2.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(3.25f, 2.5f);
+				enemyButtonsCursors[0].transform.localPosition = new Vector2(-3.25f, 2.5f);
+				enemyButtonsCursors[1].transform.localPosition = new Vector2(0, 2.5f);
+				enemyButtonsCursors[2].transform.localPosition = new Vector2(3.25f, 2.5f);
 				break;
 			case 4:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-1.625f, 2.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(1.625f, 2.5f);
-				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(4.875f, 2.5f);
+				enemyButtonsCursors[0].transform.localPosition = new Vector2(-4.875f, 2.5f);
+				enemyButtonsCursors[1].transform.localPosition = new Vector2(-1.625f, 2.5f);
+				enemyButtonsCursors[2].transform.localPosition = new Vector2(1.625f, 2.5f);
+				enemyButtonsCursors[3].transform.localPosition = new Vector2(4.875f, 2.5f);
 				break;
 			case 5:
-				enemySpriteButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
-				enemySpriteButtonsCursors[1].transform.localPosition = new Vector2(-3.25f, 2.5f);
-				enemySpriteButtonsCursors[2].transform.localPosition = new Vector2(0, 2.5f);
-				enemySpriteButtonsCursors[3].transform.localPosition = new Vector2(3.25f, 2.5f);
-				enemySpriteButtonsCursors[4].transform.localPosition = new Vector2(6.5f, 2.5f);
+				enemyButtonsCursors[0].transform.localPosition = new Vector2(-6.5f, 2.5f);
+				enemyButtonsCursors[1].transform.localPosition = new Vector2(-3.25f, 2.5f);
+				enemyButtonsCursors[2].transform.localPosition = new Vector2(0, 2.5f);
+				enemyButtonsCursors[3].transform.localPosition = new Vector2(3.25f, 2.5f);
+				enemyButtonsCursors[4].transform.localPosition = new Vector2(6.5f, 2.5f);
 				break;
 		}
 	}
@@ -519,19 +519,19 @@ public class BattleUI : MonoBehaviour {
 
 	// Assign on button click effects
 	public void AssignAttackEnemyEffect() {
-		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
+		Utilities.S.RemoveListeners(enemyButtonsCS);
 		for (int i = 0; i < _.enemyAmount; i++) {
 			// Add listener to option button
 			int copy = i;
-			enemySpriteButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.ClickedAttackEnemy(copy); });
+			enemyButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.ClickedAttackEnemy(copy); });
 		}
 	}
 	public void AssignAttackAllEnemiesEffect() {
-		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
+		Utilities.S.RemoveListeners(enemyButtonsCS);
 		for (int i = 0; i < _.enemyAmount; i++) {
 			// Add listener to option button
 			int copy = i;
-			enemySpriteButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.AttackAllEnemies(); });
+			enemyButtonsCS[copy].onClick.AddListener(delegate { _.playerActions.AttackAllEnemies(); });
 		}
 	}
 	public void AssignItemEffect() {
@@ -630,7 +630,7 @@ public class BattleUI : MonoBehaviour {
 
 	public void RemoveAllListeners() {
 		Utilities.S.RemoveListeners(optionButtonsCS);
-		Utilities.S.RemoveListeners(enemySpriteButtonsCS);
+		Utilities.S.RemoveListeners(enemyButtonsCS);
 		Utilities.S.RemoveListeners(partyNameButtonsCS);
 	}
 
