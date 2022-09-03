@@ -398,6 +398,11 @@ public class BattleQTE : MonoBehaviour {
 			QTEInputSprites[i].gameObject.SetActive(false);
 		}
 
+		// Activate enemy sprites
+		for (int i = 0; i < _.enemyAmount; i++) {
+			_.enemySprites[i].SetActive(true);
+		}
+
 		// Reset first input sprite position (for blocking)
 		//QTEInputSprites[0].gameObject.transform.position = new Vector2(0, 2.7f);
 		QTEInputSprites[0].gameObject.transform.localPosition = new Vector2(0, 0.5f);

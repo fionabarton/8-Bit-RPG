@@ -68,6 +68,11 @@ public class BattleEnemyActions : MonoBehaviour {
 
 					// Set battleMode to QTE
 					_.mode = eBattleMode.qte;
+
+					// Deactivate enemy sprites
+					for (int i = 0; i < _.enemyAmount; i++) {
+						_.enemySprites[i].SetActive(false);
+					}
 				} else {
 					// Deactivate Battle Text
 					_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
