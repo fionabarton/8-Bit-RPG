@@ -28,6 +28,8 @@ public enum eItemMenuMode { pickItem, pickPartyMember, pickAllPartyMembers, used
 public enum eItemStatEffect { HP, MP, STR, DEF, WIS, AGI, nothing };
 public enum eItemType { Weapon, Armor, Helmet, Accessory, Consumable, Ingredient, Important, Useless };
 
+public enum eKeyboardInputMenuMode { editName, nameConfirmation, nameConfirmed };
+
 public enum eMovement { randomWalk, patrol, pursueWalk, pursueRun, pursueWait, pursueDelayedTargetPos, flee, idle, reverse, auto };
 
 public enum eParallax { autoScroll, scrollWithPlayer, childedToPlayer };
