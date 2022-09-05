@@ -108,15 +108,26 @@ public class TitleMenu : MonoBehaviour {
 
         // Close Curtains
         Curtain.S.Close();
+        //// Activate Black Screen
+        //ColorScreen.S.ActivateBlackScreen();
 
         // Audio: Buff 2
         AudioManager.S.PlaySFX(eSoundName.buff2);
 
         // Delay, then Load Scene
-        Invoke("LoadFirstScene", 1.25f);
+        Invoke("LoadFirstScene", 1f);
     }
 
     void LoadFirstScene() {
-        GameManager.S.LoadLevel("Playground");
+        Deactivate();
+
+        KeyboardInputMenu.S.Activate(2);
+
+        // Open Curtains
+        Curtain.S.Open();
+        //// Deactivate Black Screen
+        //ColorScreen.S.anim.Play("Clear Screen", 0, 0);
+
+        //GameManager.S.LoadLevel("Playground");
     }
 }
