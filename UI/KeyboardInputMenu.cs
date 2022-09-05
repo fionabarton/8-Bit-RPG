@@ -12,7 +12,15 @@ public class KeyboardInputMenu : MonoBehaviour {
 	// Each slots represents one char 
 	public List<Text> charSlotsText;
 
+	// Displayed party member image animator
+	public Animator playerImageAnim;
+
+	// Cached animator controllers for each party member; to be assigned dynamically to playerImageAnim.runtimeAnimatorController
+	public List<RuntimeAnimatorController> playerAnimatorControllers;
+
 	[Header("Set Dynamically")]
+	public eKeyboardInputMenuMode mode = eKeyboardInputMenuMode.editName;
+	
 	private string inputString = "";
 
 	// Uppercase: 0-25, Lowercase: 26-51, Numbers: 52-61, Symbols: 62-65, 66-69, 70-89
@@ -30,7 +38,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 	private Animator inputBoxAnim;
 
-	private bool subMenuIsActive;
+	// Scene to load after confirming name
+	public string sceneToLoad = "Playground";
 
 	private static KeyboardInputMenu _S;
 	public static KeyboardInputMenu S { get { return _S; } set { _S = value; } }
@@ -45,7 +54,13 @@ public class KeyboardInputMenu : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
-	public void Activate() {
+	public void Activate(int partyMemberNdx = 0, string _sceneToLoad = "Playground") {
+		// Set mode
+		mode = eKeyboardInputMenuMode.editName;
+
+		// Set scene to load
+		sceneToLoad = _sceneToLoad;
+
 		// Reset text
 		inputString = "";
 		for(int i = 0; i < charSlotsText.Count; i++) {
@@ -70,15 +85,24 @@ public class KeyboardInputMenu : MonoBehaviour {
 		previousSelectedGameObject = buttonsGO[0];
 
 		// Set active char cursor position
-		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 60, 3, 1);
 
 		// Activate PauseMessage
-		PauseMessage.S.DisplayText("Yo.\nSo what's the name, ya little goon?");
+		PauseMessage.S.DisplayText("Yo.\nSo what's the name, ya little goon?", false, false, -374);
 
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
 		gameObject.SetActive(true);
+
+		// Set party member image animator controller
+		playerImageAnim.runtimeAnimatorController = playerAnimatorControllers[partyMemberNdx] as RuntimeAnimatorController;
+
+		// Set party member image animation clip
+		playerImageAnim.CrossFade("Walk", 0);
+
+		// Audio: Never
+		AudioManager.S.PlaySong(eSongName.never);
 	}
 
 	public void Deactivate() {
@@ -109,7 +133,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 			for (int i = 0; i < buttonsGO.Count; i++) {
 				if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == buttonsGO[i]) {
 					// Set Cursor Position to Selected Button
-					Utilities.S.PositionCursor(buttonsGO[i], -30, -10, 0);
+					Utilities.S.PositionCursor(buttonsGO[i], -30, 40, 0);
 
 					// Set selected button text color	
 					buttonsGO[i].gameObject.GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
@@ -124,17 +148,46 @@ public class KeyboardInputMenu : MonoBehaviour {
 			canUpdate = false;
 		}
 
-        if (!subMenuIsActive) {
-			// Backspace input
-			if (Input.GetButtonDown("SNES Y Button") || Input.GetKeyDown(KeyCode.Backspace)) {
-				Backspace();
-			}
+		switch (mode) {
+			case eKeyboardInputMenuMode.editName:
+				// Backspace input
+				if (Input.GetButtonDown("SNES Y Button") || Input.GetKeyDown(KeyCode.Backspace)) {
+					Backspace();
+				}
 
-			// Space input
-			if (Input.GetKeyDown(KeyCode.Space)) {
-				PressedKey(85);
-			}
-		}
+				// Space input
+				if (Input.GetKeyDown(KeyCode.Space)) {
+					PressedKey(85);
+				}
+				break;
+			case eKeyboardInputMenuMode.nameConfirmation:
+
+				break;
+			case eKeyboardInputMenuMode.nameConfirmed:
+				if (PauseMessage.S.dialogueFinished) {
+					if (Input.GetButtonDown("SNES B Button")) {
+						// Close Curtains
+						Curtain.S.Close();
+
+						// Audio: Buff 2
+						AudioManager.S.PlaySFX(eSoundName.buff2);
+
+						// Delay, then Load Scene
+						Invoke("LoadScene", 1f);
+					}
+				}
+				break;
+        }
+	}
+
+	void LoadScene() {
+		Deactivate();
+
+		// Open Curtains
+		Curtain.S.Open();
+
+		// Load scene
+		GameManager.S.LoadLevel(sceneToLoad);
 	}
 
 	// Add a char to the displayed name
@@ -148,7 +201,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 					if (inputString.Length < 15) {
 						// Set active char cursor position
-						Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+						Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 60, 3, 1);
 					} else {
 						// Deactivate cursor
 						ScreenCursor.S.cursorGO[1].SetActive(false);
@@ -159,13 +212,16 @@ public class KeyboardInputMenu : MonoBehaviour {
 					}
 
 					// Display text
-					PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you add that character!");
+					PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you add that character!", false, false, -374);
 
 					// Audio: Confirm
 					AudioManager.S.PlaySFX(eSoundName.confirm);
 				}
 			}
-        } else {
+
+			// Set party member image animation clip
+			playerImageAnim.CrossFade("Walk", 0);
+		} else {
 			// Input box shake animation
 			inputBoxAnim.CrossFade("Shake", 0);
 
@@ -173,7 +229,10 @@ public class KeyboardInputMenu : MonoBehaviour {
 			AudioManager.S.PlayRandomDamageSFX();
 
 			// Display text
-			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't add anymore characters;\nthere's no more room!");
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't add anymore characters;\nthere's no more room!", false, false, -374);
+
+			// Set party member image animation clip
+			playerImageAnim.CrossFade("Damage", 0);
 		}
 	}
 
@@ -187,13 +246,16 @@ public class KeyboardInputMenu : MonoBehaviour {
 			// Set active char cursor position
 			ScreenCursor.S.cursorGO[1].SetActive(true);
 			ScreenCursor.S.ResetAnimClip();
-			Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+			Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 60, 3, 1);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
 			// Display text
-			PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you delete that character!");
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nYeah, you delete that character!", false, false, -374);
+
+			// Set party member image animation clip
+			playerImageAnim.CrossFade("Walk", 0);
 		} else {
 			// Input box shake animation
 			inputBoxAnim.CrossFade("Shake", 0);
@@ -202,7 +264,10 @@ public class KeyboardInputMenu : MonoBehaviour {
 			AudioManager.S.PlayRandomDamageSFX();
 
 			// Display text
-			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't delete anymore characters;\nthere's nothing left to delete!");
+			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't delete anymore characters;\nthere's nothing left to delete!", false, false, -374);
+
+			// Set party member image animation clip
+			playerImageAnim.CrossFade("Damage", 0);
 		}
 	}
 
@@ -215,7 +280,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Set active char cursor position
 		ScreenCursor.S.cursorGO[1].SetActive(true);
 		ScreenCursor.S.ResetAnimClip();
-		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 10, 3, 1);
+		Utilities.S.PositionCursor(charSlotsText[inputString.Length].gameObject, 0, 60, 3, 1);
 
 		// Increment index
 		if (dontCareNdx < dontCareNames.Count - 1) {
@@ -225,14 +290,15 @@ public class KeyboardInputMenu : MonoBehaviour {
 		}
 
 		// Display text
-		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nNice \"choice\", lazy bones!");
+		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nNice \"choice\", lazy bones!", false, false, -374);
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
 	}
 
 	public void OK() {
-		subMenuIsActive = true;
+		// Set mode
+		mode = eKeyboardInputMenuMode.nameConfirmation;
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
@@ -243,51 +309,59 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Reset OK button text color	
 		buttonsGO[92].gameObject.GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
 
-		PauseMessage.S.DisplayText("Are you sure about this name?\nWell, are ya?", false, true);
+		PauseMessage.S.DisplayText("Are you sure about this name?\nWell, are ya?", false, true, -374);
 		GameManager.S.gameSubMenu.SetText();
 
 		// Set OnClick Methods
 		Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
-		GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(delegate { Yes(1); });
+		GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(delegate { Yes(0); });
 		GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
 
 		// Set button navigation
 		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
 		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
+
+		// Set party member image animation clip
+		playerImageAnim.CrossFade("Idle", 0);
 	}
 
 	public void Yes(int ndx) {
+		// Set mode
+		mode = eKeyboardInputMenuMode.nameConfirmed;
+
 		// Set selected party member's name
 		Party.S.stats[ndx].name = inputString;
 
-		// Audio: Buff 1
-		AudioManager.S.PlaySFX(eSoundName.buff1);
-
-		subMenuIsActive = false;
+		// Audio: Win
+		StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 
 		// Display text
 		DialogueManager.S.ResetSettings();
-		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nThe name has been set!");
+		PauseMessage.S.DisplayText(WordManager.S.GetRandomExclamation() + "!\nThe name has been set!\nPress the action button to proceed!", false, false, -374);
 
 		// Set Selected Gameobject
-		Utilities.S.SetSelectedGO(previousSelectedGameObject);
+		Utilities.S.SetSelectedGO(null);
 
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 		ScreenCursor.S.cursorGO[1].SetActive(true);
 		ScreenCursor.S.ResetAnimClip();
+
+		// Set party member image animation clip
+		playerImageAnim.CrossFade("Success", 0);
 
 		canUpdate = true;
 	}
 
 	public void No() {
+		// Set mode
+		mode = eKeyboardInputMenuMode.editName;
+
 		// Audio: Deny
 		AudioManager.S.PlaySFX(eSoundName.deny);
 
-		subMenuIsActive = false;
-
 		DialogueManager.S.ResetSettings();
-		PauseMessage.S.DisplayText("Oh, okay. That's cool.\nSo what's the name?");
+		PauseMessage.S.DisplayText("Oh, okay. That's cool.\nSo what's the name?", false, false, -374);
 
 		// Set Selected Gameobject
 		Utilities.S.SetSelectedGO(previousSelectedGameObject);
@@ -296,6 +370,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 		ScreenCursor.S.cursorGO[1].SetActive(true);
 		ScreenCursor.S.ResetAnimClip();
+
+		// Set party member image animation clip
+		playerImageAnim.CrossFade("Walk", 0);
 
 		canUpdate = true;
 	}
@@ -322,16 +399,4 @@ public class KeyboardInputMenu : MonoBehaviour {
 			charSlotsText[i].text = text[i].ToString();
 		}
     }
-
-	//  private void Update() {
-	//foreach (char cIt in Input.inputString) {
-	//	if (characters.Contains(cIt)) {
-	//		Debug.Log(cIt);
-	//	}
-
-	//	if(cIt == '\b') {
-	//		Debug.Log(cIt);
-	//          }
-	//}
-	//  }
 }
