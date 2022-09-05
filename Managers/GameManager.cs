@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour {
         OptionsMenu.S.Deactivate();
         //SaveMenu.S.Deactivate();
         ShopMenu.S.Deactivate();
-        //TitleScreen.S.Deactivate();
+        TitleMenu.S.Deactivate();
 
         // Deactivate Sub Menus
         gameSubMenu.gameObject.SetActive(false);
@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour {
 		////////////// Music //////////////
 		switch (currentScene) {
 			case "Title_Screen":
-				AudioManager.S.PlaySong(eSongName.zelda);
+				AudioManager.S.PlaySong(eSongName.soap);
 				break;
 			case "Playground":
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
@@ -183,6 +183,9 @@ public class GameManager : MonoBehaviour {
 
 		// Set up Player, Camera, etc. for Scene 
 		switch (currentScene) {
+			case "Title_Screen":
+				TitleMenu.S.Activate();
+				break;
 			default:
 				// Set Player Position to Respawn Position
 				Player.S.gameObject.transform.position = Player.S.respawnPos;
