@@ -51,13 +51,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Loop() {
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
-				KeyboardInputMenu.S.Activate();
-			} else {
-				KeyboardInputMenu.S.Deactivate();
-			}
-        }
+   //     if (Input.GetKeyDown(KeyCode.Y)) {
+   //         if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
+			//	KeyboardInputMenu.S.Activate();
+			//} else {
+			//	KeyboardInputMenu.S.Deactivate();
+			//}
+   //     }
 
         // Pause Screen input
         if (!Items.S.menu.gameObject.activeInHierarchy &&
@@ -103,10 +103,8 @@ public class GameManager : MonoBehaviour {
 
 		canInput = false;
 
-		//
+		// Disable player collider
 		Player.S.coll.enabled = false;
-		//Player.S.colliders[1].enabled = false;
-		//Utilities.S.SetActiveList(Player.S.colliders, false);
 
 		SceneManager.LoadScene(levelToLoad);
 		StartCoroutine("LoadSettingsCo");
@@ -170,8 +168,6 @@ public class GameManager : MonoBehaviour {
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
 			case "New Scene":
-				//AudioManager.S.PlaySong(eSongName.nineteenForty);
-				//AudioManager.S.PlaySong(eSongName.soap);
 				AudioManager.S.PlaySong(eSongName.things);
 				break;
 			case "Battle":
@@ -209,9 +205,8 @@ public class GameManager : MonoBehaviour {
 
 		canInput = true;
 
-		//
+		// Enable player collider
 		Player.S.coll.enabled = true;
-		//Player.S.colliders[1].enabled = true;
 
 		// Deactivate Black Screen
 		ColorScreen.S.anim.Play("Clear Screen", 0, 0);
