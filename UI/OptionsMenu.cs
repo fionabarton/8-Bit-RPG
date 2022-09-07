@@ -14,6 +14,11 @@ public class OptionsMenu : MonoBehaviour {
 		"Set the rate at which text is displayed!",
 		"Enable Quick Time Events (QTE) in battle!"};
 
+	// Rect transform (for positioning game object)
+	public RectTransform rectTrans;
+
+	public GameObject blackScreenGO;
+
 	[Header("Set Dynamically")]
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
 	public bool canUpdate;
@@ -82,11 +87,17 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	// Set in Inspector on OptionsScreen
-	public void Activate() {
+	public void Activate(float anchoredYPosition = 70, bool activateBlackScreen = false) {
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
 
 		gameObject.SetActive(true);
+
+		// Position game object
+		rectTrans.anchoredPosition = new Vector2(0, anchoredYPosition);
+
+		// Activate black screen
+		blackScreenGO.SetActive(activateBlackScreen);
 
 		// Set Selected Gameobject 
 		Utilities.S.SetSelectedGO(sliders[0].gameObject);
@@ -118,7 +129,7 @@ public class OptionsMenu : MonoBehaviour {
 			PauseMenu.S.canUpdate = true;
 		} else {
 			// Set Selected GameObject (New Game Button)
-			Utilities.S.SetSelectedGO(TitleScreen.S.previousSelectedButton);
+			Utilities.S.SetSelectedGO(TitleMenu.S.previousSelectedButton);
 
 			PauseMessage.S.gameObject.SetActive(false);
 		}

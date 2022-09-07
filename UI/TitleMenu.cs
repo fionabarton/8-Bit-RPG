@@ -21,14 +21,18 @@ public class TitleMenu : MonoBehaviour {
         S = this;
     }
 
+    void Start() {
+        buttons[0].transform.parent.gameObject.SetActive(false);
+    }
+
     public void Activate() {
         // Activate TitleScreenButtons gameObject
         buttons[0].transform.parent.gameObject.SetActive(true);
 
         // Add listeners
         buttons[0].onClick.AddListener(NewGame);
-       // buttons[1].onClick.AddListener(SaveMenu.S.Activate);
-        buttons[2].onClick.AddListener(OptionsMenu.S.Activate);
+        buttons[1].onClick.AddListener(SaveMenu.S.Activate);
+        buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(70, true); });
 
         // Set Selected GameObject and Position Cursor 
         if (PlayerPrefs.HasKey("0Time") || PlayerPrefs.HasKey("1Time") || PlayerPrefs.HasKey("2Time")) {
