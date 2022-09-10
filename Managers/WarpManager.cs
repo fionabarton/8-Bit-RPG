@@ -180,8 +180,12 @@ public class WarpManager : MonoBehaviour {
 
 		// Set player move point position
 		Player.S.movePoint.position = destinationPos;
-		Player.S.followers.followerMovePoints[0].transform.position = destinationPos;
-		Player.S.followers.followerMovePoints[1].transform.position = destinationPos;
+		if (Player.S.followers.followersGO[0].activeInHierarchy) {
+			Player.S.followers.followerMovePoints[0].transform.position = destinationPos;
+		}
+		if (Player.S.followers.followersGO[1].activeInHierarchy) {
+			Player.S.followers.followerMovePoints[1].transform.position = destinationPos;
+		}
 
 		// Clear cached follower properties
 		Player.S.followers.movePoints.Clear();
