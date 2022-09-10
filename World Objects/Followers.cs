@@ -28,8 +28,10 @@ public class Followers : MonoBehaviour {
 		facingRights.Insert(0, facingRight);
 
 		if (movePoints.Count > 3) {
-			// Set follower's movePoint pos
-			followerMovePoints[1].position = movePoints[3];
+            // Set follower's movePoint pos
+            if (followersGO[1].gameObject.activeInHierarchy) {
+                followerMovePoints[1].position = movePoints[3];
+			}
 
 			// Set followers' facing 
 			SetFollowerFacing(1);
@@ -40,7 +42,9 @@ public class Followers : MonoBehaviour {
 		}
 		if (movePoints.Count > 1) {
 			// Set follower's movePoint pos 
-			followerMovePoints[0].position = movePoints[1];
+			if (followersGO[0].gameObject.activeInHierarchy) {
+				followerMovePoints[0].position = movePoints[1];
+			}
 
 			// Set followers' facing
 			SetFollowerFacing(0);
@@ -65,11 +69,16 @@ public class Followers : MonoBehaviour {
 		if (animations.Count > 3) {
 			SetOrderInLayer();
 
-			followerAnims[1].CrossFade(animations[3], 0);
+			if (followersGO[1].activeInHierarchy) {
+				followerAnims[1].CrossFade(animations[3], 0);
+			}
+
 			animations.RemoveAt(animations.Count - 1);
 		}
 		if (animations.Count > 1) {
-			followerAnims[0].CrossFade(animations[1], 0);
+			if (followersGO[0].activeInHierarchy) {
+				followerAnims[0].CrossFade(animations[1], 0);
+			}
 		}
 	}
 

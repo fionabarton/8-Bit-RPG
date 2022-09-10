@@ -66,9 +66,9 @@ public class Player : MonoBehaviour {
 	}
 
     void Start() {
-		movePoint.parent = null;
-		followers.followerMovePoints[0].parent = null;
-		followers.followerMovePoints[1].parent = null;
+		movePoint.parent = ObjectPool.S.poolAnchor;
+		followers.followerMovePoints[0].parent = ObjectPool.S.poolAnchor;
+		followers.followerMovePoints[1].parent = ObjectPool.S.poolAnchor;
 
 		// Add Loop() and FixedLoop() to UpdateManager
 		UpdateManager.updateDelegate += Loop;
@@ -92,10 +92,16 @@ public class Player : MonoBehaviour {
 				}
             }
 
-			// Move Blob and its followers towards their movePoints
+			// Move Blob towards its movePoint
 			transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);
-			followers.followersGO[0].transform.position = Vector3.MoveTowards(followers.followersGO[0].transform.position, followers.followerMovePoints[0].position, speed * Time.deltaTime);
-			followers.followersGO[1].transform.position = Vector3.MoveTowards(followers.followersGO[1].transform.position, followers.followerMovePoints[1].position, speed * Time.deltaTime);
+
+			// Move followers towards their movePoints
+			if (followers.followersGO[0].activeInHierarchy) {
+				followers.followersGO[0].transform.position = Vector3.MoveTowards(followers.followersGO[0].transform.position, followers.followerMovePoints[0].position, speed * Time.deltaTime);
+			}
+            if (followers.followersGO[1].activeInHierarchy) {
+				followers.followersGO[1].transform.position = Vector3.MoveTowards(followers.followersGO[1].transform.position, followers.followerMovePoints[1].position, speed * Time.deltaTime);
+			}
 
 			// If gameObject is on movePoint
 			if (Vector3.Distance(transform.position, movePoint.position) == 0f) {
