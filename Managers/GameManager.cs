@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -43,29 +42,29 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
-        // Load First Scene
-        LoadLevel(firstScene);
+		// Load First Scene
+		LoadLevel(firstScene);
 
         // Add Loop() to UpdateManager
         UpdateManager.updateDelegate += Loop;
 	}
 
 	public void Loop() {
-   //     if (Input.GetKeyDown(KeyCode.Y)) {
-   //         if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
-			//	KeyboardInputMenu.S.Activate();
-			//} else {
-			//	KeyboardInputMenu.S.Deactivate();
-			//}
-   //     }
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            if (!SaveMenu.S.gameObject.activeInHierarchy) {
+				SaveMenu.S.Activate();
+            } else {
+				SaveMenu.S.Deactivate();
+            }
+        }
 
-        // Pause Screen input
-        if (!Items.S.menu.gameObject.activeInHierarchy &&
+		// Pause Screen input
+		if (!Items.S.menu.gameObject.activeInHierarchy &&
             !Spells.S.menu.gameObject.activeInHierarchy &&
             !EquipMenu.S.gameObject.activeInHierarchy &&
             !ShopMenu.S.gameObject.activeInHierarchy &&
-            !OptionsMenu.S.gameObject.activeInHierarchy) {
-            //!SaveMenu.S.gameObject.activeInHierarchy) {
+            !OptionsMenu.S.gameObject.activeInHierarchy &&
+			!SaveMenu.S.gameObject.activeInHierarchy) {
 
             if (!Player.S.isBattling) {
                 if (currentScene != "Title_Screen") {
@@ -136,7 +135,7 @@ public class GameManager : MonoBehaviour {
 		Spells.S.menu.Deactivate();
 		EquipMenu.S.Deactivate();
         OptionsMenu.S.Deactivate();
-        //SaveMenu.S.Deactivate();
+        SaveMenu.S.Deactivate();
         ShopMenu.S.Deactivate();
         TitleMenu.S.Deactivate();
 
