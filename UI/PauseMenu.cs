@@ -51,25 +51,26 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	void Start() {
-		UnPause();
-    }
+		SetUp();
+		gameObject.SetActive(false);
+	}
 
-	void OnEnable() {
+	void SetUp() {
 		canUpdate = true;
 
 		try {
 			// Display Player Stats (Level, HP, MP, EXP)
 			UpdateGUI();
 
-            // Deactivate all player gameObjects 
-            for (int i = 0; i < playerGO.Count; i++) {
-                playerGO[i].SetActive(false);
-            }
+			// Deactivate all player gameObjects 
+			for (int i = 0; i < playerGO.Count; i++) {
+				playerGO[i].SetActive(false);
+			}
 
-            // Activate player gameObjects depending on party amount
-            for (int i = 0; i <= Party.S.partyNdx; i++) {
-                playerGO[i].SetActive(true);
-            }
+			// Activate player gameObjects depending on party amount
+			for (int i = 0; i <= Party.S.partyNdx; i++) {
+				playerGO[i].SetActive(true);
+			}
 
 			// Set party stats UI positions
 			switch (Party.S.partyNdx) {
@@ -90,8 +91,8 @@ public class PauseMenu : MonoBehaviour {
 			// Activate Cursor
 			ScreenCursor.S.cursorGO[0].SetActive(true);
 
-            // Account for time that PauseScreen is not active
-            timeWhenEnabled = Time.time;
+			// Account for time that PauseScreen is not active
+			timeWhenEnabled = Time.time;
 			float tTime = timeWhenEnabled - timeWhenDisabled;
 			minutes += (int)tTime / 60;
 			seconds += (int)tTime % 60;
@@ -103,7 +104,7 @@ public class PauseMenu : MonoBehaviour {
 		}
 	}
 
-	void OnDisable() {
+    void OnDisable() {
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
@@ -175,6 +176,10 @@ public class PauseMenu : MonoBehaviour {
 		//}
 
 		gameObject.SetActive(true);
+
+		SetUp();
+
+		
 
         // Buttons Interactable
         Utilities.S.ButtonsInteractable(buttonCS, true);
