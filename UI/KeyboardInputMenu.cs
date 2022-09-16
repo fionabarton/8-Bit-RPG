@@ -257,18 +257,18 @@ public class KeyboardInputMenu : MonoBehaviour {
 			// Set party member image animation clip
 			playerImageAnim.CrossFade("Walk", 0);
 		} else {
-			// Input box shake animation
-			inputBoxAnim.CrossFade("Shake", 0);
+            // Input box shake animation
+            inputBoxAnim.CrossFade("Shake", 0);
 
-			// Audio: Damage
-			AudioManager.S.PlayRandomDamageSFX();
+            // Audio: Damage
+            AudioManager.S.PlayRandomDamageSFX();
 
-			// Display text
-			PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't delete anymore characters;\nthere's nothing left to delete!", false, false, -374);
+            // Display text
+            PauseMessage.S.DisplayText(WordManager.S.GetRandomInterjection() + "!\nYa can't delete anymore characters;\nthere's nothing left to delete!", false, false, -374);
 
-			// Set party member image animation clip
-			playerImageAnim.CrossFade("Damage", 0);
-		}
+            // Set party member image animation clip
+            playerImageAnim.CrossFade("Damage", 0);
+        }
 	}
 
 	// Sets the displayed name to a predetermined default name
@@ -294,6 +294,11 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
+	}
+
+	public void BackToMenu() {
+		Deactivate();
+		TitleMenu.S.Activate();
 	}
 
 	public void OK() {
