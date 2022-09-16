@@ -297,6 +297,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 	}
 
 	public void BackToMenu() {
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.deny);
+
 		Deactivate();
 		TitleMenu.S.Activate();
 	}
