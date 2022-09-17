@@ -7,6 +7,8 @@ public class Curtain : MonoBehaviour {
 	public Animator anim;
 
 	[Header("Set Dynamically")]
+	public bool isOpen;
+	
 	private static Curtain _S;
 	public static Curtain S { get { return _S; } set { _S = value; } }
 
@@ -15,7 +17,9 @@ public class Curtain : MonoBehaviour {
 	}
 
 	public void Open() {
-		if(Random.value > 0.5f) {
+		isOpen = true;
+
+		if (Random.value > 0.5f) {
 			anim.Play("Horizontal_Open");
 		} else {
 			anim.Play("Vertical_Open");
@@ -23,6 +27,8 @@ public class Curtain : MonoBehaviour {
 	}
 
 	public void Close() {
+		isOpen = false;
+
 		if (Random.value > 0.5f) {
 			anim.Play("Horizontal_Close");
 		} else {
