@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour {
 		ColorScreen.S.anim.Play("Clear Screen", 0, 0);
 
 		// Open Curtains 
-		if (currentScene == "Battle" || previousScene == "Title_Screen") {
+		if (!Curtain.S.isOpen) {
 			Curtain.S.Open();
 		}
 	}
