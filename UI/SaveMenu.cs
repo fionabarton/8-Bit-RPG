@@ -8,12 +8,14 @@ Current HP/MP, Steps, Party Members, Inventory, Equipment, Doors/Chests/KeyItems
  */
 public class SaveMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
+	// Load, save, delete buttons
+	public List<Button> actionButtons;
+
+	// File slot buttons
 	public List<Button> slotButtons;
 
+	// File slot text descriptions (name, lvl, time, etc.)
 	public List<Text> slotDataText;
-
-	// Load, Save, Delete
-	public List<Button> actionButtons;
 
 	[Header("Set Dynamically")]
 	// For Input & Display Message
@@ -23,8 +25,8 @@ public class SaveMenu : MonoBehaviour {
 	public bool canUpdate;
 
 	// Ensures audio is only played once when button is selected
-	GameObject previousSelectedActionButton;
-	GameObject previousSelectedSlotButton;
+	public GameObject previousSelectedActionButton;
+	public GameObject previousSelectedSlotButton;
 
 	// Index of the file the user is currently playing
 	public int currentFileNdx;
@@ -74,6 +76,9 @@ public class SaveMenu : MonoBehaviour {
 			actionButtons[1].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(1); });
 			actionButtons[2].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(2); });
 
+			// Reset slot buttons color
+			Utilities.S.SetTextColor(slotButtons, new Color32(255, 255, 255, 255));
+
 			canUpdate = true;
 		}
 		catch (Exception e) {
@@ -84,6 +89,8 @@ public class SaveMenu : MonoBehaviour {
 	public void Activate() {
 		// Ensures first slot is selected when screen enabled
 		previousSelectedActionButton = actionButtons[0].gameObject;
+
+		previousSelectedSlotButton = slotButtons[0].gameObject;
 
 		SetUp();
 
@@ -104,13 +111,10 @@ public class SaveMenu : MonoBehaviour {
 	}
 
 	public void Deactivate(bool playSound = false) {
-		if (GameManager.S.currentScene != "Battle" || GameManager.S.currentScene != "Title_Screen") {
+		if (GameManager.S.currentScene != "Title_Screen") {
 			// Unfreeze player
 			GameManager.S.paused = false;
 			Player.S.canMove = true;
-
-			// Deactivate PauseMessage
-			PauseMessage.S.gameObject.SetActive(false);
 
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
@@ -125,19 +129,21 @@ public class SaveMenu : MonoBehaviour {
 			ScreenCursor.S.cursorGO[0].SetActive(false);
 
 			PauseMenu.S.canUpdate = true;
-		}
-
-		if (GameManager.S.currentScene == "Title_Screen") {
+		} else {
 			// Set Selected GameObject (New Game Button)
 			Utilities.S.SetSelectedGO(TitleMenu.S.previousSelectedButton);
 
-			PauseMessage.S.gameObject.SetActive(false);
+			// Buttons Interactable
+			Utilities.S.ButtonsInteractable(TitleMenu.S.buttons, true);
 		}
 
 		if (playSound) {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
+
+		// Deactivate PauseMessage
+		PauseMessage.S.gameObject.SetActive(false);
 
 		// Update Delegate
 		UpdateManager.updateDelegate -= Loop;
@@ -155,13 +161,22 @@ public class SaveMenu : MonoBehaviour {
 		switch (saveScreenMode) {
 			case eSaveScreenMode.pickAction:
 				if (canUpdate) {
-					// Set cursor position
-					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
-						Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 100);
-					}
+					for (int i = 0; i < actionButtons.Count; i++) {
+						if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == actionButtons[i].gameObject) {
+							// Set Cursor Position set to Selected Button
+							Utilities.S.PositionCursor(actionButtons[i].gameObject, 100, 5);
 
-					// Audio: Selection (when a new gameObject is selected)
-					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedActionButton);
+							// Set selected button text color	
+							actionButtons[i].GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
+
+							// Audio: Selection (when a new gameObject is selected)
+							Utilities.S.PlayButtonSelectedSFX(ref previousSelectedActionButton);
+						} else {
+							// Set non-selected button text color
+							actionButtons[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+						}
+					}
+					canUpdate = false;
 				}
 
 				if (Input.GetButtonDown("SNES Y Button")) {
@@ -170,13 +185,22 @@ public class SaveMenu : MonoBehaviour {
 				break;
 			case eSaveScreenMode.pickFile:
 				if (canUpdate) {
-					// Set cursor position
-					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject != null) {
-						Utilities.S.PositionCursor(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject, 100);
-					}
+					for (int i = 0; i < slotButtons.Count; i++) {
+						if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == slotButtons[i].gameObject) {
+							// Set Cursor Position set to Selected Button
+							Utilities.S.PositionCursor(slotButtons[i].gameObject, 100, 5);
 
-					// Audio: Selection (when a new gameObject is selected)
-					Utilities.S.PlayButtonSelectedSFX(ref previousSelectedSlotButton);
+							// Set selected button text color	
+							slotButtons[i].GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
+
+							// Audio: Selection (when a new gameObject is selected)
+							Utilities.S.PlayButtonSelectedSFX(ref previousSelectedSlotButton);
+						} else {
+							// Set non-selected button text color
+							slotButtons[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+						}
+					}
+					canUpdate = false;
 				}
 
 				if (Input.GetButtonDown("SNES Y Button")) {
@@ -234,9 +258,6 @@ public class SaveMenu : MonoBehaviour {
 		// Set Selected GameObject
 		Utilities.S.SetSelectedGO(slotButtons[0].gameObject);
 
-		// Set previously selected GameObject
-		previousSelectedSlotButton = slotButtons[0].gameObject;
-
 		currentActionNdx = loadSaveOrDelete;
 
 		switch (loadSaveOrDelete) {
@@ -265,6 +286,8 @@ public class SaveMenu : MonoBehaviour {
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
+
+		canUpdate = true;
 
 		saveScreenMode = eSaveScreenMode.pickFile;
 	}
@@ -374,8 +397,12 @@ public class SaveMenu : MonoBehaviour {
 		// Reset stats to starting stats
 		Party.S.stats.Clear();
 
-        // Player 1
-        Party.S.stats.Add(new PartyStats("Blob", 40, 40, 40, 6, 6, 6,
+		// Reset time that PauseMenu is not active
+		PauseMenu.S.timeWhenEnabled = 0;
+		PauseMenu.S.timeWhenDisabled = 0;
+
+		// Player 1
+		Party.S.stats.Add(new PartyStats("Blob", 40, 40, 40, 6, 6, 6,
             2, 2, 2, 2, 1, 1, 1, 1,
             0, 1, 6,
             new List<Spell> { Spells.S.spells[1], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[4], Spells.S.spells[5], Spells.S.spells[3] },
@@ -437,15 +464,29 @@ public class SaveMenu : MonoBehaviour {
 			WarpManager.S.visitedLocations.Add(WarpManager.S.locations[ndx]);
 		}
 
-        // Warp to this file's current location
-        StartCoroutine(WarpManager.S.Warp(
-            WarpManager.S.visitedLocations[PlayerPrefs.GetInt(fileNdx + "LocationNdx")].position,
-            true,
-            WarpManager.S.visitedLocations[PlayerPrefs.GetInt(fileNdx + "LocationNdx")].sceneName));
+		// Close Curtains
+		Curtain.S.Close();
+
+		// Audio: Buff 2
+		AudioManager.S.PlaySFX(eSoundName.buff2);
+
+		// Delay, then Load Scene
+		Invoke("Warp", 1f);
     }
 
-	void SaveFile(int fileNdx) {
-		// Slot 1
+
+    void Warp() {
+        // Warp to this file's current location
+        StartCoroutine(WarpManager.S.Warp(
+            WarpManager.S.visitedLocations[PlayerPrefs.GetInt(currentFileNdx + "LocationNdx")].position,
+            true,
+            WarpManager.S.visitedLocations[PlayerPrefs.GetInt(currentFileNdx + "LocationNdx")].sceneName));
+    }
+
+    void SaveFile(int fileNdx) {
+		// Account for time that PauseMenu is not active
+		PauseMenu.S.AddTimeWhileInactiveToTime();
+
 		PlayerPrefs.SetInt(fileNdx + "Player1Level", Party.S.stats[0].LVL);
 		PlayerPrefs.SetInt(fileNdx + "Player2Level", Party.S.stats[1].LVL);
 		PlayerPrefs.SetInt(fileNdx + "Player3Level", Party.S.stats[2].LVL);
@@ -465,8 +506,7 @@ public class SaveMenu : MonoBehaviour {
 		FileHelper("Saved game!");
 	}
 
-	void DeleteFile(int fileNdx) {
-		// Slot 1		
+	void DeleteFile(int fileNdx) {	
 		PlayerPrefs.SetInt(fileNdx + "Player1Level", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player2Level", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player3Level", 0);
@@ -527,9 +567,9 @@ public class SaveMenu : MonoBehaviour {
 					slotDataText[i].text = "<color=yellow>New Game</color>";
 				} else {
 					slotDataText[i].text =
-					"<color=yellow>Name:</color> " + PlayerPrefs.GetString(i + "Name") + "    " + "<color=yellow>Level:</color> " + PlayerPrefs.GetInt(i + "Player1Level") + "\n" +
-					"<color=yellow>Time:</color> " + PlayerPrefs.GetString(i + "Time") + "    " + "<color=yellow>Gold:</color> " + PlayerPrefs.GetInt(i + "Gold") + "    " +
-					"<color=yellow>Location:</color> " + PlayerPrefs.GetString(i + "LocationName");
+					"<color=yellow>Name:</color> " + PlayerPrefs.GetString(i + "Name") + "    " + "<color=yellow>Level:</color> " + PlayerPrefs.GetInt(i + "Player1Level") + "    " +
+					"<color=yellow>Time:</color> " + PlayerPrefs.GetString(i + "Time") + "\n" + "<color=yellow>Location:</color> " + PlayerPrefs.GetString(i + "LocationName") + "    " +
+					"<color=yellow>Gold:</color> " + PlayerPrefs.GetInt(i + "Gold");
 				}
 			}
 		}

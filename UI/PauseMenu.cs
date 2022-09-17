@@ -24,16 +24,16 @@ public class PauseMenu : MonoBehaviour {
 	public List<Animator> statFrameAnims;
 
 	[Header("Set Dynamically")]
-	// Stats
+	// Amount of time spent playing (excluding time spent on title screen)
 	public int seconds;
 	public int minutes;
 
 	// Resets timer
 	float timeDone;
 
-	// Account for time that PauseScreen is not active
-	float timeWhenEnabled;
-	float timeWhenDisabled;
+	// Account for time that PauseMenu is not active
+	public float timeWhenEnabled;
+	public float timeWhenDisabled;
 
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
 	public bool canUpdate;
@@ -91,12 +91,6 @@ public class PauseMenu : MonoBehaviour {
 			// Activate Cursor
 			ScreenCursor.S.cursorGO[0].SetActive(true);
 
-			// Account for time that PauseScreen is not active
-			timeWhenEnabled = Time.time;
-			float tTime = timeWhenEnabled - timeWhenDisabled;
-			minutes += (int)tTime / 60;
-			seconds += (int)tTime % 60;
-
 			StartCoroutine("FixedUpdateCoroutine");
 		}
 		catch (Exception e) {
@@ -107,9 +101,6 @@ public class PauseMenu : MonoBehaviour {
     void OnDisable() {
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
-
-		// Account for time that PauseScreen is not active
-		timeWhenDisabled = Time.time;
 
 		StopCoroutine("FixedUpdateCoroutine");
 	}
@@ -179,8 +170,6 @@ public class PauseMenu : MonoBehaviour {
 
 		SetUp();
 
-		
-
         // Buttons Interactable
         Utilities.S.ButtonsInteractable(buttonCS, true);
 
@@ -200,8 +189,20 @@ public class PauseMenu : MonoBehaviour {
         // Audio: Confirm
         AudioManager.S.PlaySFX(eSoundName.confirm);
 
+		// Account for time that PauseMenu is not active
+		AddTimeWhileInactiveToTime();
+
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
+	}
+
+	// Account for time that PauseMenu is not active
+	public void AddTimeWhileInactiveToTime() {
+		// Account for time that PauseScreen is not active
+		timeWhenEnabled = Time.time;
+		float tTime = timeWhenEnabled - timeWhenDisabled;
+		minutes += (int)tTime / 60;
+		seconds += (int)tTime % 60;
 	}
 
 	public void UnPause(bool playSound = false) {
@@ -225,6 +226,9 @@ public class PauseMenu : MonoBehaviour {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
+
+		// Account for time that PauseScreen is not active
+		timeWhenDisabled = Time.time;
 
 		// Update Delegate
 		UpdateManager.updateDelegate -= Loop;
