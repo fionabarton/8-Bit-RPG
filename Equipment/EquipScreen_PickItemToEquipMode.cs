@@ -64,7 +64,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 		Utilities.S.ResetButtonNavigation(equipScreen.inventoryButtons);
 
 		// Set button navigation if inventory is less than 10
-		if (SortItems.S.tItems.Count < equipScreen.inventoryButtons.Count) {
+		if (SortItems.S.tItems.Count <= equipScreen.inventoryButtons.Count) {
 			if (SortItems.S.tItems.Count > 1) {
 				// Set first button navigation
 				Utilities.S.SetButtonNavigation(
