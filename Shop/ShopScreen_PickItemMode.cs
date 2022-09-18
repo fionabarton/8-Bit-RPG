@@ -164,7 +164,7 @@ public class ShopScreen_PickItemMode : MonoBehaviour {
 		Utilities.S.ResetButtonNavigation(shopScreen.inventoryButtons);
 
 		// Set button navigation if inventory is less than 10
-		if (shopScreen.inventory.Count < shopScreen.inventoryButtons.Count) {
+		if (shopScreen.inventory.Count <= shopScreen.inventoryButtons.Count) {
 			if (shopScreen.inventory.Count > 1) {
 				// Set first button navigation
 				Utilities.S.SetButtonNavigation(
