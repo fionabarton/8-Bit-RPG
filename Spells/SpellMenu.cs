@@ -426,7 +426,7 @@ public class SpellMenu : MonoBehaviour {
 		Utilities.S.ResetButtonNavigation(spellsButtons);
 
 		// Set button navigation if inventory is less than 10
-		if (Party.S.stats[playerNdx].spellNdx < spellsButtons.Count) {
+		if (Party.S.stats[playerNdx].spellNdx <= spellsButtons.Count) {
 			if (Party.S.stats[playerNdx].spellNdx > 1) {
 				// Set first button navigation
 				Utilities.S.SetButtonNavigation(
