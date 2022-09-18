@@ -75,7 +75,7 @@ public class PickItemMode : MonoBehaviour {
 		Utilities.S.ResetButtonNavigation(itemScreen.itemButtons);
 
 		// Set button navigation if inventory is less than 10
-		if (Inventory.S.GetItemList().Count < itemScreen.itemButtons.Count) {
+		if (Inventory.S.GetItemList().Count <= itemScreen.itemButtons.Count) {
 			if (Inventory.S.GetItemList().Count > 1) {
 				// Set first button navigation
 				Utilities.S.SetButtonNavigation(
