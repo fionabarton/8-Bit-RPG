@@ -447,6 +447,7 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "LocationName")) { WarpManager.S.locationName = PlayerPrefs.GetString(fileNdx + "LocationName"); }
 		if (PlayerPrefs.HasKey(fileNdx + "VisitedLocations")) { WarpManager.S.visitedLocationNdxs = PlayerPrefs.GetString(fileNdx + "VisitedLocations"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Inventory")) { Inventory.S.GetInventoryFromString(PlayerPrefs.GetString(fileNdx + "Inventory")); }
+		if (PlayerPrefs.HasKey(fileNdx + "UnlockedDoors")) { DoorManager.S.UnlockDoorsFromString(PlayerPrefs.GetString(fileNdx + "UnlockedDoors")); }
 
 		// Level Up
 		Party.S.CheckForLevelUp();
@@ -508,6 +509,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "LocationName", WarpManager.S.locationName);
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", WarpManager.S.visitedLocationNdxs);
 		PlayerPrefs.SetString(fileNdx + "Inventory", Inventory.S.GetInventoryString());
+		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", DoorManager.S.GetIsUnlockedString());
 
 		FileHelper("Saved game!");
 	}
@@ -531,6 +533,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "LocationName", "");
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", "");
 		PlayerPrefs.SetString(fileNdx + "Inventory", "");
+		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", "");
 
 		FileHelper("Deleted game!");
 	}
