@@ -47,4 +47,41 @@ public class DoorManager : MonoBehaviour {
 			}
 		}
 	}
+
+	// Load/save which doors are unlocked/locked //////////////////
+	///////////////////////////////////////////////////////////////
+
+	// Save which doors are unlocked/locked:
+	// Convert list of bools into a string of 0's and 1's
+	public string GetIsUnlockedString() {
+		// Initialize string to store 0's and 1's
+		string isUnlockedString = "";
+
+		// Loop over all doors
+		for (int i = 0; i < isUnlocked.Count; i++) {
+			// If door is unlocked/locked, add 0/1
+			if (isUnlocked[i]) {
+				isUnlockedString += "1";
+			} else {
+				isUnlockedString += "0";
+			}
+		}
+
+		// Return string of 0's and 1's
+		return isUnlockedString;
+	}
+
+	// Load which doors are unlocked/locked:
+	// Read string of 0's and 1's to set list of bools
+	public void UnlockDoorsFromString(string isUnlockedString) {
+		// Loop over string of 0's and 1's
+		for (int i = 0; i < isUnlockedString.Length; i++) {
+			// If char is 0/1, lock/unlock door
+			if (isUnlockedString[i].ToString() == "0") {
+				isUnlocked[i] = false;
+			} else {
+				isUnlocked[i] = true;
+			}
+		}
+	}
 }
