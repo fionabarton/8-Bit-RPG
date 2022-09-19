@@ -440,10 +440,13 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Time")) { PauseMenu.S.fileStatsNumText.text = PlayerPrefs.GetString(fileNdx + "Time"); } // Stores Time in 0:00 format
 		if (PlayerPrefs.HasKey(fileNdx + "Seconds")) { PauseMenu.S.seconds = PlayerPrefs.GetInt(fileNdx + "Seconds"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Minutes")) { PauseMenu.S.minutes = PlayerPrefs.GetInt(fileNdx + "Minutes"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Name")) { Party.S.stats[0].name = PlayerPrefs.GetString(fileNdx + "Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1Name")) { Party.S.stats[0].name = PlayerPrefs.GetString(fileNdx + "Player1Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2Name")) { Party.S.stats[1].name = PlayerPrefs.GetString(fileNdx + "Player2Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3Name")) { Party.S.stats[2].name = PlayerPrefs.GetString(fileNdx + "Player3Name"); }
 		if (PlayerPrefs.HasKey(fileNdx + "LocationNdx")) { WarpManager.S.locationNdx = PlayerPrefs.GetInt(fileNdx + "LocationNdx"); }
 		if (PlayerPrefs.HasKey(fileNdx + "LocationName")) { WarpManager.S.locationName = PlayerPrefs.GetString(fileNdx + "LocationName"); }
 		if (PlayerPrefs.HasKey(fileNdx + "VisitedLocations")) { WarpManager.S.visitedLocationNdxs = PlayerPrefs.GetString(fileNdx + "VisitedLocations"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Inventory")) { Inventory.S.GetInventoryFromString(PlayerPrefs.GetString(fileNdx + "Inventory")); }
 
 		// Level Up
 		Party.S.CheckForLevelUp();
@@ -498,10 +501,13 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Time", PauseMenu.S.GetTime()); // Stores Time in 0:00 format
 		PlayerPrefs.SetInt(fileNdx + "Seconds", PauseMenu.S.seconds);
 		PlayerPrefs.SetInt(fileNdx + "Minutes", PauseMenu.S.minutes);
-		PlayerPrefs.SetString(fileNdx + "Name", Party.S.stats[0].name);
+		PlayerPrefs.SetString(fileNdx + "Player1Name", Party.S.stats[0].name);
+		PlayerPrefs.SetString(fileNdx + "Player2Name", Party.S.stats[1].name);
+		PlayerPrefs.SetString(fileNdx + "Player3Name", Party.S.stats[2].name);
 		PlayerPrefs.SetInt(fileNdx + "LocationNdx", WarpManager.S.locationNdx);
 		PlayerPrefs.SetString(fileNdx + "LocationName", WarpManager.S.locationName);
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", WarpManager.S.visitedLocationNdxs);
+		PlayerPrefs.SetString(fileNdx + "Inventory", Inventory.S.GetInventoryString());
 
 		FileHelper("Saved game!");
 	}
@@ -518,10 +524,13 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Time", "0:00"); // Stores Time in 0:00 format
 		PlayerPrefs.SetInt(fileNdx + "Seconds", 0);
 		PlayerPrefs.SetInt(fileNdx + "Minutes", 0);
-		PlayerPrefs.SetString(fileNdx + "Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player1Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player2Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player3Name", "");
 		PlayerPrefs.SetInt(fileNdx + "LocationNdx", 0);
 		PlayerPrefs.SetString(fileNdx + "LocationName", "");
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", "");
+		PlayerPrefs.SetString(fileNdx + "Inventory", "");
 
 		FileHelper("Deleted game!");
 	}
