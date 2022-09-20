@@ -69,16 +69,16 @@ public class ItemMenu : MonoBehaviour {
 	}
 
 	public void Deactivate(bool playSound = false) {
-        // Deactivate Cursors if in Battle Mode
-        if (!GameManager.S.paused) {
-            Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
-        }
+		// Activate cursor
+		if (!ScreenCursor.S.cursorGO[0].activeInHierarchy) {
+			ScreenCursor.S.cursorGO[0].SetActive(true);
+		}
 
-        // Set Battle Turn Cursor sorting layer ABOVE UI
-        //Battle.S.UI.turnCursorSRend.sortingLayerName = "Above UI";
+		// Set Battle Turn Cursor sorting layer ABOVE UI
+		//Battle.S.UI.turnCursorSRend.sortingLayerName = "Above UI";
 
-        // Remove Listeners
-        Utilities.S.RemoveListeners(itemButtons);
+		// Remove Listeners
+		Utilities.S.RemoveListeners(itemButtons);
 
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
