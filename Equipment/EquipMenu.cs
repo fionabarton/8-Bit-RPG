@@ -23,7 +23,7 @@ public class EquipMenu : MonoBehaviour {
 
 	// Each party member's current equipment ([playerNdx][Weapon, Armor, Helmet, Other])
 	public List<List<Item>> playerEquipment = new List<List<Item>>();
-
+	
 	public eEquipScreenMode equipScreenMode = eEquipScreenMode.pickPartyMember;
 
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
@@ -337,5 +337,60 @@ public class EquipMenu : MonoBehaviour {
 			}
 		}
 		return count;
+	}
+
+	// Load/save a party members's equipped gear //////////////////
+	///////////////////////////////////////////////////////////////
+
+	// Save a party members's equipped gear:
+	// Convert a party members's equipped gear into a string of item ids
+	public string GetEquippedGearString(int ndx) {
+		// Get list of items
+		List<Item> list = new List<Item>(playerEquipment[ndx]);
+
+		// Initialize string to store item ids
+		string inventoryString = "";
+
+		// Loop over each item 
+		for (int i = 0; i < list.Count; i++) {
+			// Add item id to inventorystring
+			inventoryString += list[i].id;
+		}
+
+		// Return string of item keys
+		return inventoryString;
+	}
+
+	// Load a party members's equipped gear:
+	// Convert a string of item ids into a party members's equipped gear
+	public void GetEquippedGearString(string inventoryString, int ndx) {
+		// Clear current inventory 
+		playerEquipment[ndx].Clear();
+
+		// Initialize string to temporarily store each item id
+		string itemId = "";
+
+		// Loop over string of item ids
+		for (int i = 0; i < inventoryString.Length; i++) {
+			// Build 3-char item id
+			itemId += inventoryString[i];
+
+			// Every 3rd char...
+			if ((i + 1) % 3 == 0) {
+				// If item id is valid...
+				for (int j = 0; j < Items.S.items.Length; j++) {
+					if (itemId == Items.S.items[j].id) {
+						// Add item to player equipment
+						playerEquipment[ndx].Add(Items.S.items[j]);
+
+						// Add item effect
+						equipStatsEffect.AddItemEffect(ndx, Items.S.items[j]);
+					}
+				}
+
+				// Reset string to build next 3-char item id
+				itemId = "";
+			}
+		}
 	}
 }
