@@ -449,6 +449,9 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Inventory")) { Inventory.S.GetInventoryFromString(PlayerPrefs.GetString(fileNdx + "Inventory")); }
 		if (PlayerPrefs.HasKey(fileNdx + "UnlockedDoors")) { DoorManager.S.UnlockDoorsFromString(PlayerPrefs.GetString(fileNdx + "UnlockedDoors")); }
 		if (PlayerPrefs.HasKey(fileNdx + "OpenChests")) { ChestManager.S.OpenChestsFromString(PlayerPrefs.GetString(fileNdx + "OpenChests")); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player1Gear"), 0); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player2Gear"), 1); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
 
 		// Level Up
 		Party.S.CheckForLevelUp();
@@ -512,6 +515,9 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Inventory", Inventory.S.GetInventoryString());
 		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", DoorManager.S.GetIsUnlockedString());
 		PlayerPrefs.SetString(fileNdx + "OpenChests", ChestManager.S.GetIsOpenString());
+		PlayerPrefs.SetString(fileNdx + "Player1Gear", EquipMenu.S.GetEquippedGearString(0));
+		PlayerPrefs.SetString(fileNdx + "Player2Gear", EquipMenu.S.GetEquippedGearString(1));
+		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
 
 		FileHelper("Saved game!");
 	}
@@ -537,6 +543,9 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Inventory", "");
 		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", "");
 		PlayerPrefs.SetString(fileNdx + "OpenChests", "");
+		PlayerPrefs.SetString(fileNdx + "Player1Gear", "");
+		PlayerPrefs.SetString(fileNdx + "Player2Gear", "");
+		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
 
 		FileHelper("Deleted game!");
 	}
