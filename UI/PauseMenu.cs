@@ -157,16 +157,16 @@ public class PauseMenu : MonoBehaviour {
 
 	// ************ PAUSE ************ \\
 	public void Pause() {
-		// If SubMenu enabled when Paused, re-select this GO when Unpaused
-		//previousSelectedSubMenuGameObject = null;
-		//for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
-		//	if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
-		//		previousSelectedSubMenuGameObject = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-		//	}
-		//	GameManager.S.gameSubMenu.buttonCS[i].interactable = false;
-		//}
+        // If SubMenu enabled when Paused, re-select this GO when Unpaused
+        previousSelectedSubMenuGameObject = null;
+        for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
+            if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
+                previousSelectedSubMenuGameObject = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+            }
+            GameManager.S.gameSubMenu.buttonCS[i].interactable = false;
+        }
 
-		gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
 		SetUp();
 
@@ -206,21 +206,24 @@ public class PauseMenu : MonoBehaviour {
 	}
 
 	public void UnPause(bool playSound = false) {
-		// Unfreeze player
+		// Unpause game
 		GameManager.S.paused = false;
-		Player.S.canMove = true;
+
+		// If sub menu is inactive, unfreeze player
+		if (!GameManager.S.gameSubMenu.gameObject.activeInHierarchy) {
+			Player.S.canMove = true;
+		}
 
         // Deactivate PauseMessage
         PauseMessage.S.gameObject.SetActive(false);
 
         // If SubMenu enabled when Paused, re-select this GO when Unpaused
-        // TBR: Account for SubMenu having 2 to 4 options
-        //for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
-        //	if (previousSelectedSubMenuGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
-        //		Utilities.S.SetSelectedGO(previousSelectedSubMenuGameObject);
-        //	}
-        //	GameManager.S.gameSubMenu.buttonCS[i].interactable = true;
-        //}
+        for (int i = 0; i < GameManager.S.gameSubMenu.buttonGO.Count; i++) {
+            if (previousSelectedSubMenuGameObject == GameManager.S.gameSubMenu.buttonGO[i]) {
+                Utilities.S.SetSelectedGO(previousSelectedSubMenuGameObject);
+            }
+            GameManager.S.gameSubMenu.buttonCS[i].interactable = true;
+        }
 
         if (playSound) {
 			// Audio: Deny
