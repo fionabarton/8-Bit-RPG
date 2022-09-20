@@ -106,18 +106,20 @@ public class SpellMenu : MonoBehaviour {
 
 			PauseMenu.S.canUpdate = true;
 
-			// Activate Cursor
-			ScreenCursor.S.cursorGO[0].SetActive(true);
-		} else {
-			// If Player didn't use a Spell, go back to Player Turn
-			if (mode != eSpellScreenMode.pickSpell) {
-				if (Battle.S.mode == eBattleMode.spellMenu) {
-					Battle.S.PlayerTurn(false, false);
-				}
+            // Activate cursor 
+            if (!ScreenCursor.S.cursorGO[0].activeInHierarchy) {
+				ScreenCursor.S.cursorGO[0].SetActive(true);
 			}
+		} else {
+			//// If Player didn't use a Spell, go back to Player Turn
+			//if (mode != eSpellScreenMode.pickSpell) {
+			//	if (Battle.S.mode == eBattleMode.spellMenu) {
+			//		Battle.S.PlayerTurn(false, false);
+			//	}
+			//}
 
-			// Deactivate screen cursors
-			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
+			//// Deactivate screen cursors
+			//Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 		}
 
 		if (playSound) {
