@@ -162,6 +162,11 @@ public class WarpManager : MonoBehaviour {
 		if (Items.S.menu.gameObject.activeInHierarchy) {
 			Inventory.S.RemoveItemFromInventory(Items.S.items[23]);
 		}
+		
+		// Remove listeners
+		Utilities.S.RemoveListeners(Items.S.menu.itemButtons);
+		Utilities.S.RemoveListeners(Spells.S.menu.spellsButtons);
+		Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
 
 		// Activate Black Screen
 		ColorScreen.S.ActivateBlackScreen();
