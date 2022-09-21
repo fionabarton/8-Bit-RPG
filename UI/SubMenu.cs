@@ -70,7 +70,7 @@ public class SubMenu : MonoBehaviour {
         }
     }
 
-	public void SetText(string option1 = "Yes", string option2 = "No", string option3 = "3rd", string option4 = "4th", int optionAmount = 2) {
+	public void SetText(string option1 = "Yes", string option2 = "No", string option3 = "3rd", string option4 = "4th", int optionAmount = 2, float gameObjectXPos = -415) {
 		// Set Selected GameObject
 		if (option1 == "Yes") {
 			Utilities.S.SetSelectedGO(buttonGO[1]);
@@ -79,6 +79,9 @@ public class SubMenu : MonoBehaviour {
 			Utilities.S.SetSelectedGO(buttonGO[0]);
 			previousSelectedGameObject = buttonGO[0];
 		}
+
+		// Set y-position
+		Utilities.S.SetRectPosition(gameObject, gameObjectXPos, 80);
 
 		// Get Frame Sprite Position
 		Vector2 frameSpritePos = frameRT.anchoredPosition;
@@ -123,13 +126,15 @@ public class SubMenu : MonoBehaviour {
 
 	public void ResetSettings() {
 		// Set order in hierarchy
-		//gameObject.transform.SetAsFirstSibling();
+		gameObject.transform.SetAsFirstSibling();
 
 		// Set position
 		Utilities.S.SetRectPosition(gameObject, -415, 80);
 
 		// Deactivate Sub Menu
 		gameObject.SetActive(false);
+
+		isPauseSubMenu = false;
 
 		// Update Delgate
 		UpdateManager.fixedUpdateDelegate -= Loop;
