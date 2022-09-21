@@ -32,7 +32,6 @@ public class DialogueManager : MonoBehaviour {
 	public List<int>	linesWithMiddleAlignment = new List<int>();
 
 	void Awake() {
-		// Singleton
 		S = this;
 	}
 
@@ -40,7 +39,7 @@ public class DialogueManager : MonoBehaviour {
 		dialogueTextCS = GetComponentInChildren<Text> ();
 		dialogueTextGO = dialogueTextCS.gameObject;
 
-		DeactivateTextBox ();
+		DeactivateTextBox();
 	}
 
 	public void ThisLoop() {
@@ -59,7 +58,11 @@ public class DialogueManager : MonoBehaviour {
 		AudioManager.S.PlaySFX(eSoundName.highBeep2);
 
 		// Deactivate text box
-		DeactivateTextBox();
+		if(GameManager.S.currentScene != "Title_Screen") {
+			DeactivateTextBox();
+        } else {
+			DeactivateTextBox(false);
+		}
 
 		// Set Camera to Player gameObject
 		CamManager.S.ChangeTarget(Player.S.gameObject, true);
@@ -101,7 +104,7 @@ public class DialogueManager : MonoBehaviour {
 		// Set Text Alignment
 		if (linesWithMiddleAlignment.Count <= 0) {
 			dialogueTextCS.alignment = TextAnchor.UpperLeft;
-        } else {
+		} else {
 			for(int i = 0; i < linesWithMiddleAlignment.Count; i++) {
 				if (ndx == linesWithMiddleAlignment[i]) {
 					dialogueTextCS.alignment = TextAnchor.MiddleCenter;
