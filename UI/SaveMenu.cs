@@ -71,15 +71,15 @@ public class SaveMenu : MonoBehaviour {
 			// Set Selected GameObject
 			Utilities.S.SetSelectedGO(previousSelectedActionButton);
 
-			// Add Listeners
-			actionButtons[0].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(0); });
-			actionButtons[1].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(1); });
-			actionButtons[2].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(2); });
+            // Add Listeners
+            actionButtons[0].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(0); });
+            actionButtons[1].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(1); });
+            actionButtons[2].onClick.AddListener(delegate { ClickedLoadSaveOrDelete(2); });
 
-			// Reset slot buttons color
-			Utilities.S.SetTextColor(slotButtons, new Color32(255, 255, 255, 255));
+            // Reset slot buttons color
+            Utilities.S.SetTextColor(slotButtons, new Color32(255, 255, 255, 255));
 
-			canUpdate = true;
+            canUpdate = true;
 		}
 		catch (Exception e) {
 			Debug.Log(e);
@@ -97,18 +97,17 @@ public class SaveMenu : MonoBehaviour {
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
-		// Freeze player
-		GameManager.S.paused = true;
-		Player.S.canMove = false;
+        // Freeze player
+        Player.S.canMove = false;
 
-		gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
-		// Activate screen cursor
-		ScreenCursor.S.cursorGO[0].SetActive(true);
+        // Activate screen cursor
+        ScreenCursor.S.cursorGO[0].SetActive(true);
 
-		// Audio: Confirm
-		AudioManager.S.PlaySFX(eSoundName.confirm);
-	}
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSoundName.confirm);
+    }
 
 	public void Deactivate(bool playSound = false) {
 		if (GameManager.S.currentScene != "Title_Screen") {
@@ -137,16 +136,16 @@ public class SaveMenu : MonoBehaviour {
 			Utilities.S.ButtonsInteractable(TitleMenu.S.buttons, true);
 		}
 
-		if (playSound) {
-			// Audio: Deny
-			AudioManager.S.PlaySFX(eSoundName.deny);
-		}
+        if (playSound) {
+            // Audio: Deny
+            AudioManager.S.PlaySFX(eSoundName.deny);
+        }
 
-		// Deactivate PauseMessage
-		PauseMessage.S.gameObject.SetActive(false);
+        // Deactivate PauseMessage
+        PauseMessage.S.gameObject.SetActive(false);
 
-		// Update Delegate
-		UpdateManager.updateDelegate -= Loop;
+        // Update Delegate
+        UpdateManager.updateDelegate -= Loop;
 
 		// Deactivate this gameObject
 		gameObject.SetActive(false);
@@ -363,6 +362,7 @@ public class SaveMenu : MonoBehaviour {
 
 		// Set sub menu text
 		GameManager.S.pauseSubMenu.SetText("Yes", "No");
+		GameManager.S.pauseSubMenu.isPauseSubMenu = true;
 
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(slotButtons, false);
@@ -394,6 +394,9 @@ public class SaveMenu : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////
 	void LoadFile(int fileNdx) {
+		// Remove listeners
+		Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
+
 		// Reset stats to starting stats
 		Party.S.stats.Clear();
 
