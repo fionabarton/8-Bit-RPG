@@ -7,6 +7,8 @@ public class TitleMenu : MonoBehaviour {
     [Header("Set in Inspector")]
     public List<Button> buttons;
 
+    public GameObject blackScreenGO;
+
     [Header("Set Dynamically")]
     // Allows parts of Loop() to be called once rather than repeatedly every frame.
     public bool canUpdate;
@@ -31,8 +33,9 @@ public class TitleMenu : MonoBehaviour {
 
         // Add listeners
         buttons[0].onClick.AddListener(NewGame);
-        buttons[1].onClick.AddListener(SaveMenu.S.Activate);
-        buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(70, true); });
+        buttons[1].onClick.AddListener(SaveGame);
+        buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(180, true); });
+        buttons[3].onClick.AddListener(ExitGameMenu.S.Activate);
 
         // Set Selected GameObject and Position Cursor 
         if (PlayerPrefs.HasKey("0Time") || PlayerPrefs.HasKey("1Time") || PlayerPrefs.HasKey("2Time")) {
@@ -41,7 +44,7 @@ public class TitleMenu : MonoBehaviour {
                 SetSelectedButton(0);
             } else {
                 // Set Selected GameObject: Load Game Button
-                SetSelectedButton(0);
+                SetSelectedButton(1);
             }
         } else {
             // Set Selected GameObject: New Game Button
@@ -62,8 +65,9 @@ public class TitleMenu : MonoBehaviour {
         Utilities.S.SetSelectedGO(buttons[ndx].gameObject);
         Utilities.S.PositionCursor(buttons[ndx].gameObject, 150, -10);
 
-        // Set selected button text color	
-        buttons[ndx].gameObject.GetComponentInChildren<Text>().color = new Color32(205, 208, 0, 255);
+        previousSelectedButton = buttons[ndx].gameObject;
+
+        canUpdate = true;
     }
 
     public void Deactivate() {
@@ -84,8 +88,7 @@ public class TitleMenu : MonoBehaviour {
         }
 
         if (canUpdate) {
-            //if (!OptionsMenu.S.gameObject.activeInHierarchy && !SaveMenu.S.gameObject.activeInHierarchy) {
-            if (!OptionsMenu.S.gameObject.activeInHierarchy) {
+            if (!OptionsMenu.S.gameObject.activeInHierarchy && !SaveMenu.S.gameObject.activeInHierarchy) {
                 for (int i = 0; i < buttons.Count; i++) {
                     if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == buttons[i].gameObject) {
                         // Set Cursor Position set to Selected Button
@@ -101,7 +104,6 @@ public class TitleMenu : MonoBehaviour {
                         buttons[i].gameObject.GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
                     }
                 }
-
             }
         }
     }
@@ -111,27 +113,32 @@ public class TitleMenu : MonoBehaviour {
         Utilities.S.RemoveListeners(buttons);
 
         // Close Curtains
-        Curtain.S.Close();
-        //// Activate Black Screen
+        //Curtain.S.Close();
+        // Activate Black Screen
         //ColorScreen.S.ActivateBlackScreen();
 
         // Audio: Buff 2
         AudioManager.S.PlaySFX(eSoundName.buff2);
 
-        // Delay, then Load Scene
-        Invoke("LoadFirstScene", 1f);
+        // Delay, then activate name input
+        //Invoke("ActivateNameInput", 1f);
+        ActivateNameInput();
     }
 
-    void LoadFirstScene() {
+    void ActivateNameInput() {
         Deactivate();
 
         KeyboardInputMenu.S.Activate(2);
 
         // Open Curtains
-        Curtain.S.Open();
-        //// Deactivate Black Screen
+        //Curtain.S.Open();
+        // Deactivate Black Screen
         //ColorScreen.S.anim.Play("Clear Screen", 0, 0);
+    }
 
-        //GameManager.S.LoadLevel("Playground");
+    void SaveGame() {
+        SaveMenu.S.Activate();
+
+        Utilities.S.ButtonsInteractable(buttons, false);
     }
 }
