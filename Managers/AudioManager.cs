@@ -31,8 +31,9 @@ public class AudioManager : MonoBehaviour {
 	}
 
 	public void Loop() {
+		// (Un)mute audio
 		if (Input.GetKeyDown(KeyCode.M)) {
-			PauseAndMuteAudio();
+			SetMuteAudioSliderValue();
 		}
 	}
 
@@ -115,12 +116,24 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 
-	public void PauseAndMuteAudio() {
+    public void SetMuteAudioSliderValue() {
+		// Sets 'Mute Audio' slider value on OptionsMenu,
+		// which calls PauseAndMuteAudio() when its value is changed
+		if (!AudioListener.pause) {
+            OptionsMenu.S.sliders[5].value = 0;
+        } else {
+            OptionsMenu.S.sliders[5].value = 1;
+        }
+    }
+
+    public void PauseAndMuteAudio() {
+		// Pause and mute
 		if (!AudioListener.pause) {
 			previousVolumeLvl = AudioListener.volume;
 			AudioListener.pause = true;
 
 			bgmCS[currentSongNdx].Pause();
+		// Unpause and unmute
 		} else {
 			AudioListener.volume = previousVolumeLvl;
 			AudioListener.pause = false;
