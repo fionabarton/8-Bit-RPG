@@ -75,6 +75,13 @@ public class OptionsMenu : MonoBehaviour {
 		} else {
 			EnableQTE(1, false);
 		}
+		if (PlayerPrefs.HasKey("Mute Audio")) {
+			sliders[5].value = PlayerPrefs.GetInt("Mute Audio");
+
+			if(sliders[5].value == 0) {
+				AudioManager.S.PauseAndMuteAudio();
+			} 
+		} 
 
 		// Adds a listener to each slider and invokes a method when the value changes
 		sliders[0].onValueChanged.AddListener(delegate { SetMasterVolume(); });
@@ -82,12 +89,13 @@ public class OptionsMenu : MonoBehaviour {
 		sliders[2].onValueChanged.AddListener(delegate { SetSFXVolume(); });
 		sliders[3].onValueChanged.AddListener(delegate { SetTextSpeed(); });
 		sliders[4].onValueChanged.AddListener(delegate { EnableQTE((int)sliders[4].value); });
+		sliders[5].onValueChanged.AddListener(delegate { MuteAudio(); });
 
 		Deactivate();
 	}
 
-	// Set in Inspector on OptionsScreen
-	public void Activate(float anchoredYPosition = 70, bool activateBlackScreen = false) {
+	// Called in script
+	public void Activate(float anchoredYPosition = 70) {
 		// Buttons Interactable
 		Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
 
@@ -95,9 +103,6 @@ public class OptionsMenu : MonoBehaviour {
 
 		// Position game object
 		rectTrans.anchoredPosition = new Vector2(0, anchoredYPosition);
-
-		// Activate black screen
-		blackScreenGO.SetActive(activateBlackScreen);
 
 		// Set Selected Gameobject 
 		Utilities.S.SetSelectedGO(sliders[0].gameObject);
@@ -227,13 +232,28 @@ public class OptionsMenu : MonoBehaviour {
 		}
 	}
 
+	public void MuteAudio() {
+		// (Un)mute audio
+		AudioManager.S.PauseAndMuteAudio();
+
+		// Save settings
+		PlayerPrefs.SetInt("Mute Audio", (int)sliders[5].value);
+
+		// Audio: Selection
+		AudioManager.S.masterVolSelection.Play();
+	}
+
 	public void SetCursorPosition() {
 		for (int i = 0; i < sliderTextGO.Count; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == sliders[i].gameObject) {
 				PauseMessage.S.SetText(sliderDescriptions[i]);
 
 				// Set Cursor Position set to Selected Button
-				Utilities.S.PositionCursor(sliderTextGO[i], -105, 0, 0);
+				if (GameManager.S.currentScene != "Title_Screen") {
+					Utilities.S.PositionCursor(sliderTextGO[i], -105, 0, 0);
+				} else {
+					Utilities.S.PositionCursor(sliderTextGO[i], -105, 110, 0);
+				}
 
 				// Set selected button text color	
 				sliderTextGO[i].GetComponent<Text>().color = new Color32(205, 208, 0, 255);
