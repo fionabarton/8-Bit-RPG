@@ -23,6 +23,10 @@ public class PauseMenu : MonoBehaviour {
 	// Stat frame animators
 	public List<Animator> statFrameAnims;
 
+	// Parent gameObject of BlackScreen & Player 1-3
+	// Used to change its order in hierarchy for items, skills, & gear menus
+	public GameObject partyMembersGO;
+
 	[Header("Set Dynamically")]
 	// Amount of time spent playing (excluding time spent on title screen)
 	public int seconds;
@@ -325,6 +329,17 @@ public class PauseMenu : MonoBehaviour {
 					playerAnims[i].CrossFade("Idle", 0);
 				}
 			}
+		}
+	}
+
+	// Used to set 'partyMembersGO' above/below items, skills, & gear menus
+	public void SwapPartyMemberGOParentAndOrderInHierarchy(bool isAboveMenus = true) {
+		if(isAboveMenus) {
+			partyMembersGO.transform.SetParent(Battle.S.gameObject.transform);
+			partyMembersGO.transform.SetSiblingIndex(11);
+        } else {
+			partyMembersGO.transform.SetParent(gameObject.transform);
+			partyMembersGO.transform.SetAsFirstSibling();
 		}
 	}
 }
