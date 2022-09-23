@@ -30,6 +30,9 @@ public class WorldSpells : MonoBehaviour {
 			PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { functionToPass(1); });
 			PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { functionToPass(2); });
 
+			// Set pause menu's party sprites above skills menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(true);
+
 			Spells.S.menu.canUpdate = true;
 		} else {
 			Spells.S.CantUseSpell("Not enough MP to use this skill!");

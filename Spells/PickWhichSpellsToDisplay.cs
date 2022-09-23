@@ -48,6 +48,9 @@ public class PickWhichSpellsToDisplay : MonoBehaviour {
 
 				// Activate Cursor
 				ScreenCursor.S.cursorGO[0].SetActive(true);
+
+				// Set pause menu's party sprites above skills menu
+				PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy();
 			} else {
 				// Set Turn Cursor sorting layer BELOW UI
 				//Battle.S.UI.turnCursorSRend.sortingLayerName = "0";

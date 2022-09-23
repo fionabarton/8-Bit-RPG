@@ -104,10 +104,13 @@ public class SpellMenu : MonoBehaviour {
 
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
+			// Set pause menu's party sprites below skills menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
+
 			PauseMenu.S.canUpdate = true;
 
-            // Activate cursor 
-            if (!ScreenCursor.S.cursorGO[0].activeInHierarchy) {
+			// Activate cursor 
+			if (!ScreenCursor.S.cursorGO[0].activeInHierarchy) {
 				ScreenCursor.S.cursorGO[0].SetActive(true);
 			}
 		} else {
@@ -317,6 +320,10 @@ public class SpellMenu : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		} else {
 			canUpdate = true;
+
+			// Set pause menu's party sprites below skills menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
+
 			// Switch ScreenMode 
 			mode = eSpellScreenMode.pickSpell;
 
