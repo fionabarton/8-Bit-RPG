@@ -32,6 +32,9 @@ public class PickItemMode : MonoBehaviour {
 			// Reset party name text colors
 			Utilities.S.SetTextColor(PauseMenu.S.playerNameButtons, new Color32(255, 255, 255, 255));
 
+			// Set pause menu's party sprites below item menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
+
 			// If Inventory Empty 
 			if (Inventory.S.GetItemList().Count == 0) {
 				PauseMessage.S.DisplayText("You have no items, fool!");

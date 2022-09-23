@@ -32,6 +32,9 @@ public class WorldItems : MonoBehaviour {
 		PauseMenu.S.playerNameButtons[1].onClick.AddListener(delegate { functionToPass(1); });
 		PauseMenu.S.playerNameButtons[2].onClick.AddListener(delegate { functionToPass(2); });
 
+		// Set pause menu's party sprites above item menu
+		PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy();
+
 		// If multiple targets
 		if (!item.multipleTargets) {
 			Items.S.menu.mode = eItemMenuMode.pickPartyMember;
