@@ -32,6 +32,9 @@ public class EquipScreen_PickPartyMemberMode : MonoBehaviour {
 
 			// Display Text
 			PauseMessage.S.DisplayText("Assign whose equipment?!");
+
+			// Set pause menu's party sprites above skills menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy();
 		}
 		catch (NullReferenceException) { }
 	}

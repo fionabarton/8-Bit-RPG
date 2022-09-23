@@ -37,7 +37,10 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		// Activate Cursor
 		ScreenCursor.S.cursorGO[0].SetActive(true);
 
-        if (Player.S.isBattling) {
+		// Set pause menu's party sprites below skills menu
+		PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
+
+		if (Player.S.isBattling) {
 			equipScreen.DisplayCurrentEquipmentNames(ndx);
 			equipScreen.DisplayCurrentStats(ndx);
 		}

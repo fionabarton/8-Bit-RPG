@@ -151,6 +151,9 @@ public class EquipMenu : MonoBehaviour {
 
 			PauseMessage.S.DisplayText("Welcome to the Pause Screen!");
 
+			// Set pause menu's party sprites below skills menu
+			PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
+
 			PauseMenu.S.canUpdate = true;
         } else {
 			// Activate battle game objects, enemy sprites in particular
