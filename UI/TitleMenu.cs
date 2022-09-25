@@ -110,7 +110,6 @@ public class TitleMenu : MonoBehaviour {
     }
 
     public void NewGame() {
-        Debug.Log("New Game");
         // Remove listeners
         Utilities.S.RemoveListeners(buttons);
 
