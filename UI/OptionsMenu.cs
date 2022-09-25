@@ -27,6 +27,8 @@ public class OptionsMenu : MonoBehaviour {
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
 	public bool canUpdate;
 
+	public GameObject previousSelectedGameObject;
+
 	public float textSpeed = 0.1f;
 
 	private static OptionsMenu _S;
@@ -105,6 +107,7 @@ public class OptionsMenu : MonoBehaviour {
 
 		// Set Selected Gameobject 
 		Utilities.S.SetSelectedGO(slidersGO[0].gameObject);
+		previousSelectedGameObject = slidersGO[0].gameObject;
 
 		// Set Cursor Position set to Selected Button
 		Utilities.S.PositionCursor(optionsTextGO[0], -125, 0, 0);
@@ -269,7 +272,7 @@ public class OptionsMenu : MonoBehaviour {
 				optionsTextGO[i].GetComponent<Text>().color = new Color32(205, 208, 0, 255);
 
 				// Audio: Selection (when a new gameObject is selected)
-				Utilities.S.PlayButtonSelectedSFX(ref Items.S.menu.previousSelectedGameObject);
+				Utilities.S.PlayButtonSelectedSFX(ref previousSelectedGameObject);
 			} else {
 				// Set non-selected button text color
 				optionsTextGO[i].GetComponent<Text>().color = new Color32(255, 255, 255, 255);

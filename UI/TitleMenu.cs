@@ -34,8 +34,8 @@ public class TitleMenu : MonoBehaviour {
         // Add listeners
         buttons[0].onClick.AddListener(NewGame);
         buttons[1].onClick.AddListener(SaveGame);
-        buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(180, true); });
-        buttons[3].onClick.AddListener(ExitGameMenu.S.Activate);
+        buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(); });
+        buttons[3].onClick.AddListener(delegate { ExitGameMenu.S.Activate(); }); 
 
         // Set Selected GameObject and Position Cursor 
         if (PlayerPrefs.HasKey("0Time") || PlayerPrefs.HasKey("1Time") || PlayerPrefs.HasKey("2Time")) {
@@ -110,7 +110,7 @@ public class TitleMenu : MonoBehaviour {
 
     public void NewGame() {
         // Remove listeners
-        Utilities.S.RemoveListeners(buttons);
+        //Utilities.S.RemoveListeners(buttons);
 
         // Close Curtains
         //Curtain.S.Close();
@@ -137,6 +137,9 @@ public class TitleMenu : MonoBehaviour {
     }
 
     void SaveGame() {
+        // Remove listeners
+        Utilities.S.RemoveListeners(buttons);
+
         SaveMenu.S.Activate();
 
         Utilities.S.ButtonsInteractable(buttons, false);
