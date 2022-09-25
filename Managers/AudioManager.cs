@@ -120,10 +120,10 @@ public class AudioManager : MonoBehaviour {
 		// Sets 'Mute Audio' slider value on OptionsMenu,
 		// which calls PauseAndMuteAudio() when its value is changed
 		if (!AudioListener.pause) {
-            OptionsMenu.S.slidersGO[5].value = 1;
-        } else {
             OptionsMenu.S.slidersGO[5].value = 0;
-        }
+		} else {
+            OptionsMenu.S.slidersGO[5].value = 1;
+		}
     }
 
     public void PauseAndMuteAudio() {
