@@ -32,6 +32,7 @@ public class TitleMenu : MonoBehaviour {
         buttons[0].transform.parent.gameObject.SetActive(true);
 
         // Add listeners
+        Utilities.S.RemoveListeners(buttons);
         buttons[0].onClick.AddListener(NewGame);
         buttons[1].onClick.AddListener(SaveGame);
         buttons[2].onClick.AddListener(delegate { OptionsMenu.S.Activate(); });
@@ -61,7 +62,7 @@ public class TitleMenu : MonoBehaviour {
         UpdateManager.updateDelegate += Loop;
     }
 
-    void SetSelectedButton(int ndx) {
+    public void SetSelectedButton(int ndx) {
         Utilities.S.SetSelectedGO(buttons[ndx].gameObject);
         Utilities.S.PositionCursor(buttons[ndx].gameObject, 150, -10);
 
@@ -109,8 +110,9 @@ public class TitleMenu : MonoBehaviour {
     }
 
     public void NewGame() {
+        Debug.Log("New Game");
         // Remove listeners
-        //Utilities.S.RemoveListeners(buttons);
+        Utilities.S.RemoveListeners(buttons);
 
         // Close Curtains
         //Curtain.S.Close();
