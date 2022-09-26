@@ -17,6 +17,11 @@ public class SaveMenu : MonoBehaviour {
 	// File slot text descriptions (name, lvl, time, etc.)
 	public List<Text> slotDataText;
 
+	//
+	public RectTransform frameImageRectTrans;
+	public RectTransform loadButtonRectTrans;
+	public RectTransform deleteButtonRectTrans;
+
 	[Header("Set Dynamically")]
 	// For Input & Display Message
 	public eSaveScreenMode saveScreenMode;
@@ -50,8 +55,40 @@ public class SaveMenu : MonoBehaviour {
 			// Freeze Player
 			if (GameManager.S.currentScene != "Title_Screen") {
 				GameManager.S.paused = true;
+				
+				// Activate save button
+				actionButtons[1].gameObject.SetActive(true);
+
+				// Set action button navigation
+				Utilities.S.SetButtonNavigation(actionButtons[0], actionButtons[2], actionButtons[1]);
+				Utilities.S.SetButtonNavigation(actionButtons[2], actionButtons[1], actionButtons[0]);
+
+				// Set action button positions
+				loadButtonRectTrans.anchoredPosition = new Vector2(0, 70);
+				deleteButtonRectTrans.anchoredPosition = new Vector2(0, -70);
+
+				// Set action button frame size
+				frameImageRectTrans.sizeDelta = new Vector2(205, 260);
+
+				PauseMessage.S.DisplayText("Would you like to\nLoad, Save, or Delete a file?");
+			} else {
+				// Deactivate save button
+				actionButtons[1].gameObject.SetActive(false);
+
+				// Set action button navigation
+				Utilities.S.SetButtonNavigation(actionButtons[0], actionButtons[2], actionButtons[2]);
+				Utilities.S.SetButtonNavigation(actionButtons[2], actionButtons[0], actionButtons[0]);
+
+				// Set action button positions
+				loadButtonRectTrans.anchoredPosition = new Vector2(0, 35);
+				deleteButtonRectTrans.anchoredPosition = new Vector2(0, -35);
+
+				// Set action button frame size
+				frameImageRectTrans.sizeDelta = new Vector2(205, 190);
+
+				PauseMessage.S.DisplayText("Would you like to\nLoad or Delete a file?");
 			}
-			
+
 			// Switch ScreenMode 
 			saveScreenMode = eSaveScreenMode.pickAction;
 
@@ -60,8 +97,6 @@ public class SaveMenu : MonoBehaviour {
 			Utilities.S.RemoveListeners(slotButtons);
 
 			UpdateGUI();
-
-			PauseMessage.S.DisplayText("Would you like to\nLoad, Save, or Delete a file?");
 
 			// Buttons Interactable
 			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, false);
@@ -271,8 +306,8 @@ public class SaveMenu : MonoBehaviour {
 				break;
 		}
 
-        // Audio: Confirm
-        if (playSound) {
+		// Audio: Confirm
+		if (playSound) {
 			AudioManager.S.PlaySFX(eSoundName.confirm);
 		}
 
@@ -364,6 +399,8 @@ public class SaveMenu : MonoBehaviour {
 
 		// Audio: Deny
 		AudioManager.S.PlaySFX(eSoundName.deny);
+
+		canUpdate = true;
 
 		saveScreenMode = eSaveScreenMode.cannotPeformAction;
 	}
