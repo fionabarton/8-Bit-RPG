@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,12 +8,18 @@ public class ExitGameMenu : MonoBehaviour{
     public List<GameObject> buttonGO;
     public List<Button> buttonCS;
 
+	// Text displayed in dialogue box
+	public Text textMessage;
+
 	// Cursor Position
 	public RectTransform cursorRT;
 
 	[Header("Set Dynamically")]
     // Allows parts of Loop() to be called once rather than repeatedly every frame.
     private bool canUpdate;
+
+	// Dicatates whether listeners are set here or elsewhere
+	private bool isExitGameSubMenu;
 
 	// Ensures audio is only played once when button is selected
 	GameObject previousSelectedGameObject;
@@ -34,17 +39,32 @@ public class ExitGameMenu : MonoBehaviour{
 		gameObject.SetActive(false);
 	}
 
-	public void Activate() {
+	// Add listener in Inspector: PauseMenu > Buttons > ExitGameButton
+	public void ActivateInPauseMenuInspector() {
+		Activate();
+	}
+
+	public void Activate(string message = "Are you sure that you\nwould like to exit the game?", bool addExitGameListeners = true) {
+		// Set text
+		textMessage.text = message;
+
 		// Set selected gameObject
 		Utilities.S.SetSelectedGO(buttonGO[1]);
-		
+		previousSelectedGameObject = buttonGO[1];
+
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
-		// Set OnClick Methods
-		Utilities.S.RemoveListeners(buttonCS);
-		buttonCS[0].onClick.AddListener(Yes);
-		buttonCS[1].onClick.AddListener(No);
+        // Set OnClick Methods
+        if (addExitGameListeners) {
+			Utilities.S.RemoveListeners(buttonCS);
+			buttonCS[0].onClick.AddListener(Yes);
+			buttonCS[1].onClick.AddListener(No);
+
+			isExitGameSubMenu = true;
+        } else {
+			isExitGameSubMenu = false;
+        }
 
 		// Audio: Confirm
 		AudioManager.S.PlaySFX(eSoundName.confirm);
@@ -84,6 +104,12 @@ public class ExitGameMenu : MonoBehaviour{
 		// Reset canUpdate
 		if (Input.GetAxisRaw("Horizontal") != 0f || Input.GetAxisRaw("Vertical") != 0f) {
 			canUpdate = true;
+		}
+
+        if (isExitGameSubMenu) {
+			if (Input.GetButtonDown("SNES Y Button")) {
+				No();
+			}
 		}
 
 		// Set Cursor Position to Selected Button

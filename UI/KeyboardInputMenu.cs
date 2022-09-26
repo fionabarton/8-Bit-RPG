@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
 // Handles creating character names via user keyboard input
 public class KeyboardInputMenu : MonoBehaviour {
@@ -161,7 +160,9 @@ public class KeyboardInputMenu : MonoBehaviour {
 				}
 				break;
 			case eKeyboardInputMenuMode.nameConfirmation:
-
+				if (Input.GetButtonDown("SNES Y Button")) {
+					No();
+				}
 				break;
 			case eKeyboardInputMenuMode.nameConfirmed:
 				if (PauseMessage.S.dialogueFinished) {
@@ -174,8 +175,12 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 						// Delay, then Load Scene
 						Invoke("LoadScene", 1f);
+
+						mode = eKeyboardInputMenuMode.loadingScene;
 					}
 				}
+				break;
+			case eKeyboardInputMenuMode.loadingScene:
 				break;
         }
 	}
@@ -304,7 +309,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 		AudioManager.S.PlaySong(eSongName.soap);
 
 		Deactivate();
-		TitleMenu.S.Activate();
+        TitleMenu.S.Activate();
+		TitleMenu.S.SetSelectedButton(0);
 	}
 
 	public void OK() {
@@ -320,23 +326,20 @@ public class KeyboardInputMenu : MonoBehaviour {
 		// Reset OK button text color	
 		buttonsGO[92].gameObject.GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
 
-		PauseMessage.S.DisplayText("Are you sure about this name?\nWell, are ya?", false, true, -374);
-		GameManager.S.gameSubMenu.SetText();
-
+		ExitGameMenu.S.Activate("Are you sure about this name?\nWell, are ya?", false);
+		
 		// Set OnClick Methods
-		Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
-		GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(delegate { Yes(0); });
-		GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
-
-		// Set button navigation
-		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
-		Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
+		Utilities.S.RemoveListeners(ExitGameMenu.S.buttonCS);
+		ExitGameMenu.S.buttonCS[0].onClick.AddListener(delegate { Yes(0); });
+		ExitGameMenu.S.buttonCS[1].onClick.AddListener(No);
 
 		// Set party member image animation clip
 		playerImageAnim.CrossFade("Idle", 0);
 	}
 
 	public void Yes(int ndx) {
+		ExitGameMenu.S.Deactivate();
+
 		// Set mode
 		mode = eKeyboardInputMenuMode.nameConfirmed;
 
@@ -365,6 +368,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 	}
 
 	public void No() {
+		ExitGameMenu.S.Deactivate();
+
 		// Set mode
 		mode = eKeyboardInputMenuMode.editName;
 
