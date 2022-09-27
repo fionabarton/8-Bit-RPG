@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class KeyboardInputMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
 	// List of buttons for each letter, number, symbol, etc. input
-	public List<GameObject> buttonsGO;
+	public List<GameObject> buttonsGO; 
+	public List<Button> buttonsCS;
 
 	// Each slots represents one char 
 	public List<Text> charSlotsText;
@@ -54,6 +55,46 @@ public class KeyboardInputMenu : MonoBehaviour {
 	}
 
 	public void Activate(int partyMemberNdx = 0, string _sceneToLoad = "Playground") {
+		if (GameManager.S.currentScene != "Title_Screen") {
+			// Deactivate 'Back To Menu' button  
+			buttonsGO[93].SetActive(false);
+
+			// Set buttons navigation
+			Utilities.S.SetButtonNavigation(buttonsCS[31], buttonsCS[56], buttonsCS[36], buttonsCS[4], buttonsCS[32]); // a 
+			Utilities.S.SetButtonNavigation(buttonsCS[32], buttonsCS[57], buttonsCS[37], buttonsCS[31], buttonsCS[33]); // b 
+			Utilities.S.SetButtonNavigation(buttonsCS[33], buttonsCS[58], buttonsCS[38], buttonsCS[32], buttonsCS[34]); // c 
+			Utilities.S.SetButtonNavigation(buttonsCS[34], buttonsCS[59], buttonsCS[39], buttonsCS[33], buttonsCS[35]); // d 
+			Utilities.S.SetButtonNavigation(buttonsCS[35], buttonsCS[60], buttonsCS[40], buttonsCS[34], buttonsCS[61]); // e 
+
+			Utilities.S.SetButtonNavigation(buttonsCS[56], buttonsCS[51], buttonsCS[31], buttonsCS[29], buttonsCS[57]); // z 
+			Utilities.S.SetButtonNavigation(buttonsCS[57], buttonsCS[52], buttonsCS[32], buttonsCS[56], buttonsCS[58]); // !
+			Utilities.S.SetButtonNavigation(buttonsCS[58], buttonsCS[53], buttonsCS[33], buttonsCS[57], buttonsCS[59]); // ?
+			Utilities.S.SetButtonNavigation(buttonsCS[59], buttonsCS[54], buttonsCS[34], buttonsCS[58], buttonsCS[60]); // .
+			Utilities.S.SetButtonNavigation(buttonsCS[60], buttonsCS[55], buttonsCS[35], buttonsCS[59], buttonsCS[86]); // ,
+
+			Utilities.S.SetButtonNavigation(buttonsCS[30], buttonsCS[25], buttonsCS[0], buttonsCS[92], buttonsCS[91]); // Don't Care
+			Utilities.S.SetButtonNavigation(buttonsCS[91], buttonsCS[86], buttonsCS[61], buttonsCS[30], buttonsCS[92]); // Backspace
+		} else {
+			// Activate 'Back To Menu' button  
+			buttonsGO[93].SetActive(true);
+
+			// Set buttons navigation
+			Utilities.S.SetButtonNavigation(buttonsCS[31], buttonsCS[93], buttonsCS[36], buttonsCS[4], buttonsCS[32]); // a 
+			Utilities.S.SetButtonNavigation(buttonsCS[32], buttonsCS[93], buttonsCS[37], buttonsCS[31], buttonsCS[33]); // b 
+			Utilities.S.SetButtonNavigation(buttonsCS[33], buttonsCS[93], buttonsCS[38], buttonsCS[32], buttonsCS[34]); // c 
+			Utilities.S.SetButtonNavigation(buttonsCS[34], buttonsCS[93], buttonsCS[39], buttonsCS[33], buttonsCS[35]); // d 
+			Utilities.S.SetButtonNavigation(buttonsCS[35], buttonsCS[93], buttonsCS[40], buttonsCS[34], buttonsCS[61]); // e 
+
+			Utilities.S.SetButtonNavigation(buttonsCS[56], buttonsCS[51], buttonsCS[93], buttonsCS[29], buttonsCS[57]); // z 
+			Utilities.S.SetButtonNavigation(buttonsCS[57], buttonsCS[52], buttonsCS[93], buttonsCS[56], buttonsCS[58]); // !
+			Utilities.S.SetButtonNavigation(buttonsCS[58], buttonsCS[53], buttonsCS[93], buttonsCS[57], buttonsCS[59]); // ?
+			Utilities.S.SetButtonNavigation(buttonsCS[59], buttonsCS[54], buttonsCS[93], buttonsCS[58], buttonsCS[60]); // .
+			Utilities.S.SetButtonNavigation(buttonsCS[60], buttonsCS[55], buttonsCS[93], buttonsCS[59], buttonsCS[86]); // ,
+
+			Utilities.S.SetButtonNavigation(buttonsCS[30], buttonsCS[25], buttonsCS[0], buttonsCS[92], buttonsCS[93]); // Don't Care
+			Utilities.S.SetButtonNavigation(buttonsCS[91], buttonsCS[86], buttonsCS[61], buttonsCS[93], buttonsCS[92]); // Backspace
+		}
+
 		// Set mode
 		mode = eKeyboardInputMenuMode.editName;
 
