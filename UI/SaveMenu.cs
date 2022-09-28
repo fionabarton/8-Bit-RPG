@@ -3,8 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 /*
-TO BE IMPLEMENTED:
-Current HP/MP, Steps, Party Members, Inventory, Equipment, Doors/Chests/KeyItems, Quests Completed/Activated
+	TO BE IMPLEMENTED:
+	- Current HP/MP
+	- Active Party Members
+	- KeyItems
+	- Quests
  */
 public class SaveMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
@@ -17,7 +20,7 @@ public class SaveMenu : MonoBehaviour {
 	// File slot text descriptions (name, lvl, time, etc.)
 	public List<Text> slotDataText;
 
-	//
+	// Reposition load and delete buttons depending on scene
 	public RectTransform frameImageRectTrans;
 	public RectTransform loadButtonRectTrans;
 	public RectTransform deleteButtonRectTrans;
@@ -149,13 +152,11 @@ public class SaveMenu : MonoBehaviour {
 			GameManager.S.paused = false;
 			Player.S.canMove = true;
 
-			// Buttons Interactable
-			Utilities.S.ButtonsInteractable(PauseMenu.S.buttonCS, true);
-
 			// Deactivate screen cursor
 			ScreenCursor.S.cursorGO[0].SetActive(false);
 
-			PauseMenu.S.canUpdate = true;
+			// Set Camera to Player gameObject
+			CamManager.S.ChangeTarget(Player.S.gameObject, true);
 		} else {
 			TitleMenu.S.Activate();
 
