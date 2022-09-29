@@ -343,7 +343,15 @@ public class SaveMenu : MonoBehaviour {
 
 	void ClickedSaveButton(int fileNdx) {
 		// Set Text
-		ExitGameMenu.S.Activate("Are you sure that you would like to save your progress to this file?", false);
+		if (PlayerPrefs.HasKey(fileNdx + "Time")) {
+			if (PlayerPrefs.GetString(fileNdx + "Time") == "0:00") {
+				ExitGameMenu.S.Activate("Are you sure that you would like to save your progress to this empty file?", false);
+			} else {
+				ExitGameMenu.S.Activate("This file contains existing save data,\nare you sure that you would like to save your progress over it?", false);
+			}
+        } else {		
+			ExitGameMenu.S.Activate("This file contains existing save data,\nare you sure that you would like to save over it?", false);
+		}
 
 		// Set OnClick Methods
 		Utilities.S.RemoveListeners(ExitGameMenu.S.buttonCS);
@@ -612,12 +620,19 @@ public class SaveMenu : MonoBehaviour {
 	void UpdateGUI() {
 		for (int i = 0; i < slotDataText.Count; i++) {
 			if (PlayerPrefs.HasKey(i + "Time")) {
+				if (PlayerPrefs.GetString(i + "Time") == "0:00") {
+					slotDataText[i].text = "<color=yellow>New Game</color>";
+				} else {
 					slotDataText[i].text =
 					"<color=yellow>Name:</color> " + PlayerPrefs.GetString(i + "Player1Name") + "    " + "<color=yellow>Level:</color> " + PlayerPrefs.GetInt(i + "Player1Level") + "    " +
 					"<color=yellow>Time:</color> " + PlayerPrefs.GetString(i + "Time") + "\n" + "<color=yellow>Location:</color> " + PlayerPrefs.GetString(i + "LocationName") + "    " +
 					"<color=yellow>Gold:</color> " + PlayerPrefs.GetInt(i + "Gold");
-            } else {
-				slotDataText[i].text = "<color=yellow>New Game</color>";
+				}
+			} else {
+				slotDataText[i].text =
+					"<color=yellow>Name:</color> " + PlayerPrefs.GetString(i + "Player1Name") + "    " + "<color=yellow>Level:</color> " + PlayerPrefs.GetInt(i + "Player1Level") + "    " +
+					"<color=yellow>Time:</color> " + PlayerPrefs.GetString(i + "Time") + "\n" + "<color=yellow>Location:</color> " + PlayerPrefs.GetString(i + "LocationName") + "    " +
+					"<color=yellow>Gold:</color> " + PlayerPrefs.GetInt(i + "Gold");
 			}
 		}
 		PauseMenu.S.UpdateGUI();
