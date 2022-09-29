@@ -115,6 +115,9 @@ public class DialogueManager : MonoBehaviour {
 			}
 		}
 
+		// Override the previous block of code and set text aligment to MiddleCenter
+		dialogueTextCS.alignment = TextAnchor.MiddleCenter;
+		
 		// Freeze Player
 		Player.S.canMove = false;
 
