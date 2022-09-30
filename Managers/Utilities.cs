@@ -248,4 +248,39 @@ public class Utilities : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.selection);
 		}
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Load/save: Convert list of bools into a string of 0's and 1's and vice versa
+
+	// Save: Convert list of bools into a string of 0's and 1's
+	public string SaveListOfBoolValues(ref List<bool> tList) {
+		// Initialize string to store 0's and 1's
+		string tString = "";
+
+		// Loop over all bools
+		for (int i = 0; i < tList.Count; i++) {
+			// If bool is false/true, add 0/1
+			if (tList[i]) {
+				tString += "1";
+			} else {
+				tString += "0";
+			}
+		}
+
+		// Return string of 0's and 1's
+		return tString;
+	}
+
+	// Load: Read string of 0's and 1's to set values for a list of bools
+	public void LoadListOfBoolValues(string tString, ref List<bool> tList) {
+		// Loop over string of 0's and 1's
+		for (int i = 0; i < tString.Length; i++) {
+			// If char is 0/1, set bool to false/true
+			if (tString[i].ToString() == "0") {
+				tList[i] = false;
+			} else {
+				tList[i] = true;
+			}
+		}
+	}
 }

@@ -47,34 +47,12 @@ public class ChestManager : MonoBehaviour {
 	// Save which chests are open:
 	// Convert list of bools into a string of 0's and 1's
 	public string GetIsOpenString() {
-		// Initialize string to store 0's and 1's
-		string isOpenString = "";
-
-		// Loop over all chests
-		for (int i = 0; i < isOpen.Count; i++) {
-			// If chest is closed/open, add 0/1
-			if (isOpen[i]) {
-				isOpenString += "1";
-			} else {
-				isOpenString += "0";
-			}
-		}
-
-		// Return string of 0's and 1's
-		return isOpenString;
+		return Utilities.S.SaveListOfBoolValues(ref isOpen);
 	}
 
 	// Load which chests are open:
 	// Read string of 0's and 1's to set list of bools
-	public void OpenChestsFromString(string isOpenString) {
-		// Loop over string of 0's and 1's
-		for (int i = 0; i < isOpenString.Length; i++) {
-			// If char is 0/1, close/open chest
-			if (isOpenString[i].ToString() == "0") {
-				isOpen[i] = false;
-			} else {
-				isOpen[i] = true;
-			}
-		}
+	public void OpenChestsFromString(string isUnlockedString) {
+		Utilities.S.LoadListOfBoolValues(isUnlockedString, ref isOpen);
 	}
 }
