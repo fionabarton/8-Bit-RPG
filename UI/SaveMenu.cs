@@ -7,7 +7,6 @@ using System;
 	- Current HP/MP
 	- Active Party Members
 	- KeyItems
-	- Quests
  */
 public class SaveMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
@@ -479,7 +478,6 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player1Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player1Gear"), 0); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player2Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player2Gear"), 1); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
-		if (PlayerPrefs.HasKey(fileNdx + "QuestsActivated")) { QuestManager.S.GetIsActivatedFromString(PlayerPrefs.GetString(fileNdx + "QuestsActivated")); }
 		if (PlayerPrefs.HasKey(fileNdx + "QuestsCompleted")) { QuestManager.S.GetIsCompletedFromString(PlayerPrefs.GetString(fileNdx + "QuestsCompleted")); }
 
 		// Level Up
@@ -549,7 +547,6 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player1Gear", EquipMenu.S.GetEquippedGearString(0));
 		PlayerPrefs.SetString(fileNdx + "Player2Gear", EquipMenu.S.GetEquippedGearString(1));
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
-		PlayerPrefs.SetString(fileNdx + "QuestsActivated", QuestManager.S.GetIsActivatedString());
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", QuestManager.S.GetIsCompletedString());
 
 		FileHelper("Saved game!");
@@ -581,7 +578,6 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player1Gear", "");
 		PlayerPrefs.SetString(fileNdx + "Player2Gear", "");
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
-		PlayerPrefs.SetString(fileNdx + "QuestsActivated", "");
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", "");
 
 		FileHelper("Deleted game!");
