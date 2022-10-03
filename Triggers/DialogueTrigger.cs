@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueTrigger : ActivateOnButtonPress {
@@ -41,15 +40,14 @@ public class DialogueTrigger : ActivateOnButtonPress {
 	int highestQuestCompleted() {
 		int tNdx = 0;
 
-		for (int i = 0; i < questNdx.Count; i++) {
-			if (QuestManager.S.completed[questNdx[i]]) {
-				if (questNdx[i] > tNdx) {
-					tNdx = i;
-				}
+        for (int i = 0; i < questNdx.Count; i++) {
+			//if (QuestManager.S.quests[questNdx[i]].isActivated) {
+			if (QuestManager.S.quests[questNdx[i]].isCompleted) {
+				tNdx = i + 1;
 			}
 		}
 
-		return tNdx;
+        return tNdx;
 	}
 
 	// If Player has entered trigger, called OnButtonPress
@@ -83,7 +81,7 @@ public class DialogueTrigger : ActivateOnButtonPress {
         }
     }
 
-	public void ThisLoop () {
+    public void ThisLoop () {
 		// Remove ThisLoop() from UpdateManager delegate on scene change.
 		// This prevents an occasional bug when the Player is within this trigger on scene change.
 		// Would prefer a better solution... 
@@ -91,7 +89,7 @@ public class DialogueTrigger : ActivateOnButtonPress {
             UpdateManager.updateDelegate -= ThisLoop;
         }
 
-        if (Input.GetButtonDown("SNES B Button")) {
+		if (Input.GetButtonDown("SNES B Button")) {
 			if (firstButtonPressed) {
 				if (!GameManager.S.paused) {
 					// If the list of dialogue has multiple elements/lines...
@@ -139,6 +137,14 @@ public class DialogueTrigger : ActivateOnButtonPress {
 				}
 			}
 		}
+    }
+
+	// Resets this trigger after quest is completed via CompleteQuestTrigger 
+    public void RecallOnTriggerEnter2D() {
+		base.OnTriggerEnter2D(Player.S.playerTriggerGO.GetComponent<BoxCollider2D>());
+
+		// Add ThisLoop() to Update Delgate
+		UpdateManager.updateDelegate += ThisLoop;
 	}
 
 	protected override void OnTriggerExit2D(Collider2D coll) {
