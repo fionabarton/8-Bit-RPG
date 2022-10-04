@@ -79,7 +79,11 @@ public class ShopMenu : MonoBehaviour {
 
 		// Unpause
 		GameManager.S.paused = false;
-		Player.S.canMove = true;
+
+		// If sub menu is inactive, unfreeze player
+		if (!GameManager.S.gameSubMenu.gameObject.activeInHierarchy) {
+			Player.S.canMove = true;
+		}
 
 		// Deactivate PauseMessage and PlayerButtons
 		PauseMessage.S.gameObject.SetActive(false);
