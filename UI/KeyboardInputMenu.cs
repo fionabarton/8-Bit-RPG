@@ -148,7 +148,11 @@ public class KeyboardInputMenu : MonoBehaviour {
 	public void Deactivate() {
 		// Unfreeze player
 		GameManager.S.paused = false;
-		Player.S.canMove = true;
+
+		// If sub menu is inactive, unfreeze player
+		if (!GameManager.S.gameSubMenu.gameObject.activeInHierarchy) {
+			Player.S.canMove = true;
+		}
 
 		// Deactivate PauseMessage
 		PauseMessage.S.gameObject.SetActive(false);
