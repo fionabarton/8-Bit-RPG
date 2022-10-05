@@ -21,7 +21,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (Party.S.stats[Battle.S.PlayerNdx()].MP >= spell.cost) {
 			Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
-			Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+			Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 			Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
 			// Audio: Confirm
@@ -50,24 +50,24 @@ public class BattleSpells : MonoBehaviour {
 					Utilities.S.SetHorizontalButtonsNavigation(_.UI.partyNameButtonsCS, Party.S.partyNdx + 1);
 				}
 			} else if (spell.type == eSpellType.Offensive || spell.type == eSpellType.Thievery) {
-				Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, true);
+				Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, true);
 
 				// Set an Enemy Button as Selected GameObject
-				Utilities.S.SetSelectedGO(_.UI.enemySpriteButtonsCS[0].gameObject);
+				Utilities.S.SetSelectedGO(_.UI.enemyButtonsCS[0].gameObject);
 
 				// Deactivate all enemy sprite buttons
-				Utilities.S.SetActiveList(_.UI.enemySpriteButtonsGO, false);
+				Utilities.S.SetActiveList(_.UI.enemyButtonsGO, false);
 
 				// Activate active enemy sprite buttons
 				for (int i = 0; i < _.enemyAmount; i++) {
-					_.UI.enemySpriteButtonsGO[i].SetActive(true);
+					_.UI.enemyButtonsGO[i].SetActive(true);
 				}
 
 				// Add Item Listeners to Enemy Buttons
 				for (int i = 0; i < _.enemyAmount; i++) {
 					// Add listener to Spell Button
 					int copy = i;
-					_.UI.enemySpriteButtonsCS[copy].onClick.AddListener(delegate { functionToPass(copy, spell); });
+					_.UI.enemyButtonsCS[copy].onClick.AddListener(delegate { functionToPass(copy, spell); });
 				}
 
 				// If multiple targets
@@ -76,7 +76,7 @@ public class BattleSpells : MonoBehaviour {
 					_.UI.TargetAllEnemies();
 				} else {
 					_.mode = eBattleMode.canGoBackToFightButton;
-					Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
+					Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemyButtonsCS, _.enemyAmount);
 				}
 			}
 		} else {

@@ -326,10 +326,10 @@ public class SpellMenu : MonoBehaviour {
 
 			// Switch ScreenMode 
 			mode = eSpellScreenMode.pickSpell;
-
+			
 			// Set Selected GameObject 
 			// If previousSelectedGameObject is enabled...
-			if (previousSelectedSpellGO.activeInHierarchy && !Player.S.isBattling) {
+			if (previousSelectedSpellGO.activeInHierarchy && !GameManager.S.IsBattling()) {
 				// Select previousSelectedGameObject
 				Utilities.S.SetSelectedGO(previousSelectedSpellGO);
 
@@ -472,7 +472,7 @@ public class SpellMenu : MonoBehaviour {
 	public void UseSpell(Spell spell) {
 		canUpdate = true;
 
-		if (Player.S.isBattling) { // if Battle
+		if (GameManager.S.IsBattling()) { // if Battle
 			if (spell.name == "Heal") {
 				Spells.S.battle.AddFunctionToButton(Spells.S.battle.AttemptHealSinglePartyMember, "Heal which party member?", spell);
 			} else if (spell.name == "Fireball") {
