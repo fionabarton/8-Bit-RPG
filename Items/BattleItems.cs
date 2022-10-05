@@ -21,7 +21,7 @@ public class BattleItems : MonoBehaviour {
 		_.UI.RemoveAllListeners();
 
 		Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
-		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+		Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, true);
 
 		// Set a Player Button as Selected GameObject

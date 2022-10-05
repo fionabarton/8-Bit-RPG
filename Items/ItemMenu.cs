@@ -259,7 +259,7 @@ public class ItemMenu : MonoBehaviour {
 		if (Inventory.S.items.ContainsKey(item)) {
 			canUpdate = true;
 
-			if (Player.S.isBattling) { // if Battle
+			if (GameManager.S.IsBattling()) { // if Battle
 				if (item.name == "Health Potion") {
 					Items.S.battle.AddFunctionToButton(Items.S.battle.HPPotion, "Use potion on which party member?", item);
 				} else if (item.name == "Magic Potion") {
