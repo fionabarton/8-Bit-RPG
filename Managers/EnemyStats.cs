@@ -31,8 +31,7 @@ public class EnemyStats : ScriptableObject {
 	// AI
 	public eEnemyAI AI;
 
-	// QuestNdx (If == 0, doesn't progress story) && doesn't StartBattle OnCollision
-	public int questNdx;
+	public int questNdx = -1;
 
 	// Default Move
 	public float chanceToCallMove;
