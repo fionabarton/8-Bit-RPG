@@ -26,23 +26,23 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		ButtonsDisableAll();
 
-		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, true);
+		Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, true);
 		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
 		_.UI.firstSlotNdx = 0;
 
 		// Deactivate all enemy sprite buttons
-		Utilities.S.SetActiveList(_.UI.enemySpriteButtonsGO, false);
+		Utilities.S.SetActiveList(_.UI.enemyButtonsGO, false);
 
 		// Activate active enemy sprite buttons
 		for (int i = 0; i < _.enemyAmount; i++) {
-			_.UI.enemySpriteButtonsGO[i].SetActive(true);
+			_.UI.enemyButtonsGO[i].SetActive(true);
 		}
 
 		_.UI.actionOptionsButtonsCursor.SetActive(false);
 
 		// Set selected gameObject
-		Utilities.S.SetSelectedGO(_.UI.enemySpriteButtonsGO[0]);
+		Utilities.S.SetSelectedGO(_.UI.enemyButtonsGO[0]);
 
 		// Audio: Confirm
 		if (playSound) {
@@ -57,7 +57,7 @@ public class BattlePlayerActions : MonoBehaviour {
 			_.mode = eBattleMode.canGoBackToFightButton;
 
 			// Set the first and last button’s navigation 
-			Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemySpriteButtonsCS, _.enemyAmount);
+			Utilities.S.SetHorizontalButtonsNavigation(_.UI.enemyButtonsCS, _.enemyAmount);
 		} else {
 			// Assign option slots effect
 			_.UI.AssignAttackAllEnemiesEffect();
@@ -90,7 +90,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);
 
 		ButtonsDisableAll();
-		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+		Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 
 		// Flicker Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
@@ -243,7 +243,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		Battle.S.previousSelectedGameObject = actionButtonsGO[4];
 
 		// Not a "boss battle", so the party can attempt to run
-		if (_.enemyStats[0].questNdx == 0) {
+		if (_.enemyStats[0].questNdx == -1) {
 			if (Random.value < _.chanceToRun) {     // || Stats.S.LVL[0] - enemyStats[0].LVL >= 5
 				Utilities.S.SetActiveList(_.UI.cursors, false);
 
@@ -302,7 +302,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		if (Party.S.stats[_.PlayerNdx()].spellNdx > 0) {
 			ButtonsInteractable(false, false, false, false, false, false, true, true, true, true, true);
-			Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+			Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 			Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
 			_.UI.firstSlotNdx = 0;
@@ -351,7 +351,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		// If Player has an Item 
 		if (Inventory.S.GetItemList().Count > 0) {
 			ButtonsInteractable(false, false, false, false, false, false, true, true, true, true, true);
-			Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+			Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 			Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, false);
 
 			_.UI.firstSlotNdx = 0;
@@ -399,7 +399,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		ButtonsDisableAll();
 		Utilities.S.ButtonsInteractable(_.UI.optionButtonsCS, false);
-		Utilities.S.ButtonsInteractable(_.UI.enemySpriteButtonsCS, false);
+		Utilities.S.ButtonsInteractable(_.UI.enemyButtonsCS, false);
 		Utilities.S.ButtonsInteractable(_.UI.partyNameButtonsCS, true);
 
 		_.UI.RemoveAllListeners();
