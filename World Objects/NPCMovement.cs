@@ -39,7 +39,7 @@ public class NPCMovement : MonoBehaviour {
 	public IEnumerator FixedUpdateCoroutine() {
 		// If not paused, and there isn't any dialogue being displayed...
 		if (!GameManager.S.paused && !DialogueManager.S.TextBoxSpriteGO.activeInHierarchy) {
-			if (!Player.S.isBattling) {
+			if (!GameManager.S.IsBattling()) {
 				if (isWalking) {
 					// Move gameObject towards movePoint
 					transform.position = Vector3.MoveTowards(transform.position, movePoint.position, speed * Time.deltaTime);

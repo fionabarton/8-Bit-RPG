@@ -29,7 +29,7 @@ public class Flicker : MonoBehaviour {
 				}
 			}
 		} else {
-			if (!Player.S.isBattling) {
+			if (!GameManager.S.IsBattling()) {
 				// Effectively "pauses" both timers when the game is paused
 				timeToEndInvincibility += Time.fixedDeltaTime;
 				timeToFlash += Time.fixedDeltaTime;

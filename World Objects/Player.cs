@@ -30,7 +30,6 @@ public class Player : MonoBehaviour {
 	public Vector3		respawnPos;
 
 	// Battle variables
-	public bool			isBattling = false;
 	public bool			canEncounter = true;
 	public int			encounterRate = 24;
 	public List<EnemyStats> enemyStats;
@@ -224,8 +223,6 @@ public class Player : MonoBehaviour {
 
 		// Audio: Start Battle
 		AudioManager.S.PlaySong(eSongName.startBattle);
-
-		isBattling = true;
 
 		// Yield
 		yield return new WaitForSeconds(1.25f);
