@@ -95,6 +95,11 @@ public class BattleEnd : MonoBehaviour {
 			AddDroppedItems(ndx);
 		}
 
+		// Add enemy questNdx to list of completed quests
+		if(_.enemyStats[ndx].questNdx != -1) {
+			_.completedQuestNdxs.Add(_.enemyStats[ndx].questNdx);
+        }
+
 		// Audio: Death
 		AudioManager.S.PlaySFX(eSoundName.death);
 
@@ -206,10 +211,10 @@ public class BattleEnd : MonoBehaviour {
 			AudioManager.S.PlaySong(eSongName.win);
 		}
 
-		// Complete Quest
-		//if (_.enemyStats[0].questNdx != 0) {
-		//	QuestManager.S.completed[_.enemyStats[0].questNdx] = true;
-		//}
+		// Set completed quests
+		for(int i = 0; i < _.completedQuestNdxs.Count; i++) {
+			QuestManager.S.quests[_.completedQuestNdxs[i]].isCompleted = true;
+		}
 
 		if (_.goldToAdd <= 0) { _.goldToAdd = 0; }
 		if (_.expToAdd <= 0) { _.expToAdd = 0; }
@@ -305,7 +310,7 @@ public class BattleEnd : MonoBehaviour {
 			if (_.playerDead[i]) { Party.S.stats[i].HP = 1; }
 		}
 
-		Invoke("LoadOverworldDelay", 0.5f);
+		Invoke("LoadOverworldDelay", 1.25f);
 	}
 	void LoadOverworldDelay() {
 		// Remove Update & Fixed Update Delegate
@@ -322,22 +327,11 @@ public class BattleEnd : MonoBehaviour {
 		// If poisoned, activate overworld poisoned icons
 		StatusEffects.S.SetOverworldPoisonIcons();
 
-		// Deactivate Black Screen
-		ColorScreen.S.anim.Play("Clear Screen", 0, 0);
-
-		AudioManager.S.PlaySong(eSongName.never);
-
 		_.mode = eBattleMode.actionButtons;
-
-		// Unfreeze player
-		Player.S.canMove = true;
-		Player.S.alreadyTriggered = false;
-
-		Player.S.movePoint.position = Player.S.transform.position;
-
-		Player.S.isBattling = false;
 
 		// Get new enemies based on current location
 		Player.S.enemyStats = Player.S.enemyManager.GetEnemies(Player.S.locationNdx);
+
+		GameManager.S.LoadLevel(GameManager.S.previousScene);
 	}
 }
