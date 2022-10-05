@@ -24,28 +24,24 @@ public class CompleteQuestTrigger : ActivateOnButtonPress {
         // Set camera to this gameObject
         CamManager.S.ChangeTarget(gameObject, true);
 
-        if (!QuestManager.S.quests[questNdx].isCompleted) {
-            DialogueManager.S.DisplayText(offerMessage);
+        DialogueManager.S.DisplayText(offerMessage);
 
-            // Set SubMenu Text
-            GameManager.S.gameSubMenu.SetText("Yes", "No");
+        // Set SubMenu Text
+        GameManager.S.gameSubMenu.SetText("Yes", "No");
 
-            // Activate Sub Menu after Dialogue 
-            DialogueManager.S.activateSubMenu = true;
-            // Don't activate Text Box Cursor 
-            DialogueManager.S.dontActivateCursor = true;
+        // Activate Sub Menu after Dialogue 
+        DialogueManager.S.activateSubMenu = true;
+        // Don't activate Text Box Cursor 
+        DialogueManager.S.dontActivateCursor = true;
 
-            // Set OnClick Methods
-            Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
-            GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(Yes);
-            GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
+        // Set OnClick Methods
+        Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
+        GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(Yes);
+        GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
 
-            // Set button navigation
-            Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
-            Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
-        } else {
-            DialogueManager.S.DisplayText("FAILURE");
-        }
+        // Set button navigation
+        Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
+        Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
     }
 
     public void ThisLoop() {
@@ -54,7 +50,9 @@ public class CompleteQuestTrigger : ActivateOnButtonPress {
                 if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
                     base.OnTriggerExit2D(Player.S.playerTriggerGO.GetComponent<BoxCollider2D>());
 
-                    dialogueTrigger.RecallOnTriggerEnter2D();
+                    if (dialogueTrigger) {
+                        dialogueTrigger.RecallOnTriggerEnter2D();
+                    }
 
                     enabled = false;
 
@@ -107,6 +105,6 @@ public class CompleteQuestTrigger : ActivateOnButtonPress {
                 // Remove ThisLoop() from Update Delgate
                 UpdateManager.updateDelegate -= ThisLoop;
             }
-       }
+        }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PurchaseTrigger : ActivateOnButtonPress {
     [Header("Set in Inspector")]
@@ -23,6 +21,9 @@ public class PurchaseTrigger : ActivateOnButtonPress {
         DialogueManager.S.dontActivateCursor = true;
         // Gray Out Text Box after Dialogue 
         //DialogueManager.S.grayOutTextBox = true;
+
+        //// Add Loop() to Update Delgate
+        //UpdateManager.updateDelegate += Loop;
 
         // Set OnClick Methods
         Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
@@ -56,6 +57,9 @@ public class PurchaseTrigger : ActivateOnButtonPress {
             // Audio: Deny
             AudioManager.S.PlaySFX(eSoundName.deny);
         }
+
+        //// Remove Loop() to Update Delgate
+        //UpdateManager.updateDelegate -= Loop;
     }
 
     void No() {
@@ -64,5 +68,17 @@ public class PurchaseTrigger : ActivateOnButtonPress {
 
         DialogueManager.S.ResetSettings();
         DialogueManager.S.DisplayText("That's cool. Later, bro.");
+
+        ////Remove Loop() to Update Delgate
+        //UpdateManager.updateDelegate -= Loop;
     }
+
+
+    //protected override void Loop() {
+    //    base.Loop();
+
+    //    if (Input.GetButtonDown("SNES Y Button")) {
+    //        No();
+    //    }
+    //}
 }

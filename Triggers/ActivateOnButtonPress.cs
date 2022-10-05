@@ -66,11 +66,12 @@ public class ActivateOnButtonPress : MonoBehaviour {
         }
     }
 
+    //protected virtual void Loop() {
     public void Loop() {
         if (!triggerHasBeenDeactivated) {
             if (!GameManager.S.paused) {
                 if (GameManager.S.canInput) {
-                    if (!Player.S.isBattling) {
+                    if (!GameManager.S.IsBattling()) {
                         // If there hasn't been any input yet...
                         if (!firstButtonPressed) {
                             // ...Activate on button press

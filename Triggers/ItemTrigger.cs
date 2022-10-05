@@ -8,10 +8,10 @@ public class ItemTrigger : ActivateOnButtonPress {
 	public eItem 	item;
 
 	// If != 0, this is a key item. Gives the index of which item is deactivated to KeyItemManager.cs
-	public int		keyItemNdx;
+	public int		keyItemNdx = -1;
 
 	// If != 0, this is a quest item. Gives the index of which quest is completed to QuestManager.cs
-	public int		questItemNdx;
+	public int		questItemNdx = -1;
 
 	protected override void Action() {
 		// Set Camera to Item gameObject
@@ -34,13 +34,13 @@ public class ItemTrigger : ActivateOnButtonPress {
 		gameObject.SetActive(false);
 
 		// Deactivate...PERMANENTLY! (KeyItemManager.cs)
-		if (keyItemNdx != 0) {
+		if (keyItemNdx != -1) {
 			KeyItemManager.S.isDeactivated[keyItemNdx] = true;
 		}
 
 		// Quest completed (QuestManager.cs)
-		if (questItemNdx != 0) {
-			QuestManager.S.completed[questItemNdx] = true;
+		if (questItemNdx != -1) {
+			QuestManager.S.quests[questItemNdx].isCompleted = true;
 		}
 	}
 }
