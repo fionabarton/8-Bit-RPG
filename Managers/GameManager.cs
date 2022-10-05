@@ -62,7 +62,17 @@ public class GameManager : MonoBehaviour {
             } else {
                 KeyboardInputMenu.S.Deactivate();
             }
-        }
+
+			//AddSubtractPlayerHP(0, false, 12);
+			//AddSubtractPlayerHP(1, false, 19);
+			//AddSubtractPlayerHP(2, false, 20);
+
+			//AddSubtractPlayerMP(0, false, 2);
+			//AddSubtractPlayerMP(1, false, 2);
+			//AddSubtractPlayerMP(2, false, 2);
+
+			//PauseMenu.S.UpdateGUI();
+		}
 
 		// Pause Screen input
 		if (!Items.S.menu.gameObject.activeInHierarchy &&
@@ -72,21 +82,11 @@ public class GameManager : MonoBehaviour {
             !OptionsMenu.S.gameObject.activeInHierarchy &&
 			!SaveMenu.S.gameObject.activeInHierarchy &&
 			!ExitGameMenu.S.gameObject.activeInHierarchy) {
-            if (!Player.S.isBattling) {
-                if (currentScene != "Title_Screen") {
+			if (!IsBattling()) {
+				if (currentScene != "Title_Screen") {
                     if (!PauseMenu.S.gameObject.activeInHierarchy) {
                         if (Input.GetButtonDown("Pause")) {
                             PauseMenu.S.Pause();
-
-                            //AddSubtractPlayerHP(0, false, 12);
-                            //AddSubtractPlayerHP(1, false, 19);
-                            //AddSubtractPlayerHP(2, false, 20);
-
-                            //AddSubtractPlayerMP(0, false, 2);
-                            //AddSubtractPlayerMP(1, false, 2);
-                            //AddSubtractPlayerMP(2, false, 2);
-
-                            //PauseMenu.S.UpdateGUI();
                         }
                     } else {
                         if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
@@ -205,7 +205,6 @@ public class GameManager : MonoBehaviour {
 				AudioManager.S.PlaySong(eSongName.ninja);
 				
 				Player.S.canMove = false;
-				Player.S.isBattling = true;
 				break;
 			default:
 				// Set positions to respawn position
@@ -234,7 +233,6 @@ public class GameManager : MonoBehaviour {
 
 				Player.S.canMove = true;
 				Player.S.alreadyTriggered = false;
-				Player.S.isBattling = false;
 
 				// Freeze Camera
 				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
@@ -263,6 +261,14 @@ public class GameManager : MonoBehaviour {
 		if (!Curtain.S.isOpen) {
 			Curtain.S.Open();
 		}
+	}
+
+	// Returns true if current scene is "Battle"
+	public bool IsBattling() {
+		if (currentScene == "Battle") {
+			return true;
+		}
+		return false;
 	}
 
 	// ************ Add/Subtract PLAYER HP ************ \\

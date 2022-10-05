@@ -208,8 +208,8 @@ public class CutsceneManager : MonoBehaviour
                             DialogueManager.S.DisplayText(message);
                             break;
                         case 4: // Reset CutsceneManager & Start BAttle
-                            Enemy enemy = actors[0].GetComponent<Enemy>();
-                            enemyStats = enemy.stats;
+                            //Enemy enemy = actors[0].GetComponent<Enemy>();
+                            //enemyStats = enemy.stats;
                             StartBattle();
 
                             EndScene();
@@ -333,10 +333,10 @@ public class CutsceneManager : MonoBehaviour
                 break;
             case 2: // Toiletron
                 // If party dies, reset cutscene to be triggered again
-                Enemy enemy = actors[0].GetComponent<Enemy>();
-                if (!enemy.stats[0].isDead) {
-                    sceneDone[ndx] = false;
-                }
+                //Enemy enemy = actors[0].GetComponent<Enemy>();
+                //if (!enemy.stats[0].isDead) {
+                //    sceneDone[ndx] = false;
+                //}
                 break;
         }
     }

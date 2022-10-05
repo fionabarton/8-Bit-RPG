@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour {
 	[Header("Set Dynamically")]
-	// Singleton
-	private static ObjectPool _S;
-	public static ObjectPool S { get { return _S; } set { _S = value; } }
-
 	public List<GameObject> pooledObjects;
 	public List<ObjectPoolItem> itemsToPool;
 	public Transform poolAnchor;
 
 	// DontDestroyOnLoad
 	private bool exists;
+
+	private static ObjectPool _S;
+	public static ObjectPool S { get { return _S; } set { _S = value; } }
 
 	void Awake() {
 		// Singleton

@@ -23,7 +23,7 @@ public class QuestManager : MonoBehaviour {
 		quests = new Quest[3];
 
 		quests[0] = new Quest(000, "Go defeat some dude.", Items.S.items[23], 50, 000);
-		quests[1] = new Quest(001, "Go retrieve/deliver something.", Items.S.items[23], 50, 000);
+		quests[1] = new Quest(001, "Go retrieve/deliver an item.", Items.S.items[23], 50, 000);
 		quests[2] = new Quest(002, "Go do something within the time limit.", Items.S.items[23], 50, 000);
 	}
 
