@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
 // Manages input, animation, etc. for the main character amongst other related functions
 public class Player : MonoBehaviour {
@@ -217,9 +216,8 @@ public class Player : MonoBehaviour {
 		canMove = false;
 		alreadyTriggered = true;
 
-		// Set followers' movePoints to their current position
-		followers.followerMovePoints[0].position = followers.followersGO[0].transform.position;
-		followers.followerMovePoints[1].position = followers.followersGO[1].transform.position;
+		// Cache respawn position
+		respawnPos = transform.position;
 
 		// Close curtain
 		Curtain.S.Close();
@@ -230,23 +228,10 @@ public class Player : MonoBehaviour {
 		isBattling = true;
 
 		// Yield
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.25f);
 
-		// Activate battle UI and gameobjects
-		Battle.S.UI.battleMenu.SetActive(true);
-		Battle.S.UI.battleGameObjects.SetActive(true);
-
-		Battle.S.InitializeBattle();
-
-		// Open curtain
-		Curtain.S.Open();
-
-		// Add Update & Fixed Update Delegate
-		UpdateManager.updateDelegate += Battle.S.Loop;
-		UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
-
-		// Audio: Ninja
-		AudioManager.S.PlaySong(eSongName.ninja);
+		// Load First Scene
+		GameManager.S.LoadLevel("Battle");
 	}
 
 	void CheckForPoisonDamage() {
