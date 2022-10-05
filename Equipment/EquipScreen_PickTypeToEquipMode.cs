@@ -40,7 +40,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		// Set pause menu's party sprites below skills menu
 		PauseMenu.S.SwapPartyMemberGOParentAndOrderInHierarchy(false);
 
-		if (Player.S.isBattling) {
+		if (GameManager.S.IsBattling()) {
 			equipScreen.DisplayCurrentEquipmentNames(ndx);
 			equipScreen.DisplayCurrentStats(ndx);
 		}
@@ -85,7 +85,7 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		// Go back to pickPartyMember mode
 		if (PauseMessage.S.dialogueFinished) { 
 			if (Input.GetButtonDown("SNES Y Button")) {
-                if (!Player.S.isBattling) {
+				if (!GameManager.S.IsBattling()) {
 					EquipMenu.S.pickPartyMemberMode.SetUp(equipScreen);
 
 					// Reset equippedButtons text color
@@ -113,14 +113,14 @@ public class EquipScreen_PickTypeToEquipMode : MonoBehaviour {
 		for (int i = 0; i <= equipScreen.equippedButtons.Count - 1; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.equippedButtons[i].gameObject) {
 				// Display item's description
-                if (!Player.S.isBattling) {
+				if (!GameManager.S.IsBattling()) {
 					PauseMessage.S.SetText(equipScreen.playerEquipment[playerNdx][i].description);
 				} else {
 					Battle.S.dialogue.SetText(equipScreen.playerEquipment[playerNdx][i].description);
 				}
 
 				// Set cursor position to currently selected button
-				if (!Player.S.isBattling) {
+				if (!GameManager.S.IsBattling()) {
 					Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, -35, 0);
 				} else {
 					Utilities.S.PositionCursor(equipScreen.equippedButtons[i].gameObject, -160, 40, 0);

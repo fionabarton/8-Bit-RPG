@@ -102,7 +102,7 @@ public class EquipMenu : MonoBehaviour {
 		// Add Loop() to Update Delgate
 		UpdateManager.updateDelegate += Loop;
 
-		if (!Player.S.isBattling) {
+		if (!GameManager.S.IsBattling()) {
 			DisplayCurrentEquipmentNames(0);
 
 			// Set up for pick party member mode
@@ -135,7 +135,7 @@ public class EquipMenu : MonoBehaviour {
 
 	public void Deactivate(bool playSound = false) {
 		// Go back to Pause Screen
-		if (!Player.S.isBattling) {
+		if (GameManager.S.currentScene != "Battle") { 
 			// Activate Cursor
 			ScreenCursor.S.cursorGO[0].SetActive(true);
 
@@ -205,7 +205,7 @@ public class EquipMenu : MonoBehaviour {
 	}
 
 	public void GoBackToPickTypeToEquipMode(string inputName, int soundNdx) {
-		if (!Player.S.isBattling) {
+		if (!GameManager.S.IsBattling()) {
 			if (PauseMessage.S.dialogueFinished) {
 				if (Input.GetButtonDown(inputName)) {
 					GoBackToPickTypeToEquipModeHelper(soundNdx);
@@ -295,7 +295,7 @@ public class EquipMenu : MonoBehaviour {
 		// Equip new item
 		playerEquipment[playerNdx][(int)item.type] = item;
 
-		if (!Player.S.isBattling) {
+		if (!GameManager.S.IsBattling()) {
 			PauseMessage.S.DisplayText(Party.S.stats[playerNdx].name + " equipped " + item.name + "!");
 
 			PauseMenu.S.playerAnims[playerNdx].CrossFade("Success", 0);

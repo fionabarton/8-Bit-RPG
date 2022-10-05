@@ -38,7 +38,7 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 			// Deactivate screen cursors
 			Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
 
-			if (!Player.S.isBattling) {
+			if (!GameManager.S.IsBattling()) {
 				PauseMessage.S.DisplayText("You don't have any items of this type to equip!");
             } else {
 				Battle.S.dialogue.DisplayText("You don't have any items of this type to equip!");
@@ -186,14 +186,14 @@ public class EquipScreen_PickItemToEquipMode : MonoBehaviour {
 				if (i < SortItems.S.tItems.Count) {
 					if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == equipScreen.inventoryButtons[i].gameObject) {
 						// Display item's description
-						if (!Player.S.isBattling) {
+						if (!GameManager.S.IsBattling()) {
 							PauseMessage.S.SetText(SortItems.S.tItems[firstSlotNdx + i].description);
 						} else {
 							Battle.S.dialogue.SetText(SortItems.S.tItems[firstSlotNdx + i].description);
 						}
 
 						// Set cursor position to currently selected button
-						if (!Player.S.isBattling) {
+						if (!GameManager.S.IsBattling()) {
 							Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, -35, 0);
 						} else {
 							Utilities.S.PositionCursor(equipScreen.inventoryButtons[i].gameObject, -160, 40, 0);
