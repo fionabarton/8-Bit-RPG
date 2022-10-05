@@ -50,7 +50,7 @@ public class ColorScreen : MonoBehaviour {
 
         // Remove all listeners
         Utilities.S.RemoveListeners(Battle.S.UI.partyNameButtonsCS);
-        Utilities.S.RemoveListeners(Battle.S.UI.enemySpriteButtonsCS);
+        Utilities.S.RemoveListeners(Battle.S.UI.enemyButtonsCS);
 
         // Set the sorting layer of each battle cursor's sprite renderer
         Battle.S.UI.SetCursorSpriteSortingLayer("UI");
