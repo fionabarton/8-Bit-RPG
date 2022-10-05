@@ -46,6 +46,9 @@ public class Battle : MonoBehaviour {
 
 	public int expToAdd, goldToAdd;
 
+	// Dynamic list that stores which quests have been completed during this battle
+	public List<int> completedQuestNdxs;
+
 	// Dropped Items
 	public List<Item> droppedItems = new List<Item>();
 
@@ -380,8 +383,9 @@ public class Battle : MonoBehaviour {
 		dialogue.Initialize();
 		StatusEffects.S.Initialize();
 
-		// Clear Dropped Items
+		// Clear dropped items, and completed quests
 		droppedItems.Clear();
+		completedQuestNdxs.Clear();
 
 		// Reset playerActions.buttonsCS text color
 		Utilities.S.SetTextColor(playerActions.actionButtonsCS, new Color32(39, 201, 255, 255));
