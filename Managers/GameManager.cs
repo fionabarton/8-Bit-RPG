@@ -50,11 +50,17 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Loop() {
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            if (!SaveMenu.S.gameObject.activeInHierarchy) {
-				SaveMenu.S.Activate();
+		if (Input.GetKeyDown(KeyCode.Y)) {
+            //if (!SaveMenu.S.gameObject.activeInHierarchy) {
+            //    SaveMenu.S.Activate();
+            //} else {
+            //    SaveMenu.S.Deactivate();
+            //}
+
+            if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
+                KeyboardInputMenu.S.Activate();
             } else {
-				SaveMenu.S.Deactivate();
+                KeyboardInputMenu.S.Deactivate();
             }
         }
 
@@ -64,8 +70,8 @@ public class GameManager : MonoBehaviour {
             !EquipMenu.S.gameObject.activeInHierarchy &&
             !ShopMenu.S.gameObject.activeInHierarchy &&
             !OptionsMenu.S.gameObject.activeInHierarchy &&
-			!SaveMenu.S.gameObject.activeInHierarchy) {
-
+			!SaveMenu.S.gameObject.activeInHierarchy &&
+			!ExitGameMenu.S.gameObject.activeInHierarchy) {
             if (!Player.S.isBattling) {
                 if (currentScene != "Title_Screen") {
                     if (!PauseMenu.S.gameObject.activeInHierarchy) {
@@ -100,7 +106,7 @@ public class GameManager : MonoBehaviour {
 		// Ensures InteractableCursor is child object of camera, otherwise it can be destroyed on scene change
 		InteractableCursor.S.Deactivate();
 
-		canInput = false;
+		//canInput = false;
 
 		// Disable player collider
 		Player.S.coll.enabled = false;
@@ -181,11 +187,54 @@ public class GameManager : MonoBehaviour {
 			case "Title_Screen":
 				TitleMenu.S.Activate();
 				break;
+			case "Battle":
+				// Activate battle UI and gameobjects
+				Battle.S.UI.battleMenu.SetActive(true);
+				Battle.S.UI.battleGameObjects.SetActive(true);
+
+				Battle.S.InitializeBattle();
+
+				// Open curtain
+				Curtain.S.Open();
+
+				// Add Update & Fixed Update Delegate
+				UpdateManager.updateDelegate += Battle.S.Loop;
+				UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
+
+				// Audio: Ninja
+				AudioManager.S.PlaySong(eSongName.ninja);
+				
+				Player.S.canMove = false;
+				Player.S.isBattling = true;
+				break;
 			default:
-				// Set Player Position to Respawn Position
+				// Set positions to respawn position
 				Player.S.gameObject.transform.position = Player.S.respawnPos;
+				Player.S.followers.followersGO[0].transform.position = Player.S.respawnPos;
+				Player.S.followers.followersGO[1].transform.position = Player.S.respawnPos;
+
+				// Set move point positions to respawn position
+				Player.S.movePoint.position = Player.S.respawnPos;
+				if (Player.S.followers.followersGO[0].activeInHierarchy) {
+					Player.S.followers.followerMovePoints[0].transform.position = Player.S.respawnPos;
+				}
+				if (Player.S.followers.followersGO[1].activeInHierarchy) {
+					Player.S.followers.followerMovePoints[1].transform.position = Player.S.respawnPos;
+				}
+
+				// Clear cached follower properties
+				Player.S.followers.movePoints.Clear();
+				Player.S.followers.animations.Clear();
+				Player.S.followers.facingRights.Clear();
+
+				// Reset sorting orders
+				Player.S.followers.partySRends[0].sortingOrder = 1;
+				Player.S.followers.partySRends[1].sortingOrder = 0;
+				Player.S.followers.partySRends[2].sortingOrder = 2;
 
 				Player.S.canMove = true;
+				Player.S.alreadyTriggered = false;
+				Player.S.isBattling = false;
 
 				// Freeze Camera
 				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
@@ -202,7 +251,7 @@ public class GameManager : MonoBehaviour {
 		// Wait 0.05f seconds
 		yield return new WaitForSeconds(0.05f);
 
-		canInput = true;
+		//canInput = true;
 
 		// Enable player collider
 		Player.S.coll.enabled = true;
