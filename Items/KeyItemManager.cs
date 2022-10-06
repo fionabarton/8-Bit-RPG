@@ -41,4 +41,19 @@ public class KeyItemManager : MonoBehaviour {
 			}
 		}
 	}
+
+	// Load/save which items are deactivated //////////////////////////
+	///////////////////////////////////////////////////////////////
+
+	// Save which items are deactivated:
+	// Convert list of bools into a string of 0's and 1's
+	public string GetIsDeactivatedString() {
+		return Utilities.S.SaveListOfBoolValues(ref isDeactivated);
+	}
+
+	// Load which items are deactivated:
+	// Read string of 0's and 1's to set list of bools
+	public void DeactivateItemsFromString(string isDeactivatedString) {
+		Utilities.S.LoadListOfBoolValues(isDeactivatedString, ref isDeactivated);
+	}
 }
