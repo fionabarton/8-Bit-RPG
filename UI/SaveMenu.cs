@@ -479,6 +479,7 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player2Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player2Gear"), 1); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
 		if (PlayerPrefs.HasKey(fileNdx + "QuestsCompleted")) { QuestManager.S.GetIsCompletedFromString(PlayerPrefs.GetString(fileNdx + "QuestsCompleted")); }
+		if (PlayerPrefs.HasKey(fileNdx + "KeyItemsDeactivated")) { KeyItemManager.S.DeactivateItemsFromString(PlayerPrefs.GetString(fileNdx + "KeyItemsDeactivated")); }
 
 		// Level Up
 		Party.S.CheckForLevelUp();
@@ -548,6 +549,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player2Gear", EquipMenu.S.GetEquippedGearString(1));
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", QuestManager.S.GetIsCompletedString());
+		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", KeyItemManager.S.GetIsDeactivatedString());
 
 		FileHelper("Saved game!");
 	}
@@ -579,6 +581,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player2Gear", "");
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", "");
+		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", "");
 
 		FileHelper("Deleted game!");
 	}
