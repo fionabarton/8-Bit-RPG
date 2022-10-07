@@ -20,11 +20,15 @@ public class QuestManager : MonoBehaviour {
 
     public void InitializeQuests() {
 		// Initialize array of quests
-		quests = new Quest[3];
+		quests = new Quest[6];
 
-		quests[0] = new Quest(000, "Go defeat some dude.", Items.S.items[23], 50, 000);
-		quests[1] = new Quest(001, "Go retrieve/deliver an item.", Items.S.items[23], 50, 000);
-		quests[2] = new Quest(002, "Go do something within the time limit.", Items.S.items[23], 50, 000);
+		quests[0] = new Quest(000, "Go defeat some dude.", Items.S.items[23], 50, 000); // SubMenu > Battle > DialogueTrigger/QuestReaction
+		quests[1] = new Quest(001, "Speak to some dude and accept the quest.", Items.S.items[23], 50, 000); // SubMenu > DialogueTrigger
+		quests[2] = new Quest(002, "Go retrieve/deliver an item.", Items.S.items[23], 50, 000);
+		quests[3] = new Quest(004, "Add girl party member to the party.", Items.S.items[23], 50, 000);
+		quests[4] = new Quest(004, "Add boy party member to the party.", Items.S.items[23], 50, 000);
+
+		quests[5] = new Quest(003, "Go do something within the time limit.", Items.S.items[23], 50, 000);
 	}
 
 	// Load/save which quests are completed ///////////////////////
