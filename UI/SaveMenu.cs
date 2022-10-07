@@ -2,12 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-/*
-	TO BE IMPLEMENTED:
-	- Current HP/MP
-	- Active Party Members
-	- KeyItems
- */
+
 public class SaveMenu : MonoBehaviour {
 	[Header("Set in Inspector")]
 	// Load, save, delete buttons
@@ -18,6 +13,15 @@ public class SaveMenu : MonoBehaviour {
 
 	// File slot text descriptions (name, lvl, time, etc.)
 	public List<Text> slotDataText;
+
+	// Party member sprite game objects
+	public List<GameObject> slot1PartyMemberSprites;
+	public List<GameObject> slot2PartyMemberSprites;
+	public List<GameObject> slot3PartyMemberSprites;
+
+	public List<Animator> slot1PartyMemberAnims;
+	public List<Animator> slot2PartyMemberAnims;
+	public List<Animator> slot3PartyMemberAnims;
 
 	// Reposition load and delete buttons depending on scene
 	public RectTransform frameImageRectTrans;
@@ -134,7 +138,7 @@ public class SaveMenu : MonoBehaviour {
 		UpdateManager.updateDelegate += Loop;
 
         // Freeze player
-        Player.S.canMove = false;
+        Player.S.canMove = false; 
 
         gameObject.SetActive(true);
 
@@ -224,9 +228,15 @@ public class SaveMenu : MonoBehaviour {
 
 							// Audio: Selection (when a new gameObject is selected)
 							Utilities.S.PlayButtonSelectedSFX(ref previousSelectedSlotButton);
+
+							// Set party sprite anim clips
+							SetPartyMemberSpriteAnims(i, "Walk");
 						} else {
 							// Set non-selected button text color
 							slotButtons[i].GetComponentInChildren<Text>().color = new Color32(255, 255, 255, 255);
+
+							// Set party sprite anim clips
+							SetPartyMemberSpriteAnims(i, "Idle");
 						}
 					}
 					canUpdate = false;
@@ -420,6 +430,9 @@ public class SaveMenu : MonoBehaviour {
 		// Remove listeners
 		Utilities.S.RemoveListeners(ExitGameMenu.S.buttonCS);
 
+		// Set party sprite anim clips
+		SetPartyMemberSpriteAnims(fileNdx, "Success");
+
 		// Reset stats to starting stats
 		Party.S.stats.Clear();
 
@@ -437,7 +450,7 @@ public class SaveMenu : MonoBehaviour {
             false, 0, 0)
         );
         // Player 2
-        Party.S.stats.Add(new PartyStats("Bill", 32, 32, 32, 15, 15, 15,
+        Party.S.stats.Add(new PartyStats("Girl", 32, 32, 32, 15, 15, 15,
             1, 1, 1, 1, 2, 2, 2, 2,
             0, 1, 2,
             new List<Spell> { Spells.S.spells[0], Spells.S.spells[1], Spells.S.spells[3], Spells.S.spells[4], Spells.S.spells[5], Spells.S.spells[2] },
@@ -446,7 +459,7 @@ public class SaveMenu : MonoBehaviour {
             false, 0, 1)
         );
         // Player 3
-        Party.S.stats.Add(new PartyStats("Fake Bill", 25, 25, 25, 10, 10, 10,
+        Party.S.stats.Add(new PartyStats("Boy", 25, 25, 25, 10, 10, 10,
             1, 1, 1, 1, 2, 2, 2, 2,
             0, 1, 6,
             new List<Spell> { Spells.S.spells[4], Spells.S.spells[3], Spells.S.spells[0], Spells.S.spells[2], Spells.S.spells[1], Spells.S.spells[5] },
@@ -461,6 +474,12 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player1Exp")) { Party.S.stats[0].EXP = PlayerPrefs.GetInt(fileNdx + "Player1Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player2Exp")) { Party.S.stats[1].EXP = PlayerPrefs.GetInt(fileNdx + "Player2Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Exp")) { Party.S.stats[2].EXP = PlayerPrefs.GetInt(fileNdx + "Player3Exp"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1HP")) { Party.S.stats[0].HP = PlayerPrefs.GetInt(fileNdx + "Player1HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2HP")) { Party.S.stats[1].HP = PlayerPrefs.GetInt(fileNdx + "Player2HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3HP")) { Party.S.stats[2].HP = PlayerPrefs.GetInt(fileNdx + "Player3HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1MP")) { Party.S.stats[0].MP = PlayerPrefs.GetInt(fileNdx + "Player1MP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2MP")) { Party.S.stats[1].MP = PlayerPrefs.GetInt(fileNdx + "Player2MP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3MP")) { Party.S.stats[2].MP = PlayerPrefs.GetInt(fileNdx + "Player3MP"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Gold")) { Party.S.gold = PlayerPrefs.GetInt(fileNdx + "Gold"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Steps")) { Player.S.stepCount = PlayerPrefs.GetInt(fileNdx + "Steps"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Time")) { PauseMenu.S.fileStatsNumText.text = PlayerPrefs.GetString(fileNdx + "Time"); } // Stores Time in 0:00 format
@@ -480,12 +499,18 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
 		if (PlayerPrefs.HasKey(fileNdx + "QuestsCompleted")) { QuestManager.S.GetIsCompletedFromString(PlayerPrefs.GetString(fileNdx + "QuestsCompleted")); }
 		if (PlayerPrefs.HasKey(fileNdx + "KeyItemsDeactivated")) { KeyItemManager.S.DeactivateItemsFromString(PlayerPrefs.GetString(fileNdx + "KeyItemsDeactivated")); }
+		if (PlayerPrefs.HasKey(fileNdx + "PartyNdx")) { Party.S.partyNdx = PlayerPrefs.GetInt(fileNdx + "PartyNdx"); }
 
 		// Level Up
 		Party.S.CheckForLevelUp();
 		Party.S.stats[0].hasLeveledUp = false;
 		Party.S.stats[1].hasLeveledUp = false;
 		Party.S.stats[2].hasLeveledUp = false;
+
+        // Activate party members
+		for(int i = 1; i <= Party.S.partyNdx; i++) {
+			Player.S.followers.followersGO[i - 1].SetActive(true);
+		}
 
 		currentFileNdx = fileNdx;
 
@@ -531,6 +556,12 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetInt(fileNdx + "Player1Exp", Party.S.stats[0].EXP);
 		PlayerPrefs.SetInt(fileNdx + "Player2Exp", Party.S.stats[1].EXP);
 		PlayerPrefs.SetInt(fileNdx + "Player3Exp", Party.S.stats[2].EXP);
+		PlayerPrefs.SetInt(fileNdx + "Player1HP", Party.S.stats[0].HP);
+		PlayerPrefs.SetInt(fileNdx + "Player2HP", Party.S.stats[1].HP);
+		PlayerPrefs.SetInt(fileNdx + "Player3HP", Party.S.stats[2].HP);
+		PlayerPrefs.SetInt(fileNdx + "Player1MP", Party.S.stats[0].MP);
+		PlayerPrefs.SetInt(fileNdx + "Player2MP", Party.S.stats[1].MP);
+		PlayerPrefs.SetInt(fileNdx + "Player3MP", Party.S.stats[2].MP);
 		PlayerPrefs.SetInt(fileNdx + "Gold", Party.S.gold);
 		PlayerPrefs.SetInt(fileNdx + "Steps", Player.S.stepCount);
 		PlayerPrefs.SetString(fileNdx + "Time", PauseMenu.S.GetTime()); // Stores Time in 0:00 format
@@ -550,6 +581,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", QuestManager.S.GetIsCompletedString());
 		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", KeyItemManager.S.GetIsDeactivatedString());
+		PlayerPrefs.SetInt(fileNdx + "PartyNdx", Party.S.partyNdx);
 
 		FileHelper("Saved game!");
 	}
@@ -563,6 +595,12 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetInt(fileNdx + "Player1Exp", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player2Exp", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player3Exp", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player1HP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player2HP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player3HP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player1MP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player2MP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player3MP", 0);
 		PlayerPrefs.SetInt(fileNdx + "Gold", 0);
 		PlayerPrefs.SetInt(fileNdx + "Steps", 0);
 		PlayerPrefs.SetString(fileNdx + "Time", "0:00"); // Stores Time in 0:00 format
@@ -582,6 +620,7 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", "");
 		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", "");
+		PlayerPrefs.SetInt(fileNdx + "PartyNdx", 0);
 
 		FileHelper("Deleted game!");
 	}
@@ -623,7 +662,13 @@ public class SaveMenu : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////
 	void UpdateGUI() {
+		// Deactivate all slot party member sprites
+		Utilities.S.SetActiveList(slot1PartyMemberSprites, false);
+		Utilities.S.SetActiveList(slot2PartyMemberSprites, false);
+		Utilities.S.SetActiveList(slot3PartyMemberSprites, false);
+
 		for (int i = 0; i < slotDataText.Count; i++) {
+			// Set slot text
 			if (PlayerPrefs.HasKey(i + "Time")) {
 				if (PlayerPrefs.GetString(i + "Time") == "0:00") {
 					slotDataText[i].text = "<color=yellow>New Game</color>";
@@ -639,7 +684,49 @@ public class SaveMenu : MonoBehaviour {
 					"<color=yellow>Time:</color> " + PlayerPrefs.GetString(i + "Time") + "\n" + "<color=yellow>Location:</color> " + PlayerPrefs.GetString(i + "LocationName") + "    " +
 					"<color=yellow>Gold:</color> " + PlayerPrefs.GetInt(i + "Gold");
 			}
+
+			// Activate slot party member sprites
+			if (PlayerPrefs.HasKey(i + "Time")) {
+				if (PlayerPrefs.GetString(i + "Time") != "0:00") {
+					for (int j = 0; j <= PlayerPrefs.GetInt(i + "PartyNdx"); j++) {
+						switch (i) {
+							case 0:
+								slot1PartyMemberSprites[j].SetActive(true);
+								break;
+							case 1:
+								slot2PartyMemberSprites[j].SetActive(true);
+								break;
+							case 2:
+								slot3PartyMemberSprites[j].SetActive(true);
+								break;
+						}
+					}
+				}
+			}
 		}
 		PauseMenu.S.UpdateGUI();
+	}
+
+	// Set party sprite anim clips
+	void SetPartyMemberSpriteAnims(int fileNdx, string clipName) {
+		for (int j = 0; j < slot1PartyMemberAnims.Count; j++) {
+			switch (fileNdx) {
+				case 0:
+					if (slot1PartyMemberAnims[j].gameObject.activeInHierarchy) {
+						slot1PartyMemberAnims[j].CrossFade(clipName, 0);
+					}
+					break;
+				case 1:
+					if (slot2PartyMemberAnims[j].gameObject.activeInHierarchy) {
+						slot2PartyMemberAnims[j].CrossFade(clipName, 0);
+					}
+					break;
+				case 2:
+					if (slot3PartyMemberAnims[j].gameObject.activeInHierarchy) {
+						slot3PartyMemberAnims[j].CrossFade(clipName, 0);
+					}
+					break;
+			}
+		}
 	}
 }
