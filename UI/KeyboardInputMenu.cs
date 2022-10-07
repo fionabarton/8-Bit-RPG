@@ -41,6 +41,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 	// Scene to load after confirming name
 	public string sceneToLoad = "Playground";
 
+	public int partyMemberNdx;
+
 	private static KeyboardInputMenu _S;
 	public static KeyboardInputMenu S { get { return _S; } set { _S = value; } }
 
@@ -54,7 +56,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
-	public void Activate(int partyMemberNdx = 0, string _sceneToLoad = "Playground") {
+	public void Activate(int _partyMemberNdx = 0, string _sceneToLoad = "Playground") {
 		if (GameManager.S.currentScene != "Title_Screen") {
 			// Deactivate 'Back To Menu' button  
 			buttonsGO[93].SetActive(false);
@@ -100,6 +102,8 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Set scene to load
 		sceneToLoad = _sceneToLoad;
+
+		partyMemberNdx = _partyMemberNdx;
 
 		// Reset text
 		inputString = "";
@@ -235,6 +239,17 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 		// Open Curtains
 		Curtain.S.Open();
+
+		if (GameManager.S.currentScene != "Title_Screen") {
+			// Increase partyNdx
+			Party.S.partyNdx += 1;
+
+			// Activate follower game object
+			Player.S.followers.followersGO[partyMemberNdx - 1].SetActive(true);
+
+			// Set respawn position
+			Player.S.respawnPos = Player.S.transform.position;
+		}
 
 		// Load scene
 		GameManager.S.LoadLevel(sceneToLoad);
@@ -375,7 +390,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		
 		// Set OnClick Methods
 		Utilities.S.RemoveListeners(ExitGameMenu.S.buttonCS);
-		ExitGameMenu.S.buttonCS[0].onClick.AddListener(delegate { Yes(0); });
+		ExitGameMenu.S.buttonCS[0].onClick.AddListener(delegate { Yes(partyMemberNdx); });
 		ExitGameMenu.S.buttonCS[1].onClick.AddListener(No);
 
 		// Set party member image animation clip
