@@ -259,7 +259,7 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void SetCursorPosition() {
-		List<int> cursorXPos = new List<int>() { -180, -335, -290, -145, -135, -205, -185 };
+		List<int> cursorXPos = new List<int>() { -180, -335, -290, -145, -135, -205, -280 };
 
 		for (int i = 0; i < optionsTextGO.Count; i++) {
 			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == optionsGO[i].gameObject) {
