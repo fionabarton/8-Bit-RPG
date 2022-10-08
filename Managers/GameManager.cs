@@ -45,23 +45,23 @@ public class GameManager : MonoBehaviour {
 		// Load First Scene
 		LoadLevel(firstScene);
 
-        // Add Loop() to UpdateManager
-        UpdateManager.updateDelegate += Loop;
+		// Add Loop() to UpdateManager
+		UpdateManager.updateDelegate += Loop;
 	}
 
 	public void Loop() {
 		if (Input.GetKeyDown(KeyCode.Y)) {
-            //if (!SaveMenu.S.gameObject.activeInHierarchy) {
-            //    SaveMenu.S.Activate();
-            //} else {
-            //    SaveMenu.S.Deactivate();
-            //}
+			//if (!SaveMenu.S.gameObject.activeInHierarchy) {
+			//    SaveMenu.S.Activate();
+			//} else {
+			//    SaveMenu.S.Deactivate();
+			//}
 
-            if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
-                KeyboardInputMenu.S.Activate();
-            } else {
-                KeyboardInputMenu.S.Deactivate();
-            }
+			if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
+				KeyboardInputMenu.S.Activate();
+			} else {
+				KeyboardInputMenu.S.Deactivate();
+			}
 
 			//AddSubtractPlayerHP(0, false, 12);
 			//AddSubtractPlayerHP(1, false, 19);
@@ -76,32 +76,38 @@ public class GameManager : MonoBehaviour {
 
 		// Pause Screen input
 		if (!Items.S.menu.gameObject.activeInHierarchy &&
-            !Spells.S.menu.gameObject.activeInHierarchy &&
-            !EquipMenu.S.gameObject.activeInHierarchy &&
-            !ShopMenu.S.gameObject.activeInHierarchy &&
-            !OptionsMenu.S.gameObject.activeInHierarchy &&
+			!Spells.S.menu.gameObject.activeInHierarchy &&
+			!EquipMenu.S.gameObject.activeInHierarchy &&
+			!ShopMenu.S.gameObject.activeInHierarchy &&
+			!OptionsMenu.S.gameObject.activeInHierarchy &&
 			!SaveMenu.S.gameObject.activeInHierarchy &&
 			!ExitGameMenu.S.gameObject.activeInHierarchy) {
 			if (!IsBattling()) {
 				if (currentScene != "Title_Screen") {
-                    if (!PauseMenu.S.gameObject.activeInHierarchy) {
-                        if (Input.GetButtonDown("Pause")) {
-                            PauseMenu.S.Pause();
-                        }
-                    } else {
-                        if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-                            PauseMenu.S.UnPause(true);
-                        }
-                    }
-                }
-            }
-        }
-    }
+					if (!PauseMenu.S.gameObject.activeInHierarchy) {
+						if (Input.GetButtonDown("Pause")) {
+							PauseMenu.S.Pause();
+						}
+					} else {
+						if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+							PauseMenu.S.UnPause(true);
+						}
+					}
+				}
+			}
+		}
+	}
 
 	// Load Level
 	public void LoadLevel(string levelToLoad) {
 		previousPreviousScene = previousScene;
 		previousScene = SceneManager.GetActiveScene().name;
+		
+		// Start incrementing time and update PauseMenu GUI 
+		if (previousScene == "Title_Screen") {
+			StopCoroutine("IncrementTimeCoroutine");
+			StartCoroutine("IncrementTimeCoroutine");
+		}
 
 		// Ensures InteractableCursor is child object of camera, otherwise it can be destroyed on scene change
 		InteractableCursor.S.Deactivate();
@@ -269,6 +275,27 @@ public class GameManager : MonoBehaviour {
 			return true;
 		}
 		return false;
+	}
+
+	// Increment time and update PauseMenu GUI
+	public IEnumerator IncrementTimeCoroutine() {
+		// Increment seconds & reset timer
+		if (PauseMenu.S.timeDone <= Time.time) {
+			PauseMenu.S.seconds += 1;
+			PauseMenu.S.timeDone = 1 + Time.time;
+		}
+
+		// Increment minutes & reset seconds
+		if (PauseMenu.S.seconds > 59) {
+			PauseMenu.S.minutes += 1;
+			PauseMenu.S.seconds = 0;
+		}
+
+		// Display Time, Step Count, & Gold
+		PauseMenu.S.Time_Steps_Gold_TXT();
+
+		yield return new WaitForFixedUpdate();
+		StartCoroutine("FixedUpdateCoroutine");
 	}
 
 	// ************ Add/Subtract PLAYER HP ************ \\
