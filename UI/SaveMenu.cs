@@ -436,10 +436,6 @@ public class SaveMenu : MonoBehaviour {
 		// Reset stats to starting stats
 		Party.S.stats.Clear();
 
-		// Reset time that PauseMenu is not active
-		PauseMenu.S.timeWhenEnabled = 0;
-		PauseMenu.S.timeWhenDisabled = 0;
-
 		// Player 1
 		Party.S.stats.Add(new PartyStats("Blob", 40, 40, 40, 6, 6, 6,
             2, 2, 2, 2, 1, 1, 1, 1,
@@ -474,12 +470,6 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player1Exp")) { Party.S.stats[0].EXP = PlayerPrefs.GetInt(fileNdx + "Player1Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player2Exp")) { Party.S.stats[1].EXP = PlayerPrefs.GetInt(fileNdx + "Player2Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Exp")) { Party.S.stats[2].EXP = PlayerPrefs.GetInt(fileNdx + "Player3Exp"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player1HP")) { Party.S.stats[0].HP = PlayerPrefs.GetInt(fileNdx + "Player1HP"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player2HP")) { Party.S.stats[1].HP = PlayerPrefs.GetInt(fileNdx + "Player2HP"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player3HP")) { Party.S.stats[2].HP = PlayerPrefs.GetInt(fileNdx + "Player3HP"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player1MP")) { Party.S.stats[0].MP = PlayerPrefs.GetInt(fileNdx + "Player1MP"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player2MP")) { Party.S.stats[1].MP = PlayerPrefs.GetInt(fileNdx + "Player2MP"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player3MP")) { Party.S.stats[2].MP = PlayerPrefs.GetInt(fileNdx + "Player3MP"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Gold")) { Party.S.gold = PlayerPrefs.GetInt(fileNdx + "Gold"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Steps")) { Player.S.stepCount = PlayerPrefs.GetInt(fileNdx + "Steps"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Time")) { PauseMenu.S.fileStatsNumText.text = PlayerPrefs.GetString(fileNdx + "Time"); } // Stores Time in 0:00 format
@@ -507,8 +497,16 @@ public class SaveMenu : MonoBehaviour {
 		Party.S.stats[1].hasLeveledUp = false;
 		Party.S.stats[2].hasLeveledUp = false;
 
-        // Activate party members
-		for(int i = 1; i <= Party.S.partyNdx; i++) {
+		// Set current HP/MP
+		if (PlayerPrefs.HasKey(fileNdx + "Player1HP")) { Party.S.stats[0].HP = PlayerPrefs.GetInt(fileNdx + "Player1HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2HP")) { Party.S.stats[1].HP = PlayerPrefs.GetInt(fileNdx + "Player2HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3HP")) { Party.S.stats[2].HP = PlayerPrefs.GetInt(fileNdx + "Player3HP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1MP")) { Party.S.stats[0].MP = PlayerPrefs.GetInt(fileNdx + "Player1MP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2MP")) { Party.S.stats[1].MP = PlayerPrefs.GetInt(fileNdx + "Player2MP"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3MP")) { Party.S.stats[2].MP = PlayerPrefs.GetInt(fileNdx + "Player3MP"); }
+
+		// Activate party members
+		for (int i = 1; i <= Party.S.partyNdx; i++) {
 			Player.S.followers.followersGO[i - 1].SetActive(true);
 		}
 
@@ -546,9 +544,6 @@ public class SaveMenu : MonoBehaviour {
 
     void SaveFile(int fileNdx) {
 		ExitGameMenu.S.Deactivate();
-
-		// Account for time that PauseMenu is not active
-		PauseMenu.S.AddTimeWhileInactiveToTime();
 
 		PlayerPrefs.SetInt(fileNdx + "Player1Level", Party.S.stats[0].LVL);
 		PlayerPrefs.SetInt(fileNdx + "Player2Level", Party.S.stats[1].LVL);

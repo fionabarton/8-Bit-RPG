@@ -33,11 +33,7 @@ public class PauseMenu : MonoBehaviour {
 	public int minutes;
 
 	// Resets timer
-	float timeDone;
-
-	// Account for time that PauseMenu is not active
-	public float timeWhenEnabled;
-	public float timeWhenDisabled;
+	public float timeDone;
 
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
 	public bool canUpdate;
@@ -94,8 +90,6 @@ public class PauseMenu : MonoBehaviour {
 
 			// Activate Cursor
 			ScreenCursor.S.cursorGO[0].SetActive(true);
-
-			StartCoroutine("FixedUpdateCoroutine");
 		}
 		catch (Exception e) {
 			Debug.Log(e);
@@ -105,8 +99,6 @@ public class PauseMenu : MonoBehaviour {
     void OnDisable() {
 		// Deactivate screen cursors
 		Utilities.S.SetActiveList(ScreenCursor.S.cursorGO, false);
-
-		StopCoroutine("FixedUpdateCoroutine");
 	}
 
 	public void Loop() {
@@ -135,28 +127,6 @@ public class PauseMenu : MonoBehaviour {
 				canUpdate = false;
 			}
 		}
-	}
-
-	public IEnumerator FixedUpdateCoroutine() {
-		// If Active
-		if (isActiveAndEnabled) {
-			// Increment seconds & reset timer
-			if (timeDone <= Time.time) {
-				seconds += 1;
-				timeDone = 1 + Time.time;
-			}
-
-			// Increment minutes & reset seconds
-			if (seconds > 59) {
-				minutes += 1;
-				seconds = 0;
-			}
-
-			// Display Time, Step Count, & Gold
-			Time_Steps_Gold_TXT();
-		}
-		yield return new WaitForFixedUpdate();
-		StartCoroutine("FixedUpdateCoroutine");
 	}
 
 	// ************ PAUSE ************ \\
@@ -193,23 +163,11 @@ public class PauseMenu : MonoBehaviour {
         // Audio: Confirm
         AudioManager.S.PlaySFX(eSoundName.confirm);
 
-		// Account for time that PauseMenu is not active
-		AddTimeWhileInactiveToTime();
-
 		// Update Delgate
 		UpdateManager.updateDelegate += Loop;
 	}
 
-	// Account for time that PauseMenu is not active
-	public void AddTimeWhileInactiveToTime() {
-		// Account for time that PauseScreen is not active
-		timeWhenEnabled = Time.time;
-		float tTime = timeWhenEnabled - timeWhenDisabled;
-		minutes += (int)tTime / 60;
-		seconds += (int)tTime % 60;
-	}
-
-	public void UnPause(bool playSound = false) {
+    public void UnPause(bool playSound = false) {
 		// Unpause game
 		GameManager.S.paused = false;
 
@@ -234,9 +192,6 @@ public class PauseMenu : MonoBehaviour {
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
 
-		// Account for time that PauseScreen is not active
-		timeWhenDisabled = Time.time;
-
 		// Update Delegate
 		UpdateManager.updateDelegate -= Loop;
 
@@ -255,8 +210,8 @@ public class PauseMenu : MonoBehaviour {
     }
 
 	// Display Time, Steps, & Gold
-	void Time_Steps_Gold_TXT() {
-        if (Player.S) {
+	public void Time_Steps_Gold_TXT() {
+        if (isActiveAndEnabled) {
             // Time
             fileStatsNumText.text = GetTime() + "\n" +
             // Steps Count
