@@ -112,7 +112,7 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// Get basic physical attack damage
-	public void GetAttackDamage(int attackerLVL, int attackerSTR, int attackerAGI, int defenderDEF, int defenderAGI, string attackerName, string defenderName, int defenderHP, bool targetIsPlayer, int targetNdx) {
+	public void GetPhysicalAttackDamage(int attackerLVL, int attackerSTR, int attackerAGI, int defenderDEF, int defenderAGI, string attackerName, string defenderName, int defenderHP, bool targetIsPlayer, int targetNdx) {
 		// Reset Attack Damage
 		_.attackDamage = 0;
 
@@ -167,8 +167,14 @@ public class BattleStats : MonoBehaviour {
 			_.attackDamage += attackerSTR;
 			_.attackDamage -= defenderDEF;
 
-			if (_.attackDamage < 0) {
+			// If no damage is done...
+			if (_.attackDamage <= 0) {
 				_.attackDamage = 0;
+
+				// 50% chance of increasing damage to 1 HP
+				if (Random.value > 0.5f) {
+					_.attackDamage = 1;
+				}
 			}
 
 			// Add QTE Bonus Damage
