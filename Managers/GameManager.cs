@@ -50,13 +50,22 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void Loop() {
-		if (Input.GetKeyDown(KeyCode.Y)) {
-			//if (!SaveMenu.S.gameObject.activeInHierarchy) {
-			//    SaveMenu.S.Activate();
-			//} else {
-			//    SaveMenu.S.Deactivate();
-			//}
+		//if (Input.GetKeyDown(KeyCode.Escape)) {
+  //          if (!ExitGameMenu.S.gameObject.activeInHierarchy) {
+		//		paused = true;
+		//		Player.S.canMove = false;
 
+		//		ExitGameMenu.S.Activate();
+
+  //          } else {
+		//		paused = false;
+		//		Player.S.canMove = true;
+
+		//		ExitGameMenu.S.Deactivate();
+  //          }
+		//}
+
+		if (Input.GetKeyDown(KeyCode.Y)) {
 			if (!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
 				KeyboardInputMenu.S.Activate();
 			} else {
@@ -295,7 +304,7 @@ public class GameManager : MonoBehaviour {
 		PauseMenu.S.Time_Steps_Gold_TXT();
 
 		yield return new WaitForFixedUpdate();
-		StartCoroutine("FixedUpdateCoroutine");
+		StartCoroutine("IncrementTimeCoroutine");
 	}
 
 	// ************ Add/Subtract PLAYER HP ************ \\
