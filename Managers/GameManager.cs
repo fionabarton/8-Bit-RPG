@@ -399,10 +399,15 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ************************ \\
-	public void InstantiateFloatingScore(GameObject gameObject, string message, Color color) {
+	public void InstantiateFloatingScore(GameObject gameObject, string message, Color color, float yPosOffset = 0) {
 		// Get and position Floating Score game object
 		GameObject floatingScore = ObjectPool.S.GetPooledObject("FloatingScore");
 		ObjectPool.S.PosAndEnableObj(floatingScore, gameObject);
+
+		// Set floating score y-pos
+		Vector2 tPos = floatingScore.transform.position;
+		tPos.y += yPosOffset;
+		floatingScore.transform.position = tPos;
 
 		// Display and color Floating Score text
 		if (floatingScore != null) {
