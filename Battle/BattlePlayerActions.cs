@@ -80,7 +80,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 	public void AttackEnemy(int ndx) {
 		// Calculate Attack Damage
-		_.stats.GetAttackDamage(Party.S.stats[_.PlayerNdx()].LVL,
+		_.stats.GetPhysicalAttackDamage(Party.S.stats[_.PlayerNdx()].LVL,
 								Party.S.stats[_.PlayerNdx()].STR, Party.S.stats[_.PlayerNdx()].AGI,
 								_.enemyStats[ndx].DEF, _.enemyStats[ndx].AGI,
 								Party.S.stats[_.PlayerNdx()].name, _.enemyStats[ndx].name,
@@ -95,7 +95,7 @@ public class BattlePlayerActions : MonoBehaviour {
 		// Flicker Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
 
-		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
 
 		AudioManager.S.PlayRandomDamageSFX();
 
@@ -177,7 +177,7 @@ public class BattlePlayerActions : MonoBehaviour {
 				totalAttackDamage += _.attackDamage;
 
 				// Display Floating Score
-				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
 
 				// Shake Enemy Anim
 				if (!_.enemyStats[i].isDead) {

@@ -16,7 +16,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		int playerToAttack = _.stats.GetRandomPlayerNdx();
 
 		// Calculate Attack Damage
-		_.stats.GetAttackDamage(_.enemyStats[_.EnemyNdx()].LVL,
+		_.stats.GetPhysicalAttackDamage(_.enemyStats[_.EnemyNdx()].LVL,
 									   _.enemyStats[_.EnemyNdx()].STR, _.enemyStats[_.EnemyNdx()].AGI,
 									   Party.S.stats[playerToAttack].DEF, Party.S.stats[playerToAttack].AGI,
 									   _.enemyStats[_.EnemyNdx()].name, Party.S.stats[playerToAttack].name,
@@ -189,7 +189,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 
 		// Display Floating Score
-		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], amountToHeal.ToString(), Color.green);
+		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], amountToHeal.ToString(), Color.green, -2f);
 
 		// Flicker Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
