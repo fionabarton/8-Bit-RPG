@@ -302,7 +302,7 @@ public class BattleSpells : MonoBehaviour {
 			GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);
 
 			// Display Floating Score
-			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
 
 			if (_.enemyStats[ndx].HP < 1) {
 				Battle.S.end.EnemyDeath(ndx);
@@ -387,7 +387,7 @@ public class BattleSpells : MonoBehaviour {
 				totalAttackDamage += _.attackDamage;
 
 				// Display Floating Score
-				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
 
 				// Shake Enemy Anim
 				if (!_.enemyStats[i].isDead) {
@@ -781,7 +781,7 @@ public class BattleSpells : MonoBehaviour {
 
         // Display Floating Score
         if (displayFloatingScore) {
-            GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+            GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
         }
 
         //       // Set player anim
