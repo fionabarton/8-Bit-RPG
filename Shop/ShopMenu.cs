@@ -61,6 +61,7 @@ public class ShopMenu : MonoBehaviour {
 		previousSelectedGameObject = inventoryButtons[0].gameObject;
 
 		firstSlotNdx = 0;
+		firstOrLastSlotSelected = true;
 
 		// Display gold amount
 		goldAmountText.text = Party.S.gold.ToString();
