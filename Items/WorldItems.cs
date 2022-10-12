@@ -57,18 +57,28 @@ public class WorldItems : MonoBehaviour {
 			Inventory.S.RemoveItemFromInventory(Items.S.items[0]);
 
 			// Add 30-45 HP to TARGET Player's HP
-			int randomValue = UnityEngine.Random.Range(30, 45);
-			GameManager.S.AddPlayerHP(ndx, randomValue);
+			int amountToHeal = UnityEngine.Random.Range(30, 45);
+			int maxAmountToHeal = Party.S.stats[ndx].maxHP - Party.S.stats[ndx].HP;
+
+			// Cap amountToHeal to maxAmountToHeal
+			if (amountToHeal >= maxAmountToHeal) {
+				amountToHeal = maxAmountToHeal;
+			}
+
+			GameManager.S.AddPlayerHP(ndx, amountToHeal);
 
 			// Display Text
 			if (Party.S.stats[ndx].HP >= Party.S.stats[ndx].maxHP) {
                 PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 			} else {
-                PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
+                PauseMessage.S.DisplayText("Used Heal Potion!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
             }
 
 			// Set animation to success
 			PauseMenu.S.playerAnims[ndx].CrossFade("Success", 0);
+
+			// Instantiate floating score
+			GameManager.S.InstantiateFloatingScore(PauseMenu.S.playerGO[ndx], amountToHeal.ToString(), Color.green);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -88,18 +98,28 @@ public class WorldItems : MonoBehaviour {
 			Inventory.S.RemoveItemFromInventory(Items.S.items[1]);
 
 			// Add 30-45 MP to TARGET Player's MP
-			int randomValue = UnityEngine.Random.Range(30, 45);
-			GameManager.S.AddPlayerMP(ndx, randomValue);
+			int amountToHeal = UnityEngine.Random.Range(30, 45);
+			int maxAmountToHeal = Party.S.stats[ndx].maxMP - Party.S.stats[ndx].MP;
+
+			// Cap amountToHeal to maxAmountToHeal
+			if (amountToHeal >= maxAmountToHeal) {
+				amountToHeal = maxAmountToHeal;
+			}
+
+			GameManager.S.AddPlayerMP(ndx, amountToHeal);
 
 			// Display Text
 			if (Party.S.stats[ndx].MP >= Party.S.stats[ndx].maxMP) {
                 PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " back to Max MP!");
 			} else {
-                PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " gained " + randomValue + " MP!");
+                PauseMessage.S.DisplayText("Used Magic Potion!\n" + Party.S.stats[ndx].name + " gained " + amountToHeal + " MP!");
 			}
 
 			// Set animation to success
 			PauseMenu.S.playerAnims[ndx].CrossFade("Success", 0);
+
+			// Instantiate floating score
+			GameManager.S.InstantiateFloatingScore(PauseMenu.S.playerGO[ndx], amountToHeal.ToString(), new Color32(39, 201, 255, 255));
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -151,15 +171,12 @@ public class WorldItems : MonoBehaviour {
 		if (Party.S.stats[0].HP < Party.S.stats[0].maxHP ||
 			Party.S.stats[1].HP < Party.S.stats[1].maxHP ||
 			Party.S.stats[2].HP < Party.S.stats[2].maxHP) {
-			for (int i = 0; i < Party.S.stats.Count; i++) {
+			for (int i = 0; i <= Party.S.partyNdx; i++) {
 				// Get amount and max amount to heal
 				int amountToHeal = UnityEngine.Random.Range(12, 20);
 				int maxAmountToHeal = Party.S.stats[i].maxHP - Party.S.stats[i].HP;
 				// Add Player's WIS to Heal Amount
 				amountToHeal += Party.S.stats[i].WIS;
-
-				// Add 12-20 HP to TARGET Player's HP
-				GameManager.S.AddPlayerHP(i, amountToHeal);
 
 				// Cap amountToHeal to maxAmountToHeal
 				if (amountToHeal >= maxAmountToHeal) {
@@ -167,13 +184,19 @@ public class WorldItems : MonoBehaviour {
 				}
 
 				totalAmountToHeal += amountToHeal;
+
+				// Add 12-20 HP to TARGET Player's HP
+				GameManager.S.AddPlayerHP(i, amountToHeal);
+
+				// Instantiate floating score
+				GameManager.S.InstantiateFloatingScore(PauseMenu.S.playerGO[i], amountToHeal.ToString(), Color.green);
 			}
 
 			// Remove from Inventory
 			Inventory.S.RemoveItemFromInventory(Items.S.items[22]);
 
-            // Display Text
-            PauseMessage.S.DisplayText("Used Heal All Potion!\nHealed ALL party members for an average of " + Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.stats.Count) + " HP!");
+			// Display Text
+			PauseMessage.S.DisplayText("Used Heal All Potion!\nHealed ALL party members for an average of " + Utilities.S.CalculateAverage(totalAmountToHeal, Party.S.partyNdx + 1) + " HP!");
 
             // Set animations to success
             for (int i = 0; i <= Party.S.partyNdx; i++) {
