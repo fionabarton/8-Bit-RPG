@@ -67,15 +67,25 @@ public class WorldSpells : MonoBehaviour {
 			GameManager.S.SubtractPlayerMP(Spells.S.menu.playerNdx, 3);
 
 			// Add 30-45 HP to TARGET Player's HP
-			int randomValue = UnityEngine.Random.Range(30, 45);
-			GameManager.S.AddPlayerHP(ndx, randomValue);
+			int amountToHeal = UnityEngine.Random.Range(30, 45);
+			int maxAmountToHeal = Party.S.stats[ndx].maxHP - Party.S.stats[ndx].HP;
+
+			// Cap amountToHeal to maxAmountToHeal
+			if (amountToHeal >= maxAmountToHeal) {
+				amountToHeal = maxAmountToHeal;
+			}
+
+			GameManager.S.AddPlayerHP(ndx, amountToHeal);
 
 			// Display Text
 			if (Party.S.stats[ndx].HP >= Party.S.stats[ndx].maxHP) {
 				PauseMessage.S.DisplayText("Used Heal Skill!\nHealed " + Party.S.stats[ndx].name + " back to Max HP!");
 			} else {
-				PauseMessage.S.DisplayText("Used Heal Skill!\nHealed " + Party.S.stats[ndx].name + " for " + randomValue + " HP!");
+				PauseMessage.S.DisplayText("Used Heal Skill!\nHealed " + Party.S.stats[ndx].name + " for " + amountToHeal + " HP!");
 			}
+
+			// Instantiate floating score
+			GameManager.S.InstantiateFloatingScore(PauseMenu.S.playerGO[ndx], amountToHeal.ToString(), Color.green);
 
 			// Audio: Buff 1
 			AudioManager.S.PlaySFX(eSoundName.buff1);
@@ -178,6 +188,9 @@ public class WorldSpells : MonoBehaviour {
 				}
 
 				totalAmountToHeal += amountToHeal;
+
+				// Instantiate floating score
+				GameManager.S.InstantiateFloatingScore(PauseMenu.S.playerGO[i], amountToHeal.ToString(), Color.green);
 			}
 
 			// Display Text
