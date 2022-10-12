@@ -505,6 +505,11 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player2MP")) { Party.S.stats[1].MP = PlayerPrefs.GetInt(fileNdx + "Player2MP"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3MP")) { Party.S.stats[2].MP = PlayerPrefs.GetInt(fileNdx + "Player3MP"); }
 
+		// Deactivate all party members
+		for (int i = 0; i < Player.S.followers.followersGO.Count; i++) {
+			Player.S.followers.followersGO[i].SetActive(false);
+		}
+
 		// Activate party members
 		for (int i = 1; i <= Party.S.partyNdx; i++) {
 			Player.S.followers.followersGO[i - 1].SetActive(true);
