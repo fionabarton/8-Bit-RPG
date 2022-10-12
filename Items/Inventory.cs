@@ -76,16 +76,27 @@ public class Inventory : MonoBehaviour {
         }
     }
 
-    public void RemoveItemFromInventory(Item name) {
-        items[name]--;
-
-        // Update Pause & Overworld GUI
-        //Items.S.menu.AssignItemNames();
-        //inventPauseMenu.S.UpdateGUI();
+    public void RemoveItemFromInventory(Item item) {
+        items[item]--;
 
         // Remove the entry if the count goes to 0.
-        if (items[name] == 0) {
-            items.Remove(name);
+        if (items[item] == 0) {
+            items.Remove(item);
+        }
+
+        // If shop or item menus enabled, decrement firstSlotNdx
+        if (GetItemCount(item) == 0) {
+            if (ShopMenu.S.isActiveAndEnabled) {
+                if (ShopMenu.S.firstSlotNdx != 0) {
+                    ShopMenu.S.firstSlotNdx -= 1;
+                }
+            }
+
+            if (Items.S.menu.isActiveAndEnabled) {
+                if (Items.S.menu.firstSlotNdx != 0) {
+                    Items.S.menu.firstSlotNdx -= 1;
+                }
+            }
         }
     }
 
