@@ -95,8 +95,12 @@ public class BattlePlayerActions : MonoBehaviour {
 		// Flicker Enemy Anim 
 		_.enemyAnims[ndx].CrossFade("Damage", 0);
 
-		GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
-
+		if(_.enemyStats[ndx].HP > 0) {
+			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
+		} else {
+			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+		}
+		
 		AudioManager.S.PlayRandomDamageSFX();
 
 		// Enemy Death or Next Turn
@@ -177,7 +181,11 @@ public class BattlePlayerActions : MonoBehaviour {
 				totalAttackDamage += _.attackDamage;
 
 				// Display Floating Score
-				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
+				if (_.enemyStats[i].HP > 0) {
+					GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
+				} else {
+					GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
+				}
 
 				// Shake Enemy Anim
 				if (!_.enemyStats[i].isDead) {
