@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// Trigger that performs an action implemented its child class OnButtonPress
@@ -20,6 +18,15 @@ public class ActivateOnButtonPress : MonoBehaviour {
     // Used after a door is opened and the trigger isn't needed anymore
     public bool triggerHasBeenDeactivated;
 
+    // 
+    public DialogueTrigger t;
+    public Vector2 v;
+
+    private void Start() {
+        t = GetComponent<DialogueTrigger>();
+        v = gameObject.transform.position;
+    }
+
     void OnDisable() {
         // Remove Update Delgate
         UpdateManager.updateDelegate -= Loop;
@@ -30,6 +37,11 @@ public class ActivateOnButtonPress : MonoBehaviour {
             if (!Player.S.alreadyTriggered) {
                 if (!GameManager.S.paused) {
                     if (coll.gameObject.CompareTag("PlayerTrigger")) {
+
+                        //
+                        v = gameObject.transform.position;
+
+
                         // Prevents triggering multiple triggers
                         Player.S.alreadyTriggered = true;
 
@@ -101,11 +113,10 @@ public class ActivateOnButtonPress : MonoBehaviour {
 
         // Activate Interactable Trigger
         if (activateInteractableCursor) {
-            InteractableCursor.S.Activate(gameObject);
+            InteractableCursor.S.Activate(v);
         }
 
         // Reset DialogueTrigger messages
-        DialogueTrigger t = GetComponent<DialogueTrigger>();
         if (t) {
             if (t.enabled) {
                 t.ResetMessages();
