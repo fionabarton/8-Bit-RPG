@@ -302,7 +302,11 @@ public class BattleSpells : MonoBehaviour {
 			GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);
 
 			// Display Floating Score
-			GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
+			if (_.enemyStats[ndx].HP > 0) {
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
+			} else {
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+			}
 
 			if (_.enemyStats[ndx].HP < 1) {
 				Battle.S.end.EnemyDeath(ndx);
@@ -387,7 +391,11 @@ public class BattleSpells : MonoBehaviour {
 				totalAttackDamage += _.attackDamage;
 
 				// Display Floating Score
-				GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
+				if (_.enemyStats[i].HP > 0) {
+					GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red, -2f);
+				} else {
+					GameManager.S.InstantiateFloatingScore(_.enemySprites[i], _.attackDamage.ToString(), Color.red);
+				}
 
 				// Shake Enemy Anim
 				if (!_.enemyStats[i].isDead) {
@@ -780,9 +788,13 @@ public class BattleSpells : MonoBehaviour {
         //       ObjectPool.S.PosAndEnableObj(explosion, _.enemySprite[ndx].gameObject);
 
         // Display Floating Score
-        if (displayFloatingScore) {
-            GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
-        }
+        if (displayFloatingScore) { 
+			if (_.enemyStats[ndx].HP > 0) {
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red, -2f);
+			} else {
+				GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
+			}
+		}
 
         //       // Set player anim
         //       if (playPlayerAnim) {
