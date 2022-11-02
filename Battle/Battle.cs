@@ -155,8 +155,6 @@ public class Battle : MonoBehaviour {
 						qte.Loop();
 
 						if (Input.GetButtonDown("SNES Y Button")) {
-							//playerAnimator[animNdx].CrossFade("Idle", 0);
-
 							// Audio: Deny
 							AudioManager.S.PlaySFX(eSoundName.deny);
 
@@ -211,10 +209,10 @@ public class Battle : MonoBehaviour {
 
 								// ...call previously announced move this turn
 								enemyAI.CallEnemyMove(moveNdx);
-								// If the enemy didn't announce what move it would perform during its previous turn...
+							// If the enemy didn't announce what move it would perform during its previous turn...
 							} else {
 								// ...let its AI dictate what move to perform
-								enemyAI.EnemyAI(enemyStats[EnemyNdx()].id);
+								enemyAI.EnemyAI();
 							}
 						}
 						break;
@@ -331,6 +329,9 @@ public class Battle : MonoBehaviour {
 				// Set Target Cursor Position: player action buttons (fight, defend, item, run, etc.)
 				UI.ActionOptionButtonsCursorPosition(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject);
 				break;
+			case eBattleMode.qte:
+				qte.FixedLoop();
+				break;
 			case eBattleMode.itemMenu:
 			case eBattleMode.spellMenu:
 				// Set buttons' text color
@@ -346,12 +347,6 @@ public class Battle : MonoBehaviour {
 
 				// Set Target Cursor Position: Enemies or Party
 				UI.ActionOptionButtonsCursorPosition(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject);
-				break;
-		}
-
-		switch (mode) {
-			case eBattleMode.qte:
-				qte.FixedLoop();
 				break;
 		}
 	}
@@ -373,7 +368,6 @@ public class Battle : MonoBehaviour {
 		}
 	}
 
-	// Called in RPGLevelManager.LoadSettings when Scene changes to Battle
 	public void InitializeBattle() {
 		// Ensures Fight button is selected for first player turn
 		previousSelectedGameObject = playerActions.actionButtonsGO[0];
