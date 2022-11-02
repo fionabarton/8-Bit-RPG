@@ -4,7 +4,6 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Enemy Stats")]
 public class EnemyStats : ScriptableObject {
-	public int id;
 	public new string name;
 	public Sprite sprite;
 	public int HP; // set to maxHP in BattleInitiative.cs
