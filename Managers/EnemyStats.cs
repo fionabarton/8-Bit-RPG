@@ -29,19 +29,20 @@ public class EnemyStats : ScriptableObject {
 
 	// AI
 	public eEnemyAI AI;
+	public int AI_id = -1; // Default setting simply calls random move
 
 	public int questNdx = -1;
 
-	// Default Move
-	public float chanceToCallMove;
-	public int defaultMove;
+	// Default Action
+	public float chanceToCallAction;
+	public int defaultAction;
 
 	// Actions/Moves Enemy can perform
-	public List<int> moveList;
+	public List<int> actionList;
 
 	public bool isDead; // set to false in BattleInitiative.cs
 	public bool isCallingForHelp;
-	public int	nextTurnMoveNdx;
+	public int	nextTurnActionNdx;
 
 	// Set dynamically when entering battle
 	public int battleID;
