@@ -1,4 +1,10 @@
-﻿public enum eBattleMode {
+﻿public enum eAction { // Order must match order found in BattleEnemyAI.CallEnemyAction()
+    attack, defend, run, stunned, heal, attackAll,
+    callForBackup, callForBackupNextTurn, attackSingle, charge, poison, paralyze, sleep, steal,
+    empty
+}
+
+public enum eBattleMode {
     actionButtons, playerTurn, canGoBackToFightButton, canGoBackToFightButtonMultipleTargets,
     selectPartyMember, selectAll,
     qteInitialize, qte, itemMenu, spellMenu, gearMenu, triedToRunFromBoss,
