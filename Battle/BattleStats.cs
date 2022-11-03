@@ -45,10 +45,22 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// Returns true if one of the enemy's HP is less than 25%
-	public bool EnemiesNeedsHeal() {
+	public bool EnemiesNeedHeal(float percentage = 0.25f) {
 		for (int i = 0; i < _.enemyStats.Count; i++) {
 			if (!_.enemyStats[i].isDead) {
-				if (Utilities.S.GetPercentage(_.enemyStats[i].HP, _.enemyStats[i].maxHP) < 0.25f) {
+				if (Utilities.S.GetPercentage(_.enemyStats[i].HP, _.enemyStats[i].maxHP) < percentage) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	// Returns true if one of the enemy's HP is less than 30 HP
+	public bool EnemiesNeedHeal(int amount = 30) {
+		for (int i = 0; i < _.enemyStats.Count; i++) {
+			if (!_.enemyStats[i].isDead) {
+				if (_.enemyStats[i].HP < amount) {
 					return true;
 				}
 			}
@@ -57,19 +69,19 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// The enemy attempts to run away if their attack won't damage the player
-	public void RunIfAttackUseless() {
-		if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallMove) {
-			// Calculate attack damage to player ((Lvl * 4) + Str - Def)
-			int attackDamage = ((_.enemyStats[_.EnemyNdx()].LVL * 4) + _.enemyStats[_.EnemyNdx()].STR) - Party.S.stats[0].DEF;
+	//public void RunIfAttackUseless() {
+	//	if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallMove) {
+	//		// Calculate attack damage to player ((Lvl * 4) + Str - Def)
+	//		int attackDamage = ((_.enemyStats[_.EnemyNdx()].LVL * 4) + _.enemyStats[_.EnemyNdx()].STR) - Party.S.stats[0].DEF;
 
-			// If attack doesn't do any damage...
-			if (attackDamage <= 0) {
-				// ...the enemy focuses on running away
-				_.enemyStats[_.EnemyNdx()].AI = eEnemyAI.RunAway;
-				return;
-			}
-		}
-	}
+	//		// If attack doesn't do any damage...
+	//		if (attackDamage <= 0) {
+	//			// ...the enemy focuses on running away
+	//			_.enemyStats[_.EnemyNdx()].AI = eEnemyAI.RunAway;
+	//			return;
+	//		}
+	//	}
+	//}
 
 	// Returns a random party member index
 	public int GetRandomPlayerNdx() {
@@ -77,12 +89,13 @@ public class BattleStats : MonoBehaviour {
 		float randomValue = Random.value;
 
 		if (_.partyQty == 0) {
-			for (int i = 0; i < _.playerDead.Count; i++) {
-				if (!_.playerDead[i]) {
-					randomNdx = i;
-					break;
-				}
-			}
+			//for (int i = 0; i < _.playerDead.Count; i++) {
+			//	if (!_.playerDead[i]) {
+			//		randomNdx = i;
+			//		break;
+			//	}
+			//}
+			randomNdx = 0;
 		} else if (_.partyQty == 1) {
 			if (randomValue > 0.5f) {
 				for (int i = 0; i < _.playerDead.Count; i++) {
