@@ -11,235 +11,154 @@ public class BattleEnemyAI : MonoBehaviour {
     }
 
     // More Spells, Use Items, Call for Backup
-    public void EnemyAI(int enemyId) {
+    public void EnemyAI() {
         _.playerActions.ButtonsDisableAll();
 
-        switch (enemyId) {
-            case 0:
+        // - Heal when needed OR valid
+        // - Attack strongest/weakest
+        // - Change AI based on status (ex. on the verge of death, an enemy gets more aggressive)
 
+        // Cache data
+        int enemyHP = _.enemyStats[_.EnemyNdx()].HP;
+        int enemyMP = _.enemyStats[_.EnemyNdx()].MP;
+        // int enemyHPToMax (maxHP - HP)
+
+        switch (_.enemyStats[_.EnemyNdx()].AI_id) {
+            case 0:
+                if(Random.value > 0.5f) {
+
+                } else {
+
+                }
                 break;
             case 1:
+                if (enemyHP % 2 == 0) {
 
+                } else {
+
+                }
                 break;
             case 2:
 
                 break;
+            // Fight wisely ///////////////////////////////////////////////////////
             case 3:
+                // Use heal spell when needed:
+                // If any enemy's HP < 10%...
+                if (_.stats.EnemiesNeedHeal(0.1f)) {
+                    // If any enemy's HP < 30...
+                    if (_.stats.EnemiesNeedHeal(30)) {
+                        // If enemy knows heal...
+                        if (KnowsAction(eAction.heal) && enemyMP >= 3) {
+                            // Heal or defend
+                            ChanceToCallAction(eAction.heal, eAction.defend);
+                        } else {
+                            // Run or defend
+                            ChanceToCallAction(eAction.run, eAction.defend);
+                        }
+                    }
+                }
 
+                // Attack:
+                // If there is only one party member...
+                if (_.partyQty == 0) {
+                    // If enemy knows attack single...
+                    if (KnowsAction(eAction.attackSingle) && enemyMP >= 1) {
+                        // Attack single or attack
+                        ChanceToCallAction(eAction.attackSingle, eAction.attack);
+                    } else {
+                        // Attack 
+                        ChanceToCallAction(eAction.attack);
+                    }
+                } else {
+                    // If enemy knows attack all...
+                    if (KnowsAction(eAction.attackAll) && enemyMP >= 3) {
+                        // Attack all or attack single 
+                        ChanceToCallAction(eAction.attackAll, eAction.attackSingle);
+                    } else {
+                        // Attack 
+                        ChanceToCallAction(eAction.attack);
+                    }
+                }
                 break;
-            case 4:
-
+            // CallForBackup ///////////////////////////////////////////////////////
+            case 4: 
+                if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallAction / 3) {
+                    ChanceToCallAction(eAction.callForBackupNextTurn);
+                } else {
+                    // Attack or defend 
+                    ChanceToCallAction(eAction.attack, eAction.defend);
+                }
                 break;
-            case 5:
-
+            // Charge //////////////////////////////////////////////////////////////
+            case 5: 
+                if (_.roundNdx % 3 == 0) { // Every third round...
+                    if (_.partyQty == 0) {
+                        // Attack single or attack
+                        ChanceToCallAction(eAction.attackSingle, eAction.attack);
+                    } else {
+                        // Attack all or attack single 
+                        ChanceToCallAction(eAction.attackAll, eAction.attackSingle);
+                    }
+                } else {
+                    _.enemyActions.Charge();
+                }
                 break;
-            case 6:
-
-                break;
-            case 7:
-
-                break;
-            case 8:
-
+            default:
+                CallRandomAction();
                 break;
         }
-        //ChanceToCallMove(13,9);
-
-        // Call for backup
-        //ChanceToCallMove(7);
-
-        // Select Random Move
-        // CallRandomMove();
-
-        // Attack OR Defend
-        //ChanceToCallMove(0, 1);
-
-        _.enemyActions.Attack();
-
-        // Steal OR Attack
-        //ChanceToCallMove(13,0);
-
-        // _.enemyActions.AttemptSteal();
-        // _.enemyActions.Defend();
-
-        //// Poison
-        //int playerToPoison = Battle.S.stats.GetRandomPlayerNdx();
-        //if (StatusEffects.S.CheckIfPoisoned(true, playerToPoison)) {
-        //    // Attack OR Defend
-        //    ChanceToCallMove(0, 1);
-        //} else {
-        //    //if (Random.value < 0.5f) {
-        //    //    _.enemyActions.Poison(playerToPoison);
-        //    //} else {
-        //    //    // Attack OR Defend
-        //    //    ChanceToCallMove(0, 1);
-        //    //}
-        //    _.enemyActions.Poison(playerToPoison);
-        //}
-        //return;
-
-        //ChanceToCallMove(7);
-
-        //// Paralyze
-        //int playerToParalyze = Battle.S.stats.GetRandomPlayerNdx();
-        //if (StatusEffects.S.CheckIfParalyzed(true, playerToParalyze)) {
-        //    // Attack OR Defend
-        //    ChanceToCallMove(0, 1);
-        //} else {
-        //    //if (Random.value < 0.5f) {
-        //    //    _.enemyActions.Paralyze(playerToParalyze);
-        //    //} else {
-        //    //    // Attack OR Defend
-        //    //    ChanceToCallMove(0, 1);
-        //    //}
-        //    _.enemyActions.Paralyze(playerToParalyze);
-        //}
-        //return;
-
-        //// Sleep
-        //int playerToSleep = Battle.S.stats.GetRandomPlayerNdx();
-        //if (StatusEffects.S.CheckIfSleeping(true, playerToSleep)) {
-        //    // Attack OR Defend
-        //    ChanceToCallMove(0, 1);
-        //} else {
-        //    //if (Random.value < 0.5f) {
-        //    //    _.enemyActions.Sleep(playerToSleep);
-        //    //} else {
-        //    //    // Attack OR Defend
-        //    //    ChanceToCallMove(0, 1);
-        //    //}
-        //    _.enemyActions.Sleep(playerToSleep);
-        //}
-        //return;
-
-        //switch (_.enemyStats[_.EnemyNdx()].AI) {
-        //    case eEnemyAI.FightWisely:
-        //        // If HP is less than 10%...
-        //        if (Utilities.S.GetPercentage(_.enemyStats[_.EnemyNdx()].HP, _.enemyStats[_.EnemyNdx()].maxHP) < 0.1f) {
-        //            // If MP is less than 10%...
-        //            if (Utilities.S.GetPercentage(_.enemyStats[_.EnemyNdx()].MP, _.enemyStats[_.EnemyNdx()].maxMP) < 0.1f) {
-        //                // Run OR Defend
-        //                ChanceToCallMove(2, 1);
-        //            } else {
-        //                // Heal Spell OR Defend
-        //                ChanceToCallMove(4, 1);
-        //            }
-        //        } else {
-        //            // If MP is less than 10%...
-        //            if (Utilities.S.GetPercentage(_.enemyStats[_.EnemyNdx()].MP, _.enemyStats[_.EnemyNdx()].maxMP) < 0.1f) {
-        //                // Attack OR Defend
-        //                ChanceToCallMove(0, 1);
-        //            } else {
-        //                // Attack All Spell OR Attack
-        //                ChanceToCallMove(5, 0);
-        //            }
-        //        }
-        //        break;
-        //    case eEnemyAI.FocusOnAttack:
-        //        // If MP is less than 10%...
-        //        if (Utilities.S.GetPercentage(_.enemyStats[_.EnemyNdx()].MP, _.enemyStats[_.EnemyNdx()].maxMP) < 0.1f) {
-        //            // Attack
-        //            ChanceToCallMove(0);
-        //        } else {
-        //            if (_.partyQty == 0) {
-        //                // Attack Single or Attack
-        //                ChanceToCallMove(8, 0);
-        //            } else {
-        //                // Attack All OR Attack Single 
-        //                ChanceToCallMove(5, 8);
-        //            }
-        //        }
-        //        break;
-        //    case eEnemyAI.FocusOnDefend:
-        //        // Defend or Run
-        //        ChanceToCallMove(1, 2);
-        //        break;
-        //    case eEnemyAI.FocusOnHeal:
-        //        // If any enemy's HP is less than 25%...
-        //        if (_.stats.EnemiesNeedsHeal()) {
-        //            // If MP is less than 10%...
-        //            if (Utilities.S.GetPercentage(_.enemyStats[_.EnemyNdx()].MP, _.enemyStats[_.EnemyNdx()].maxMP) < 0.1f) {
-        //                // Defend OR Run 
-        //                ChanceToCallMove(1, 2);
-        //            } else {
-        //                // Heal Spell OR Defend
-        //                ChanceToCallMove(4, 1);
-        //            }
-        //        } else {
-        //            // Attack OR Defend
-        //            ChanceToCallMove(0, 1);
-        //        }
-        //        break;
-        //    case eEnemyAI.Random:
-        //        // Select Random Move
-        //        CallRandomMove();
-        //        break;
-        //    case eEnemyAI.RunAway:
-        //        // Run or Defend
-        //        ChanceToCallMove(2, 1);
-        //        break;
-        //    case eEnemyAI.CallForBackup:
-        //        // Call for backup next turn
-        //        if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallMove / 3) {
-        //            ChanceToCallMove(7);
-        //        } else {
-        //            // Attack or Defend 
-        //            ChanceToCallMove(0, 1);
-        //        }
-        //        break;
-        //    case eEnemyAI.Charge:
-        //        if (_.roundNdx % 3 == 0) { // Every third round...
-        //            if (_.partyQty == 0) {
-        //                // Attack Single or Attack
-        //                ChanceToCallMove(8, 0);
-        //            } else {
-        //                // Attack All OR Attack Single 
-        //                ChanceToCallMove(5, 8);
-        //            }
-        //        } else {
-        //            _.enemyActions.Charge();
-        //        }
-        //        break;
-        //    case eEnemyAI.DontUseMP:
-        //    default:
-        //        break;
-        //}
     }
 
-    // If Enemy is lucky, check if it has desired move
-    void ChanceToCallMove(int firstChoiceNdx, int secondChoiceNdx = 999) {
-        // If lucky, call first choice move...
-        if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallMove) {
-            // Loop through the Enemy's Moves, check if Enemy knows move
-            for (int i = 0; i < _.enemyStats[_.EnemyNdx()].moveList.Count; i++) {
-                if (firstChoiceNdx == _.enemyStats[_.EnemyNdx()].moveList[i]) {
-                    CallEnemyMove(firstChoiceNdx);
+    // If Enemy is lucky, check if it has desired action
+    void ChanceToCallAction(eAction firstChoice, eAction secondChoice = eAction.empty) {
+        int firstChoiceNdx = (int)firstChoice;
+
+        // If lucky, call first choice action...
+        if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallAction) {
+            // Loop through the enemy's actions, check if enemy knows action
+            for (int i = 0; i < _.enemyStats[_.EnemyNdx()].actionList.Count; i++) {
+                if (firstChoiceNdx == _.enemyStats[_.EnemyNdx()].actionList[i]) {
+                    CallEnemyAction(firstChoiceNdx);
                     return;
                 }
             }
         } else {
-            // ...otherwise test your on luck on second choice move...
-            if (secondChoiceNdx != 999) {
-                ChanceToCallMove(secondChoiceNdx);
+            // ...otherwise test your on luck on second choice action...
+            if (secondChoice != eAction.empty) {
+                ChanceToCallAction(secondChoice);
                 return;
             }
         }
 
-        // If all else fails, call a random move
-        CallRandomMove();
+        // If all else fails, call a random action
+        CallRandomAction();
     }
 
-    // Randomly select move that the Enemy knows
-    void CallRandomMove() {
+    // Randomly select action that the enemy knows
+    void CallRandomAction() {
         // Get random index
-        int randomNdx = _.enemyStats[_.EnemyNdx()].moveList[Random.Range(0, _.enemyStats[_.EnemyNdx()].moveList.Count)];
+        int randomNdx = _.enemyStats[_.EnemyNdx()].actionList[Random.Range(0, _.enemyStats[_.EnemyNdx()].actionList.Count)];
 
-        // Call random move 
-        CallEnemyMove(randomNdx);
+        // Call random action 
+        CallEnemyAction(randomNdx);
     }
 
-    public void CallEnemyMove(int moveNdx) {
-        switch (moveNdx) {
+    // Returns true if enemy knows move
+    bool KnowsAction(eAction enemyAction) {
+        int ndx = (int)enemyAction;
+
+        for (int i = 0; i < _.enemyStats[_.EnemyNdx()].actionList.Count; i++) {
+            if (ndx == _.enemyStats[_.EnemyNdx()].actionList[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void CallEnemyAction(int actionNdx) {
+        // Order must match order found in EnumManager.eAction
+        switch (actionNdx) {
             case 0: _.enemyActions.Attack(); break;
             case 1: _.enemyActions.Defend(); break;
             case 2: _.enemyActions.Run(); break;
@@ -256,5 +175,62 @@ public class BattleEnemyAI : MonoBehaviour {
             case 13: _.enemyActions.AttemptSteal(); break;
             default: _.enemyActions.Attack(); break;
         }
+        Debug.Log(actionNdx);
     }
 }
+
+//////////////////////////////////////////////////////////////////
+// STATUS AILMENTS 
+//////////////////////////////////////////////////////////////////
+
+//// Poison
+//int playerToPoison = Battle.S.stats.GetRandomPlayerNdx();
+//if (StatusEffects.S.CheckIfPoisoned(true, playerToPoison)) {
+//    // Attack OR Defend
+//    ChanceToCallMove(0, 1);
+//} else {
+//    //if (Random.value < 0.5f) {
+//    //    _.enemyActions.Poison(playerToPoison);
+//    //} else {
+//    //    // Attack OR Defend
+//    //    ChanceToCallMove(0, 1);
+//    //}
+//    _.enemyActions.Poison(playerToPoison);
+//}
+//return;
+
+//////////////////////////////////////////////////////////////////
+
+//// Paralyze
+//int playerToParalyze = Battle.S.stats.GetRandomPlayerNdx();
+//if (StatusEffects.S.CheckIfParalyzed(true, playerToParalyze)) {
+//    // Attack OR Defend
+//    ChanceToCallMove(0, 1);
+//} else {
+//    //if (Random.value < 0.5f) {
+//    //    _.enemyActions.Paralyze(playerToParalyze);
+//    //} else {
+//    //    // Attack OR Defend
+//    //    ChanceToCallMove(0, 1);
+//    //}
+//    _.enemyActions.Paralyze(playerToParalyze);
+//}
+//return;
+//////////////////////////////////////////////////////////////////
+
+//// Sleep
+//int playerToSleep = Battle.S.stats.GetRandomPlayerNdx();
+//if (StatusEffects.S.CheckIfSleeping(true, playerToSleep)) {
+//    // Attack OR Defend
+//    ChanceToCallMove(0, 1);
+//} else {
+//    //if (Random.value < 0.5f) {
+//    //    _.enemyActions.Sleep(playerToSleep);
+//    //} else {
+//    //    // Attack OR Defend
+//    //    ChanceToCallMove(0, 1);
+//    //}
+//    _.enemyActions.Sleep(playerToSleep);
+//}
+//return;
+//////////////////////////////////////////////////////////////////

@@ -384,7 +384,7 @@ public class BattleEnemyActions : MonoBehaviour {
 	// Index = 7
 	// Call for backup next turn
 	public void CallForBackupNextTurn() {
-		_.enemyStats[_.EnemyNdx()].nextTurnMoveNdx = 6;
+		_.enemyStats[_.EnemyNdx()].nextTurnActionNdx = 6;
 
 		// Activate Enemy "Help" Word Bubble
 		_.UI.enemyHelpBubblesGO[_.EnemyNdx()].SetActive(true);

@@ -200,15 +200,15 @@ public class Battle : MonoBehaviour {
 					case eBattleMode.enemyAction:
 						if (Input.GetButtonDown("SNES B Button")) {
 							// If the enemy announced what move it would perform during its previous turn...
-							if (enemyStats[EnemyNdx()].nextTurnMoveNdx != 999) {
+							if (enemyStats[EnemyNdx()].nextTurnActionNdx != 999) {
 								// Cache move index
-								int moveNdx = enemyStats[EnemyNdx()].nextTurnMoveNdx;
+								int moveNdx = enemyStats[EnemyNdx()].nextTurnActionNdx;
 
 								// Reset this enemy's nextTurnMoveNdx
-								enemyStats[EnemyNdx()].nextTurnMoveNdx = 999;
+								enemyStats[EnemyNdx()].nextTurnActionNdx = 999;
 
 								// ...call previously announced move this turn
-								enemyAI.CallEnemyMove(moveNdx);
+								enemyAI.CallEnemyAction(moveNdx);
 							// If the enemy didn't announce what move it would perform during its previous turn...
 							} else {
 								// ...let its AI dictate what move to perform
@@ -593,7 +593,7 @@ public class Battle : MonoBehaviour {
 	// Reset next turn move index & deactivate help bubble
 	public void StopCallingForHelp(int ndx) {
 		// Reset next turn move index
-		enemyStats[ndx].nextTurnMoveNdx = 999;
+		enemyStats[ndx].nextTurnActionNdx = 999;
 
 		enemyStats[ndx].isCallingForHelp = false;
 
