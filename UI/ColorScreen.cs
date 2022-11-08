@@ -139,7 +139,7 @@ public class ColorScreen : MonoBehaviour {
                 Battle.S.enemyActions.AttackAll();
                 break;
             case 3: // Enemy: Attack Single Spell
-                Battle.S.enemyActions.AttackSingle();
+                Battle.S.enemyActions.AttackSingle(targetNdx);
                 break;
             case 4: // Party: Poison Single Spell
                 Spells.S.battle.PoisonSingle(targetNdx, spell);
