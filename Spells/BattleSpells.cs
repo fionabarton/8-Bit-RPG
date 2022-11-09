@@ -123,7 +123,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (Party.S.stats[ndx].HP < Party.S.stats[ndx].maxHP) {
 			ColorScreen.S.PlayClip("Swell", 0);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(Party.S.stats[ndx].name + " already at full health...\n...no need to use this skill!");
@@ -205,7 +205,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (_.playerDead[ndx]) {
 			ColorScreen.S.PlayClip("Swell", 3);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(Party.S.stats[ndx].name + " ain't dead...\n...and dead folk don't need to be revived, dummy!");
@@ -253,7 +253,7 @@ public class BattleSpells : MonoBehaviour {
 	public void AttemptAttackSelectedEnemy(int ndx, Spell spell) {
 		SpellHelper();
 		ColorScreen.S.PlayClip("Flicker", 0);
-		ColorScreen.S.targetNdx = ndx;
+		_.targetNdx = ndx;
 		ColorScreen.S.spell = spell;
 	}
 
@@ -475,7 +475,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (StatusEffects.S.CheckIfPoisoned(true, ndx)) {
 			ColorScreen.S.PlayClip("Swell", 4);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of poison...\n...no need to use this skill!");
@@ -517,7 +517,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (StatusEffects.S.CheckIfParalyzed(true, ndx)) {
 			ColorScreen.S.PlayClip("Swell", 5);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(Party.S.stats[ndx].name + " is not suffering from the effects of paralysis...\n...no need to use this skill!");
@@ -559,7 +559,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (StatusEffects.S.CheckIfSleeping(true, ndx)) {
 			ColorScreen.S.PlayClip("Swell", 6);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(Party.S.stats[ndx].name + " is not sleeping...\n...no need to use this skill!");
@@ -600,7 +600,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (!StatusEffects.S.CheckIfPoisoned(false, ndx)) {
 			ColorScreen.S.PlayClip("Flicker", 4);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of poison...\n...no need to use this skill!");
@@ -628,7 +628,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (!StatusEffects.S.CheckIfParalyzed(false, ndx)) {
 			ColorScreen.S.PlayClip("Flicker", 5);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of paralysis...\n...no need to use this skill!");
@@ -656,7 +656,7 @@ public class BattleSpells : MonoBehaviour {
 
 		if (!StatusEffects.S.CheckIfSleeping(false, ndx)) {
 			ColorScreen.S.PlayClip("Flicker", 6);
-			ColorScreen.S.targetNdx = ndx;
+			_.targetNdx = ndx;
 			ColorScreen.S.spell = spell;
 		} else {
 			SpellIsNotUseful(_.enemyStats[ndx].name + " is not already suffering from the effects of sleep...\n...no need to use this skill!");
@@ -686,7 +686,7 @@ public class BattleSpells : MonoBehaviour {
 	public void AttemptStealSinglePartyMember(int ndx, Spell spell) {
 		SpellHelper();
 		ColorScreen.S.PlayClip("Flicker", 7);
-		ColorScreen.S.targetNdx = ndx;
+		_.targetNdx = ndx;
 		ColorScreen.S.spell = spell;
 	}
 	public void StealSingle(int ndx, Spell spell) {
