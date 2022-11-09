@@ -16,8 +16,10 @@ public class ColorScreen : MonoBehaviour {
     // DontDestroyOnLoad
     private static bool exists;
 
-    public int targetNdx;
+    //public int targetNdx;
     public Spell spell;
+
+    private Battle _;
 
     void Awake() {
         S = this;
@@ -35,6 +37,8 @@ public class ColorScreen : MonoBehaviour {
         // Store animator's clips: (0: Swell, 1: Flicker)
         clips.Add(anim.runtimeAnimatorController.animationClips[0]);
         clips.Add(anim.runtimeAnimatorController.animationClips[1]);
+
+        _ = Battle.S;
     }
 
     public void ActivateBlackScreen() {
@@ -98,25 +102,25 @@ public class ColorScreen : MonoBehaviour {
         // Function to call after animation is played
         switch (actionNdx) {
             case 0: // Party: Heal Spell
-                Spells.S.battle.HealSinglePartyMember(targetNdx, spell);
+                Spells.S.battle.HealSinglePartyMember(_.targetNdx, spell);
                 break;
             case 1: // Enemy: Heal Spell
-                Battle.S.enemyActions.HealSpell(targetNdx);
+                Battle.S.enemyActions.HealSpell(_.targetNdx);
                 break;
             case 2: // Party: Heal All Spell
-                Spells.S.battle.HealAll(targetNdx, spell);
+                Spells.S.battle.HealAll(_.targetNdx, spell);
                 break;
             case 3: // Party: Revive Spell
-                Spells.S.battle.ReviveSelectedPartyMember(targetNdx, spell);
+                Spells.S.battle.ReviveSelectedPartyMember(_.targetNdx, spell);
                 break;
             case 4: // Party: Detoxify Spell
-                Spells.S.battle.DetoxifySinglePartyMember(targetNdx, spell);
+                Spells.S.battle.DetoxifySinglePartyMember(_.targetNdx, spell);
                 break;
             case 5: // Party: Mobilize Spell
-                Spells.S.battle.MobilizeSinglePartyMember(targetNdx, spell);
+                Spells.S.battle.MobilizeSinglePartyMember(_.targetNdx, spell);
                 break;
             case 6: // Party: Wake Spell
-                Spells.S.battle.WakeSinglePartyMember(targetNdx, spell);
+                Spells.S.battle.WakeSinglePartyMember(_.targetNdx, spell);
                 break;
         }
 
@@ -130,31 +134,31 @@ public class ColorScreen : MonoBehaviour {
         // Function to call after animation is played
         switch (actionNdx) {
             case 0: // Party: Fireball Spell
-                Spells.S.battle.AttackSelectedEnemy(targetNdx, spell);
+                Spells.S.battle.AttackSelectedEnemy(_.targetNdx, spell);
                 break;
             case 1: // Party: Fireblast Spell
-                Spells.S.battle.AttackAllEnemies(targetNdx, spell);
+                Spells.S.battle.AttackAllEnemies(_.targetNdx, spell);
                 break;
             case 2: // Enemy: Attack All Spell
                 Battle.S.enemyActions.AttackAll();
                 break;
             case 3: // Enemy: Attack Single Spell
-                Battle.S.enemyActions.AttackSingle(targetNdx);
+                Battle.S.enemyActions.AttackSingle(_.targetNdx);
                 break;
             case 4: // Party: Poison Single Spell
-                Spells.S.battle.PoisonSingle(targetNdx, spell);
+                Spells.S.battle.PoisonSingle(_.targetNdx, spell);
                 break;
             case 5: // Party: Paralyze Single Spell
-                Spells.S.battle.ParalyzeSingle(targetNdx, spell);
+                Spells.S.battle.ParalyzeSingle(_.targetNdx, spell);
                 break;
             case 6: // Party: Sleep Single Spell
-                Spells.S.battle.SleepSingle(targetNdx, spell);
+                Spells.S.battle.SleepSingle(_.targetNdx, spell);
                 break;
             case 7: // Party: Steal Single Spell
-                Spells.S.battle.StealSingle(targetNdx, spell);
+                Spells.S.battle.StealSingle(_.targetNdx, spell);
                 break;
             case 8: // Enemy: Steal 
-                Battle.S.enemyActions.Steal(targetNdx);
+                Battle.S.enemyActions.Steal(_.targetNdx);
                 break;
         }
 
