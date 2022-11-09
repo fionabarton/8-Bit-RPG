@@ -133,12 +133,13 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Get index of enemy with the lowest HP
 			if(targetNdx == -1) {
 				_.targetNdx = _.stats.GetEnemyWithLowestHP();
+            } else {
+				_.targetNdx = targetNdx;
 			}
 
 			// Not at Full HP
 			if (_.targetNdx != -1) {
 				ColorScreen.S.PlayClip("Swell", 1);
-				ColorScreen.S.targetNdx = _.targetNdx;
 			} else {
 				// Already at Full HP
 				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " thought about casting a Heal Spell...\n...But then remembered everyone's at full health...\n...and gave up!");
@@ -211,10 +212,11 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Randomly select party member to attack
 			if (targetNdx == -1) {
 				_.targetNdx = _.stats.GetRandomPlayerNdx();
+            } else {
+				_.targetNdx = targetNdx;
 			}
 
 			ColorScreen.S.PlayClip("Flicker", 3);
-			ColorScreen.S.targetNdx = _.targetNdx;
 		} else {
 			// Not enough MP
 			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast Fireball...\n...But doesn't have enough MP to do so!");
@@ -533,7 +535,7 @@ public class BattleEnemyActions : MonoBehaviour {
 	// Index = 13
 	// Steal
 	public void AttemptSteal() {
-		ColorScreen.S.targetNdx = _.stats.GetRandomPlayerNdx();
+		_.targetNdx = _.stats.GetRandomPlayerNdx();
 		ColorScreen.S.PlayClip("Flicker", 8);
 	}
 
