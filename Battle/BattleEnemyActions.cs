@@ -127,9 +127,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 4
 	// Heal Spell
-	public void AttemptHealSpell(int targetNdx = -1) {
+	public void AttemptHealSpell(int targetNdx = -1, int mpCost = 3) {
 		// Enough MP
-		if (_.enemyStats[_.EnemyNdx()].MP >= 3) {
+		if (_.enemyStats[_.EnemyNdx()].MP >= mpCost) {
 			// Get index of enemy with the lowest HP
 			if(targetNdx == -1) {
 				_.targetNdx = _.stats.GetEnemyWithLowestHP();
@@ -161,9 +161,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	// Called after BattleBlackScreen "Swell" animation
-	public void HealSpell(int targetNdx) {
+	public void HealSpell(int targetNdx, int mpCost = 3) {
 		// Subtract Spell cost from Enemy's MP
-		_.enemyStats[_.EnemyNdx()].MP -= 3;
+		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
 		// Get amount and max amount to heal
 		int amountToHeal = UnityEngine.Random.Range(30, 45);
@@ -206,9 +206,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 8
 	// Single Attack
-	public void AttemptAttackSingle(int targetNdx = -1) {
+	public void AttemptAttackSingle(int targetNdx = -1, int mpCost = 3) {
 		// Enough MP
-		if (_.enemyStats[_.EnemyNdx()].MP >= 1) {
+		if (_.enemyStats[_.EnemyNdx()].MP >= mpCost) {
 			// Randomly select party member to attack
 			if (targetNdx == -1) {
 				_.targetNdx = _.stats.GetRandomPlayerNdx();
@@ -231,9 +231,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackSingle(int targetNdx) {
+	public void AttackSingle(int targetNdx, int mpCost = 3) {
 		// Subtract Enemy MP
-		_.enemyStats[_.EnemyNdx()].MP -= 1;
+		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
 		// 5% chance to Miss/Dodge...
 		// ...but 10% chance if Defender WIS is more than Attacker's 
@@ -277,9 +277,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 5
 	// Attack All
-	public void AttemptAttackAll() {
+	public void AttemptAttackAll(int mpCost = 3) {
 		// Enough MP
-		if (_.enemyStats[_.EnemyNdx()].MP >= 3) {
+		if (_.enemyStats[_.EnemyNdx()].MP >= mpCost) {
 			ColorScreen.S.PlayClip("Flicker", 2);
 		} else {
 			// Not enough MP
@@ -295,9 +295,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackAll() {
+	public void AttackAll(int mpCost = 3) {
 		// Subtract Enemy MP
-		_.enemyStats[_.EnemyNdx()].MP -= 3;
+		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
 		// 5% chance to Miss/Dodge...
 		// ...but 10% chance if Defender WIS is more than Attacker's 
