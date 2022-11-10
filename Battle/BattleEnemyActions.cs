@@ -161,12 +161,12 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	// Called after BattleBlackScreen "Swell" animation
-	public void HealSpell(int targetNdx, int mpCost = 3) {
+	public void HealSpell(int targetNdx, int mpCost = 3, int minVal = 30, int maxVal = 45) {
 		// Subtract Spell cost from Enemy's MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
 		// Get amount and max amount to heal
-		int amountToHeal = UnityEngine.Random.Range(30, 45);
+		int amountToHeal = Random.Range(minVal, maxVal);
 		int maxAmountToHeal = _.enemyStats[targetNdx].maxHP - _.enemyStats[targetNdx].HP;
 		// Add Enemy's WIS to Heal Amount
 		amountToHeal += _.enemyStats[targetNdx].WIS;
@@ -231,7 +231,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackSingle(int targetNdx, int mpCost = 3) {
+	public void AttackSingle(int targetNdx, int mpCost = 3, int minVal = 8, int maxVal = 12) {
 		// Subtract Enemy MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -252,8 +252,8 @@ public class BattleEnemyActions : MonoBehaviour {
 
 			_.NextTurn();
 		} else {
-			// Subtract 8-12 HP
-			_.attackDamage = Random.Range(8, 12);
+			// Subtract HP
+			_.attackDamage = Random.Range(minVal, maxVal);
 
 			// Subtract Player Health
 			GameManager.S.SubtractPlayerHP(targetNdx, _.attackDamage, true);
@@ -295,7 +295,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackAll(int mpCost = 3) {
+	public void AttackAll(int mpCost = 3, int minVal = 10, int maxVal = 15) {
 		// Subtract Enemy MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -324,8 +324,8 @@ public class BattleEnemyActions : MonoBehaviour {
 
 			List<int> deadPlayers = new List<int>();
 
-			// Subtract 12-20 HP
-			_.attackDamage = Random.Range(10, 15);
+			// Subtract HP
+			_.attackDamage = Random.Range(minVal, maxVal);
 
 			// Add Enemy's WIS to Damage
 			_.attackDamage += _.enemyStats[_.EnemyNdx()].WIS;
