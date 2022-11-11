@@ -15,6 +15,8 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Randomly select party member to attack
 		if(targetNdx == -1) {
 			_.targetNdx = _.stats.GetRandomPlayerNdx();
+		} else {
+			_.targetNdx = targetNdx;
 		}
 
 		// Calculate Attack Damage
@@ -161,7 +163,7 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	// Called after BattleBlackScreen "Swell" animation
-	public void HealSpell(int targetNdx, int mpCost = 3, int minVal = 30, int maxVal = 45) {
+	public void HealSpell(int targetNdx, int mpCost = 3, int minVal = 30, int maxVal = 45, eSoundName sfx = eSoundName.buff1) {
 		// Subtract Spell cost from Enemy's MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -199,7 +201,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		_.enemyAnims[targetNdx].CrossFade("Damage", 0);
 
 		// Audio: Buff
-		AudioManager.S.PlaySFX(eSoundName.buff1);
+		AudioManager.S.PlaySFX(sfx);
 
 		_.NextTurn();
 	}
@@ -231,7 +233,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackSingle(int targetNdx, int mpCost = 3, int minVal = 8, int maxVal = 12) {
+	public void AttackSingle(int targetNdx, int mpCost = 3, int minVal = 8, int maxVal = 12, eSoundName sfx = eSoundName.fireball) {
 		// Subtract Enemy MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -268,7 +270,7 @@ public class BattleEnemyActions : MonoBehaviour {
 				_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[targetNdx].name + " for " + _.attackDamage + " HP!");
 
 				// Audio: Fireblast
-				AudioManager.S.PlaySFX(eSoundName.fireball);
+				AudioManager.S.PlaySFX(sfx);
 
 				_.NextTurn();
 			}
@@ -295,7 +297,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackAll(int mpCost = 3, int minVal = 10, int maxVal = 15) {
+	public void AttackAll(int mpCost = 3, int minVal = 10, int maxVal = 15, eSoundName sfx = eSoundName.fireblast) {
 		// Subtract Enemy MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -380,7 +382,7 @@ public class BattleEnemyActions : MonoBehaviour {
 				_.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!");
 
 				// Audio: Fireblast
-				AudioManager.S.PlaySFX(eSoundName.fireblast);
+				AudioManager.S.PlaySFX(sfx);
 
 				_.NextTurn();
 			} else {
@@ -421,7 +423,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		_.NextTurn();
 	}
 
-	public void CallForBackupHelper(int enemyNdx) {
+	public void CallForBackupHelper(int enemyNdx, eSoundName sfx = eSoundName.run) {
 		// Display Text
 		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...and someone came!");
 
@@ -477,7 +479,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		_.UI.PositionEnemySprites();
 
 		// Audio: Run
-		AudioManager.S.PlaySFX(eSoundName.run);
+		AudioManager.S.PlaySFX(sfx);
 	}
 
 	public void PlayersDeath(List<int> deadPlayers, int totalAttackDamage) {
@@ -494,9 +496,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 9
 	// Charge
-	public void Charge() {
+	public void Charge(eSoundName sfx = eSoundName.buff2) {
 		// Audio: Buff
-		AudioManager.S.PlaySFX(eSoundName.buff2);
+		AudioManager.S.PlaySFX(sfx);
 
 		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " is getting ready to do something cool...\n...what could it be?!");
 		_.NextTurn();
