@@ -105,7 +105,7 @@ public class ColorScreen : MonoBehaviour {
                 Spells.S.battle.HealSinglePartyMember(_.targetNdx, spell);
                 break;
             case 1: // Enemy: Heal Spell
-                Battle.S.enemyActions.HealSpell(_.targetNdx);
+                Battle.S.enemyActions.HealSpell();
                 break;
             case 2: // Party: Heal All Spell
                 Spells.S.battle.HealAll(_.targetNdx, spell);
@@ -143,7 +143,7 @@ public class ColorScreen : MonoBehaviour {
                 Battle.S.enemyActions.AttackAll();
                 break;
             case 3: // Enemy: Attack Single Spell
-                Battle.S.enemyActions.AttackSingle(_.targetNdx);
+                Battle.S.enemyActions.AttackSingle();
                 break;
             case 4: // Party: Poison Single Spell
                 Spells.S.battle.PoisonSingle(_.targetNdx, spell);
@@ -158,7 +158,7 @@ public class ColorScreen : MonoBehaviour {
                 Spells.S.battle.StealSingle(_.targetNdx, spell);
                 break;
             case 8: // Enemy: Steal 
-                Battle.S.enemyActions.Steal(_.targetNdx);
+                Battle.S.enemyActions.Steal();
                 break;
         }
 
