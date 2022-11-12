@@ -44,22 +44,31 @@ public class BattleEnemyAI : MonoBehaviour {
             // Fight wisely ///////////////////////////////////////////////////////
             case 3:
                 // Use heal spell when needed:
-                // If any enemy's HP < 10%...
-                if (_.stats.EnemiesNeedHeal(0.1f)) {
+                // If any enemy's HP < 25%...
+                if (_.stats.EnemiesNeedHeal(0.25f)) {
                     // If any enemy's HP < 30...
                     if (_.stats.EnemiesNeedHeal(30)) {
                         // If enemy knows heal...
                         if (KnowsAction(eAction.heal) && enemyMP >= 3) {
+                            // Set target
+                            _.targetNdx = _.stats.GetEnemyWithLowestHP();
+
                             // Heal or defend
                             ChanceToCallAction(eAction.heal, eAction.defend);
+                            return;
                         } else {
                             // Run or defend
                             ChanceToCallAction(eAction.run, eAction.defend);
+                            return;
                         }
                     }
                 }
 
                 // Attack:
+
+                // Set target
+                _.targetNdx = _.stats.GetRandomPlayerNdx();
+
                 // If there is only one party member...
                 if (_.partyQty == 0) {
                     // If enemy knows attack single...
@@ -67,6 +76,7 @@ public class BattleEnemyAI : MonoBehaviour {
                         // Attack single or attack
                         ChanceToCallAction(eAction.attackSingle, eAction.attack);
                     } else {
+ 
                         // Attack 
                         ChanceToCallAction(eAction.attack);
                     }
@@ -86,12 +96,18 @@ public class BattleEnemyAI : MonoBehaviour {
                 if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallAction / 3) {
                     ChanceToCallAction(eAction.callForBackupNextTurn);
                 } else {
+                    // Set target
+                    _.targetNdx = _.stats.GetRandomPlayerNdx();
+
                     // Attack or defend 
                     ChanceToCallAction(eAction.attack, eAction.defend);
                 }
                 break;
             // Charge //////////////////////////////////////////////////////////////
-            case 5: 
+            case 5:
+                // Set target
+                _.targetNdx = _.stats.GetRandomPlayerNdx();
+
                 if (_.roundNdx % 3 == 0) { // Every third round...
                     if (_.partyQty == 0) {
                         // Attack single or attack
@@ -148,6 +164,8 @@ public class BattleEnemyAI : MonoBehaviour {
     bool KnowsAction(eAction enemyAction) {
         int ndx = (int)enemyAction;
 
+        Debug.Log(ndx);
+
         for (int i = 0; i < _.enemyStats[_.EnemyNdx()].actionList.Count; i++) {
             if (ndx == _.enemyStats[_.EnemyNdx()].actionList[i]) {
                 return true;
@@ -175,7 +193,7 @@ public class BattleEnemyAI : MonoBehaviour {
             case 13: _.enemyActions.AttemptSteal(); break;
             default: _.enemyActions.Attack(); break;
         }
-        Debug.Log(actionNdx);
+        //Debug.Log(actionNdx);
     }
 }
 

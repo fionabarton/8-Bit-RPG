@@ -11,14 +11,7 @@ public class BattleEnemyActions : MonoBehaviour {
 
 	// Index = 0
 	// Attack ONE Party Member
-	public void Attack(int targetNdx = -1) {
-		// Randomly select party member to attack
-		if(targetNdx == -1) {
-			_.targetNdx = _.stats.GetRandomPlayerNdx();
-		} else {
-			_.targetNdx = targetNdx;
-		}
-
+	public void Attack() {
 		// Calculate Attack Damage
 		_.stats.GetPhysicalAttackDamage(_.enemyStats[_.EnemyNdx()].LVL,
 									   _.enemyStats[_.EnemyNdx()].STR, _.enemyStats[_.EnemyNdx()].AGI,
@@ -37,26 +30,6 @@ public class BattleEnemyActions : MonoBehaviour {
 		if (Party.S.stats[_.targetNdx].HP < 1) {
 			_.end.PlayerDeath(_.targetNdx);
 		} else {
-            //// If not sleeping or paralyzed...attempt to block!
-            //if (!StatusEffects.S.CheckIfParalyzed(true, playerToAttack) &&
-            //	!StatusEffects.S.CheckIfSleeping(true, playerToAttack)) {
-            //	// Index of the party member that is blocking
-            //	_.qte.blockerNdx = playerToAttack;
-
-            //	// Set qteType to Block
-            //	_.qte.qteType = 4;
-
-            //	// Enable progress bar/timer 
-            //	_.qte.Initialize();
-
-            //	// Set battleMode to QTE
-            //	_.mode = eBattleMode.qte;
-            //} else {
-            //	// Deactivate Battle Text
-            //	_.dialogue.displayMessageTextTop.gameObject.transform.parent.gameObject.SetActive(false);
-
-            //	_.NextTurn();
-            //}
             if (_.qteEnabled) {
 				// If not sleeping or paralyzed...attempt to block!
 				if (!StatusEffects.S.CheckIfParalyzed(true, _.targetNdx) &&
@@ -129,28 +102,10 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 4
 	// Heal Spell
-	public void AttemptHealSpell(int targetNdx = -1, int mpCost = 3) {
+	public void AttemptHealSpell(int mpCost = 3) {
 		// Enough MP
 		if (_.enemyStats[_.EnemyNdx()].MP >= mpCost) {
-			// Get index of enemy with the lowest HP
-			if(targetNdx == -1) {
-				_.targetNdx = _.stats.GetEnemyWithLowestHP();
-            } else {
-				_.targetNdx = targetNdx;
-			}
-
-			// Not at Full HP
-			if (_.targetNdx != -1) {
-				ColorScreen.S.PlayClip("Swell", 1);
-			} else {
-				// Already at Full HP
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " thought about casting a Heal Spell...\n...But then remembered everyone's at full health...\n...and gave up!");
-
-				// Audio: Deny
-				AudioManager.S.PlaySFX(eSoundName.deny);
-
-				_.NextTurn();
-			}
+			ColorScreen.S.PlayClip("Swell", 1);
 		} else {
 			// Not enough MP
 			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast a Heal Spell...\n...But doesn't have enough MP to do so!");
@@ -163,42 +118,42 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	// Called after BattleBlackScreen "Swell" animation
-	public void HealSpell(int targetNdx, int mpCost = 3, int minVal = 30, int maxVal = 45, eSoundName sfx = eSoundName.buff1) {
+	public void HealSpell(int mpCost = 3, int minVal = 30, int maxVal = 45, eSoundName sfx = eSoundName.buff1) {
 		// Subtract Spell cost from Enemy's MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
 		// Get amount and max amount to heal
 		int amountToHeal = Random.Range(minVal, maxVal);
-		int maxAmountToHeal = _.enemyStats[targetNdx].maxHP - _.enemyStats[targetNdx].HP;
+		int maxAmountToHeal = _.enemyStats[_.targetNdx].maxHP - _.enemyStats[_.targetNdx].HP;
 		// Add Enemy's WIS to Heal Amount
-		amountToHeal += _.enemyStats[targetNdx].WIS;
+		amountToHeal += _.enemyStats[_.targetNdx].WIS;
 
 		// Add 30-45 HP to TARGET Player's HP
-		GameManager.S.AddEnemyHP(targetNdx, amountToHeal);
+		GameManager.S.AddEnemyHP(_.targetNdx, amountToHeal);
 
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
-			if (targetNdx == _.EnemyNdx()) {
-				_.dialogue.DisplayText(_.enemyStats[targetNdx].name + " casts a Heal Spell!\nHealed itself back to Max HP!");
+			if (_.targetNdx == _.EnemyNdx()) {
+				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].name + " casts a Heal Spell!\nHealed itself back to Max HP!");
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[targetNdx].name + " back to Max HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[_.targetNdx].name + " back to Max HP!");
 			}
 
 			// Prevents Floating Score being higher than the acutal amount healed
 			amountToHeal = maxAmountToHeal;
 		} else {
-			if (targetNdx == _.EnemyNdx()) {
-				_.dialogue.DisplayText(_.enemyStats[targetNdx].name + " casts a Heal Spell!\nHealed itself for " + amountToHeal + " HP!");
+			if (_.targetNdx == _.EnemyNdx()) {
+				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].name + " casts a Heal Spell!\nHealed itself for " + amountToHeal + " HP!");
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[targetNdx].name + " for " + amountToHeal + " HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[_.targetNdx].name + " for " + amountToHeal + " HP!");
 			}
 		}
 
 		// Display Floating Score
-		GameManager.S.InstantiateFloatingScore(_.enemySprites[targetNdx], amountToHeal.ToString(), Color.green, -2f);
+		GameManager.S.InstantiateFloatingScore(_.enemySprites[_.targetNdx], amountToHeal.ToString(), Color.green, -2f);
 
 		// Flicker Enemy Anim 
-		_.enemyAnims[targetNdx].CrossFade("Damage", 0);
+		_.enemyAnims[_.targetNdx].CrossFade("Damage", 0);
 
 		// Audio: Buff
 		AudioManager.S.PlaySFX(sfx);
@@ -208,16 +163,9 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 8
 	// Single Attack
-	public void AttemptAttackSingle(int targetNdx = -1, int mpCost = 3) {
+	public void AttemptAttackSingle(int mpCost = 3) {
 		// Enough MP
 		if (_.enemyStats[_.EnemyNdx()].MP >= mpCost) {
-			// Randomly select party member to attack
-			if (targetNdx == -1) {
-				_.targetNdx = _.stats.GetRandomPlayerNdx();
-            } else {
-				_.targetNdx = targetNdx;
-			}
-
 			ColorScreen.S.PlayClip("Flicker", 3);
 		} else {
 			// Not enough MP
@@ -233,7 +181,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		}
 	}
 
-	public void AttackSingle(int targetNdx, int mpCost = 3, int minVal = 8, int maxVal = 12, eSoundName sfx = eSoundName.fireball) {
+	public void AttackSingle(int mpCost = 3, int minVal = 8, int maxVal = 12, eSoundName sfx = eSoundName.fireball) {
 		// Subtract Enemy MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
@@ -258,16 +206,16 @@ public class BattleEnemyActions : MonoBehaviour {
 			_.attackDamage = Random.Range(minVal, maxVal);
 
 			// Subtract Player Health
-			GameManager.S.SubtractPlayerHP(targetNdx, _.attackDamage, true);
+			GameManager.S.SubtractPlayerHP(_.targetNdx, _.attackDamage, true);
 
 			// Play attack animations, SFX, and spawn objects
-			PlaySingleAttackAnimsAndSFX(targetNdx);
+			PlaySingleAttackAnimsAndSFX(_.targetNdx);
 
 			// Player Death or Next Turn
-			if (Party.S.stats[targetNdx].HP < 1) {
-				_.end.PlayerDeath(targetNdx);
+			if (Party.S.stats[_.targetNdx].HP < 1) {
+				_.end.PlayerDeath(_.targetNdx);
 			} else {
-				_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[targetNdx].name + " for " + _.attackDamage + " HP!");
+				_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[_.targetNdx].name + " for " + _.attackDamage + " HP!");
 
 				// Audio: Fireblast
 				AudioManager.S.PlaySFX(sfx);
@@ -506,32 +454,32 @@ public class BattleEnemyActions : MonoBehaviour {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 10
 	// Poison
-	public void Poison(int targetNdx) {
+	public void Poison() {
 		// Poison party member
-		StatusEffects.S.AddPoisoned(targetNdx);
+		StatusEffects.S.AddPoisoned(_.targetNdx);
 
 		// Play attack animations, SFX, and spawn objects
-		PlaySingleAttackAnimsAndSFX(targetNdx, true, false);
+		PlaySingleAttackAnimsAndSFX(_.targetNdx, true, false);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 11
 	// Paralyze
-	public void Paralyze(int targetNdx) {
+	public void Paralyze() {
 		// Paralyze party member
-		StatusEffects.S.AddParalyzed(targetNdx);
+		StatusEffects.S.AddParalyzed(_.targetNdx);
 
 		// Play attack animations, SFX, and spawn objects
-		PlaySingleAttackAnimsAndSFX(targetNdx, true, false);
+		PlaySingleAttackAnimsAndSFX(_.targetNdx, true, false);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 12
 	// Sleep
-	public void Sleep(int targetNdx) {
+	public void Sleep() {
 		// Put party member to sleep
-		StatusEffects.S.AddSleeping(targetNdx);
+		StatusEffects.S.AddSleeping(_.targetNdx);
 
 		// Play attack animations, SFX, and spawn objects
-		PlaySingleAttackAnimsAndSFX(targetNdx, true, false);
+		PlaySingleAttackAnimsAndSFX(_.targetNdx, true, false);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 13
@@ -541,7 +489,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		ColorScreen.S.PlayClip("Flicker", 8);
 	}
 
-	public void Steal(int targetNdx) {
+	public void Steal() {
 		if (Inventory.S.GetItemList().Count != 0) {
 			// 50% chance to miss...
 			if (Random.value <= 0.5f) {
@@ -558,10 +506,10 @@ public class BattleEnemyActions : MonoBehaviour {
 					_.enemyStats[_.EnemyNdx()].amountToSteal += 1;
 
 					// Play attack animations, SFX, and spawn objects
-					PlaySingleAttackAnimsAndSFX(targetNdx, true, false);
+					PlaySingleAttackAnimsAndSFX(_.targetNdx, true, false);
 
 					// Display text: item stolen
-					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " swiped a " + tItem.name + " from " + Party.S.stats[targetNdx].name + ".\n" + WordManager.S.GetRandomInterjection() + "!");
+					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " swiped a " + tItem.name + " from " + Party.S.stats[_.targetNdx].name + ".\n" + WordManager.S.GetRandomInterjection() + "!");
 				} else {
 					// Set mini party member animations
 					_.UI.SetPartyMemberAnim("Success");
@@ -570,7 +518,7 @@ public class BattleEnemyActions : MonoBehaviour {
 					AudioManager.S.PlaySFX(eSoundName.deny);
 
 					// Display text: can't steal an important item
-					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal a " + tItem.name + " from " + Party.S.stats[targetNdx].name + "...\n...but it can't be stolen!\n" + WordManager.S.GetRandomExclamation() + "!");
+					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal a " + tItem.name + " from " + Party.S.stats[_.targetNdx].name + "...\n...but it can't be stolen!\n" + WordManager.S.GetRandomExclamation() + "!");
 				}
 			} else {
 				// Set mini party member animations
@@ -580,14 +528,14 @@ public class BattleEnemyActions : MonoBehaviour {
 				AudioManager.S.PlaySFX(eSoundName.deny);
 
 				// Display text: miss
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to loot an item from " + Party.S.stats[targetNdx].name + "...\n...but missed the mark!\n" + WordManager.S.GetRandomExclamation() + "!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to loot an item from " + Party.S.stats[_.targetNdx].name + "...\n...but missed the mark!\n" + WordManager.S.GetRandomExclamation() + "!");
 			}
 		} else {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
 			// Display text: no items to steal
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal an item from " + Party.S.stats[targetNdx].name + "...\n...but they've got nothing!\n" + WordManager.S.GetRandomExclamation() + "!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal an item from " + Party.S.stats[_.targetNdx].name + "...\n...but they've got nothing!\n" + WordManager.S.GetRandomExclamation() + "!");
 		}
 
 		_.NextTurn();
