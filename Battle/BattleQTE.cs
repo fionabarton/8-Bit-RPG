@@ -185,7 +185,7 @@ public class BattleQTE : MonoBehaviour {
 				//_.dialogue.DisplayText("Press " + ConvertDirections(goalString[0]) + " to\nBLOCK!");
 
 				// Set Timer
-				tooLateTime = 1.5f;
+				tooLateTime = _.enemyStats[_.EnemyNdx()].timeToQTEBlock;
 				tooLateTimeDone = Time.time + tooLateTime;
 
 				// Display Arrow Sprite
