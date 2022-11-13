@@ -33,16 +33,21 @@ public class EnemyStats : ScriptableObject {
 
 	public int questNdx = -1;
 
-	// Default Action
-	public float chanceToCallAction;
+	// Chance to call action (range from 0.0 to 1.0)
+	public float chanceToCallAction = 0.5f;
 	public int defaultAction;
 
 	// Actions/Moves Enemy can perform
 	public List<int> actionList;
 
 	public bool isDead; // set to false in BattleInitiative.cs
+	
+	// Calling for help
 	public bool isCallingForHelp;
 	public int	nextTurnActionNdx;
+
+	// Amount of time the player has to block an attack
+	public float timeToQTEBlock = 1.5f;
 
 	// Set dynamically when entering battle
 	public int battleID;
