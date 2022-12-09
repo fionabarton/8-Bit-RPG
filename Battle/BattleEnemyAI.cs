@@ -23,9 +23,13 @@ public class BattleEnemyAI : MonoBehaviour {
         int enemyMP = _.enemyStats[_.EnemyNdx()].MP;
         // int enemyHPToMax (maxHP - HP)
 
+        // TESTING: Set target, then call action
+        //_.targetNdx = _.stats.GetPlayerWithLowestHP();
+        //ChanceToCallAction(eAction.attackAll);
+
         switch (_.enemyStats[_.EnemyNdx()].AI_id) {
             case 0:
-                if(Random.value > 0.5f) {
+                if (Random.value > 0.5f) {
 
                 } else {
 
@@ -51,7 +55,7 @@ public class BattleEnemyAI : MonoBehaviour {
                         // If enemy knows heal...
                         if (KnowsAction(eAction.heal) && enemyMP >= 3) {
                             // Set target
-                            _.targetNdx = _.stats.GetEnemyWithLowestHP();
+                            _.targetNdx = _.stats.GetPlayerWithLowestHP();
 
                             // Heal or defend
                             ChanceToCallAction(eAction.heal, eAction.defend);
@@ -76,7 +80,7 @@ public class BattleEnemyAI : MonoBehaviour {
                         // Attack single or attack
                         ChanceToCallAction(eAction.attackSingle, eAction.attack);
                     } else {
- 
+
                         // Attack 
                         ChanceToCallAction(eAction.attack);
                     }
@@ -92,7 +96,7 @@ public class BattleEnemyAI : MonoBehaviour {
                 }
                 break;
             // CallForBackup ///////////////////////////////////////////////////////
-            case 4: 
+            case 4:
                 if (Random.value < _.enemyStats[_.EnemyNdx()].chanceToCallAction / 3) {
                     ChanceToCallAction(eAction.callForBackupNextTurn);
                 } else {
@@ -164,7 +168,7 @@ public class BattleEnemyAI : MonoBehaviour {
     bool KnowsAction(eAction enemyAction) {
         int ndx = (int)enemyAction;
 
-        Debug.Log(ndx);
+        //Debug.Log(ndx);
 
         for (int i = 0; i < _.enemyStats[_.EnemyNdx()].actionList.Count; i++) {
             if (ndx == _.enemyStats[_.EnemyNdx()].actionList[i]) {

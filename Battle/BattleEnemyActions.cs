@@ -28,7 +28,11 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		// Player Death or Next Turn
 		if (Party.S.stats[_.targetNdx].HP < 1) {
-			_.end.PlayerDeath(_.targetNdx);
+			// Add player index to list of dead combatants
+			_.deadCombatantNdxs.Add(_.targetNdx);
+
+			// Player dead mode
+			_.mode = eBattleMode.playerDead;
 		} else {
             if (_.qteEnabled) {
 				// If not sleeping or paralyzed...attempt to block!
@@ -211,15 +215,19 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Play attack animations, SFX, and spawn objects
 			PlaySingleAttackAnimsAndSFX(_.targetNdx);
 
+			_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[_.targetNdx].name + " for " + _.attackDamage + " HP!");
+
+			// Audio: Fireblast
+			AudioManager.S.PlaySFX(sfx);
+
 			// Player Death or Next Turn
 			if (Party.S.stats[_.targetNdx].HP < 1) {
-				_.end.PlayerDeath(_.targetNdx);
+				// Add player index to list of dead combatants
+				_.deadCombatantNdxs.Add(_.targetNdx);
+
+				// Player dead mode
+				_.mode = eBattleMode.playerDead;
 			} else {
-				_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[_.targetNdx].name + " for " + _.attackDamage + " HP!");
-
-				// Audio: Fireblast
-				AudioManager.S.PlaySFX(sfx);
-
 				_.NextTurn();
 			}
 		}
@@ -325,13 +333,13 @@ public class BattleEnemyActions : MonoBehaviour {
 				}
 			}
 
+			_.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!");
+
+			// Audio: Fireblast
+			AudioManager.S.PlaySFX(sfx);
+
 			// If no one is killed...
 			if (deadPlayers.Count <= 0) {
-				_.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!");
-
-				// Audio: Fireblast
-				AudioManager.S.PlaySFX(sfx);
-
 				_.NextTurn();
 			} else {
 				PlayersDeath(deadPlayers, totalAttackDamage);
@@ -431,15 +439,13 @@ public class BattleEnemyActions : MonoBehaviour {
 	}
 
 	public void PlayersDeath(List<int> deadPlayers, int totalAttackDamage) {
-		switch (deadPlayers.Count) {
-			case 1: _.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!" + "\nOne party member has been felled!"); break;
-			case 2: _.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!" + "\nTwo party members have been felled!"); break;
-			case 3: _.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!" + "\nThree party members have been felled!"); break;
+		for (int i = 0; i < deadPlayers.Count; i++) {
+			// Add player indexes to list of dead combatants
+			_.deadCombatantNdxs.Add(deadPlayers[i]);
 		}
 
-		for (int i = 0; i < deadPlayers.Count; i++) {
-			_.end.PlayerDeath(deadPlayers[i], false);
-		}
+		// Player dead mode
+		_.mode = eBattleMode.playerDead;
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// Index = 9

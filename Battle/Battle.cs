@@ -68,6 +68,9 @@ public class Battle : MonoBehaviour {
 	// Ensures audio is only played once when button is selected
 	public GameObject previousSelectedForAudio;
 
+	// Dynamic list that stores the indexes of which members/enemies died this turn
+	public List<int> deadCombatantNdxs;
+
 	public BattleInitiative initiative;
 	public BattleDialogue dialogue;
 	public BattleEnd end;
@@ -254,6 +257,16 @@ public class Battle : MonoBehaviour {
 							}
 						}
 						break;
+					case eBattleMode.playerDead:
+						if (Input.GetButtonDown("SNES B Button")) {
+							end.PlayerDeath(deadCombatantNdxs[0]);
+						}
+						break;
+					case eBattleMode.enemyDead:
+						if (Input.GetButtonDown("SNES B Button")) {
+							end.EnemyDeath(deadCombatantNdxs[0]);
+						}
+                        break;
 					case eBattleMode.partyDeath:
 						if (Input.GetButtonDown("SNES B Button")) {
 							end.PartyDeath();
@@ -377,9 +390,10 @@ public class Battle : MonoBehaviour {
 		dialogue.Initialize();
 		StatusEffects.S.Initialize();
 
-		// Clear dropped items, and completed quests
+		// Clear dropped items, completed quests, dead combatants
 		droppedItems.Clear();
 		completedQuestNdxs.Clear();
+		deadCombatantNdxs.Clear();
 
 		// Reset playerActions.buttonsCS text color
 		Utilities.S.SetTextColor(playerActions.actionButtonsCS, new Color32(39, 201, 255, 255));

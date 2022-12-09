@@ -105,7 +105,11 @@ public class BattlePlayerActions : MonoBehaviour {
 
 		// Enemy Death or Next Turn
 		if (_.enemyStats[ndx].HP < 1) {
-			_.end.EnemyDeath(ndx);
+			// Add enemy index to list of dead combatants
+			_.deadCombatantNdxs.Add(ndx);
+
+			// Enemy dead mode
+			_.mode = eBattleMode.enemyDead;
 		} else {
 			_.NextTurn();
 		}
@@ -201,13 +205,13 @@ public class BattlePlayerActions : MonoBehaviour {
 				}
 			}
 
+			_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " got'em!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
+
+			// Audio: Fireblast
+			AudioManager.S.PlaySFX(eSoundName.fireblast);
+
 			// If no one is killed...
 			if (deadEnemies.Count <= 0) {
-				_.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " got'em!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
-
-				// Audio: Fireblast
-				AudioManager.S.PlaySFX(eSoundName.fireblast);
-
 				_.NextTurn();
 			} else {
 				Spells.S.battle.EnemiesDeath(deadEnemies, totalAttackDamage, Party.S.stats[_.PlayerNdx()].name + " got'em!");

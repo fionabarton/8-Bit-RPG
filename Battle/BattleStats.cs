@@ -27,6 +27,7 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// Returns the index of the enemy with the lowest HP
+	// If all enemies at full HP, returns -1
 	public int GetEnemyWithLowestHP() {
 		int ndx = -1;
 		int lowestHP = 9999;
@@ -89,12 +90,6 @@ public class BattleStats : MonoBehaviour {
 		float randomValue = Random.value;
 
 		if (_.partyQty == 0) {
-			//for (int i = 0; i < _.playerDead.Count; i++) {
-			//	if (!_.playerDead[i]) {
-			//		randomNdx = i;
-			//		break;
-			//	}
-			//}
 			randomNdx = 0;
 		} else if (_.partyQty == 1) {
 			if (randomValue > 0.5f) {
@@ -204,12 +199,10 @@ public class BattleStats : MonoBehaviour {
 			}
 
 			// Display Text
-			if (defenderHP > _.attackDamage) {
-				if (isCriticalHit) {
-					_.dialogue.DisplayText("Critical hit!\n" + attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
-				} else {
-					_.dialogue.DisplayText(attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
-				}
+			if (isCriticalHit) {
+				_.dialogue.DisplayText("Critical hit!\n" + attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
+			} else {
+				_.dialogue.DisplayText(attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
 			}
 		}
 	}

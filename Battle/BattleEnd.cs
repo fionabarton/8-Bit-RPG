@@ -129,7 +129,15 @@ public class BattleEnd : MonoBehaviour {
 				// Switch Mode
 				_.mode = eBattleMode.addExpAndGoldNoDrops;
 			}
-		} else { _.NextTurn(); }
+		} else {
+			//  Remove dead combatant index
+			_.deadCombatantNdxs.RemoveAt(0);
+
+			// If no more dead combatants to announce, go to next turn
+			if (_.deadCombatantNdxs.Count <= 0) {
+				_.NextTurn();
+            } 
+		}
 	}
 
 	public void AddDroppedItems(int ndx) {
@@ -177,6 +185,9 @@ public class BattleEnd : MonoBehaviour {
 		// Animation: Death party member
 		_.UI.miniPartyAnims[ndx].CrossFade("Death", 0);
 
+		// Animatiom: flicker party member's stats frame sprite
+		_.UI.SetPartyFlickerAnim(ndx);
+
 		// Remove all status ailments 
 		StatusEffects.S.RemoveAllStatusAilments(true, ndx);
 
@@ -189,7 +200,17 @@ public class BattleEnd : MonoBehaviour {
 
 		// Add PartyDeath or NextTurn 
 		// Switch Mode
-		if (_.partyQty < 0) { _.mode = eBattleMode.partyDeath; } else { _.NextTurn(); }
+		if (_.partyQty < 0) { 
+			_.mode = eBattleMode.partyDeath; } 
+		else {
+			//  Remove dead combatant index
+			_.deadCombatantNdxs.RemoveAt(0);
+
+			// If no more dead combatants to announce, go to next turn
+			if (_.deadCombatantNdxs.Count <= 0) {
+				_.NextTurn();
+			}
+		}
 	}
 	public void PartyDeath() {
 		//_.UI.turnCursor.SetActive(false);
