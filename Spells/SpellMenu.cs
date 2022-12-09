@@ -462,12 +462,6 @@ public class SpellMenu : MonoBehaviour {
 		}
 	}
 
-	public void ScreenOffEnemyDeath(int enemyNdx) {
-		Deactivate();
-
-		Battle.S.end.EnemyDeath(enemyNdx);
-	}
-
 	// Inspired by ConsumeItem() in ItemScreen.cs
 	public void UseSpell(Spell spell) {
 		canUpdate = true;

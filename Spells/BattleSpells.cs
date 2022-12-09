@@ -308,18 +308,22 @@ public class BattleSpells : MonoBehaviour {
 				GameManager.S.InstantiateFloatingScore(_.enemySprites[ndx], _.attackDamage.ToString(), Color.red);
 			}
 
+			// Display text
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit " + _.enemyStats[ndx].name + " for " + _.attackDamage + " HP!");
+
+			// Audio: Fireball
+			AudioManager.S.PlaySFX(eSoundName.fireball);
+
+			// Shake Enemy Anim
+			_.enemyAnims[ndx].CrossFade("Damage", 0);
+
 			if (_.enemyStats[ndx].HP < 1) {
-				Battle.S.end.EnemyDeath(ndx);
+				// Add enemy index to list of dead combatants
+				_.deadCombatantNdxs.Add(ndx);
+
+				// Enemy dead mode
+				_.mode = eBattleMode.enemyDead;
 			} else {
-				// Deactivate Spells Screen then Enemy Turn
-				_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit " + _.enemyStats[ndx].name + " for " + _.attackDamage + " HP!");
-
-				// Audio: Fireball
-				AudioManager.S.PlaySFX(eSoundName.fireball);
-
-				// Shake Enemy Anim
-				_.enemyAnims[ndx].CrossFade("Damage", 0);
-
 				_.NextTurn();
 			}
 		}
@@ -411,13 +415,13 @@ public class BattleSpells : MonoBehaviour {
 				}
 			}
 
+			_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
+
+			// Audio: Fireblast
+			AudioManager.S.PlaySFX(eSoundName.fireblast);
+
 			// If no one is killed...
 			if (deadEnemies.Count <= 0) {
-				_.dialogue.DisplayText("Used " + spell.name + " Skill!\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyAmount) + " HP!");
-
-				// Audio: Fireblast
-				AudioManager.S.PlaySFX(eSoundName.fireblast);
-
 				_.NextTurn();
 			} else {
 				EnemiesDeath(deadEnemies, totalAttackDamage, "Used Fire BLAST Skill!");
@@ -427,37 +431,13 @@ public class BattleSpells : MonoBehaviour {
 
 	// Handle enemy deaths
 	public void EnemiesDeath(List<int> deadEnemies, int totalAttackDamage, string message) {
-		bool hasStolenItems = false;
-		for (int i = 0; i < deadEnemies.Count; i++) {
-			// Check if any enemy has stolen an item from the party
-			if (_.enemyStats[deadEnemies[i]].stolenItems.Count > 0) {
-				hasStolenItems = true;
-			}
-		}
-
-		// Display different text whether the enemy has stolen anything
-		if (hasStolenItems) {
-			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy felled; stolen items are returned!"); break;
-				case 2: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies felled; stolen items are returned!"); break;
-				case 3: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies felled; stolen items are returned!"); break;
-				case 4: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies felled; stolen items are returned!"); break;
-				case 5: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies felled; stolen items are returned!"); break;
-			}
-		} else {
-			switch (deadEnemies.Count) {
-				case 1: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nOne enemy has been felled!"); break;
-				case 2: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nTwo enemies have been felled!"); break;
-				case 3: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nThree enemies have been felled!"); break;
-				case 4: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFour enemies have been felled!"); break;
-				case 5: _.dialogue.DisplayText(message + "\nHit ALL Enemies for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, _.enemyStats.Count) + " HP!" + "\nFive enemies have been felled!"); break;
-			}
-		}
-
 		for (int i = deadEnemies.Count - 1; i >= 0; i--) {
-			// Handle enemy death
-			_.end.EnemyDeath(deadEnemies[i], false);
+			// Add enemy indexes to list of dead combatants
+			_.deadCombatantNdxs.Add(deadEnemies[i]);
 		}
+
+		// Enemy dead mode
+		_.mode = eBattleMode.enemyDead;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
