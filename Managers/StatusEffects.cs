@@ -225,7 +225,11 @@ public class StatusEffects : MonoBehaviour {
 
 			// Check if dead
 			if (Party.S.stats[ndx].HP < 1) {
-				_.end.PlayerDeath(ndx);
+				// Add player index to list of dead combatants
+				_.deadCombatantNdxs.Add(ndx);
+
+				// Player dead mode
+				_.mode = eBattleMode.playerDead;
 				return;
 			}
 		} else {
@@ -247,7 +251,11 @@ public class StatusEffects : MonoBehaviour {
 
 			// Check if dead
 			if (_.enemyStats[ndx].HP < 1) {
-				_.end.EnemyDeath(ndx);
+				// Add enemy index to list of dead combatants
+				_.deadCombatantNdxs.Add(ndx);
+
+				// Enemy dead mode
+				_.mode = eBattleMode.enemyDead;
 				return;
 			}
 		}
