@@ -47,6 +47,8 @@ public class BattleEnemyAI : MonoBehaviour {
                 break;
             // Fight wisely ///////////////////////////////////////////////////////
             case 3:
+                // Defend/Heal AI
+
                 // Use heal spell when needed:
                 // If any enemy's HP < 25%...
                 if (_.stats.EnemiesNeedHeal(0.25f)) {
@@ -55,7 +57,7 @@ public class BattleEnemyAI : MonoBehaviour {
                         // If enemy knows heal...
                         if (KnowsAction(eAction.heal) && enemyMP >= 3) {
                             // Set target
-                            _.targetNdx = _.stats.GetPlayerWithLowestHP();
+                            _.targetNdx = _.stats.GetEnemyWithLowestHP();
 
                             // Heal or defend
                             ChanceToCallAction(eAction.heal, eAction.defend);
@@ -68,7 +70,7 @@ public class BattleEnemyAI : MonoBehaviour {
                     }
                 }
 
-                // Attack:
+                // Attack AI:
 
                 // Set target
                 _.targetNdx = _.stats.GetRandomPlayerNdx();
