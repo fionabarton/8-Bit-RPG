@@ -1,32 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using System.Linq;
 
 // Manages party members that follow the lead character in the overworld
 public class Followers : MonoBehaviour {
     [Header("Set in Inspector")]
 	// Follower variables
-	public List<GameObject> followersGO;
-	public List<Transform> followerMovePoints;
-	public List<Animator> followerAnims;
-
+	public List<GameObject>		followersGO;
+	public List<Transform>		followerMovePoints;
+	public List<Animator>		followerAnims;
+	
 	// Variables for getting/setting the order in layer for all party members
-	public List<Transform> partyTransforms;
+	public List<Transform>		partyTransforms;
 	public List<SpriteRenderer> partySRends;
+	public List<SpriteRenderer> partyMaskBorderSRends;
+	public List<SortingGroup>	partySortingGroups;
 
 	[Header("Set Dynamically")]
 	// Follower variables
-	public List<Vector3> movePoints;
-	public List<string> animations;
-	public List<bool> facingRights;
+	public List<Vector3>		movePoints;
+	public List<string>			animations;
+	public List<bool>			facingRights;
 
 	// Cache and set followers' move points 
 	public void AddFollowerMovePoints(Transform movePoint, bool facingRight) {
 		// Cache move point and facingRight
 		movePoints.Insert(0, movePoint.position);
 		facingRights.Insert(0, facingRight);
-
+		
 		if (movePoints.Count > 3) {
             // Set follower's movePoint pos
             if (followersGO[1].gameObject.activeInHierarchy) {
@@ -67,8 +70,6 @@ public class Followers : MonoBehaviour {
 
 		// Set followers' animations
 		if (animations.Count > 3) {
-			SetOrderInLayer();
-
 			if (followersGO[1].activeInHierarchy) {
 				followerAnims[1].CrossFade(animations[3], 0);
 			}
@@ -84,9 +85,9 @@ public class Followers : MonoBehaviour {
 
 	// Set the order in layer for all party members based on their y-pos
 	public void SetOrderInLayer() {
-		if (movePoints.Count > 2) {
-			// Get each party member's y-pos
-			List<float> yPositions = new List<float>();
+        if (movePoints.Count > 2) {
+            // Get each party member's y-pos
+            List<float> yPositions = new List<float>();
 			for (int i = 0; i < partyTransforms.Count; i++) {
 				yPositions.Add(partyTransforms[i].position.y);
 			}
@@ -95,18 +96,24 @@ public class Followers : MonoBehaviour {
 			float minValue = yPositions.Min();
 			int minIndex = yPositions.IndexOf(minValue);
 			partySRends[minIndex].sortingOrder = 2;
+			partyMaskBorderSRends[minIndex].sortingOrder = 2;
+			partySortingGroups[minIndex].sortingOrder = 2;
 
 			// Set lowest party member order
 			float maxValue = yPositions.Max();
 			int maxIndex = yPositions.IndexOf(maxValue);
 			partySRends[maxIndex].sortingOrder = 0;
+			partyMaskBorderSRends[maxIndex].sortingOrder = 0;
+			partySortingGroups[maxIndex].sortingOrder = 0;
 
 			// Set middle party member order
 			for (int i = 0; i < yPositions.Count; i++) {
-				if (i != minIndex && i != maxIndex) {
-					partySRends[i].sortingOrder = 1;
+                if (i != minIndex && i != maxIndex) {
+                    partySRends[i].sortingOrder = 1;
+                    partyMaskBorderSRends[i].sortingOrder = 1;
+					partySortingGroups[i].sortingOrder = 1;
 				}
-			}
-		}
-	}
+            }
+        }
+    }
 }
