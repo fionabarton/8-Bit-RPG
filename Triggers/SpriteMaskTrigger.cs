@@ -5,29 +5,20 @@ using UnityEngine;
 // On trigger, (de)activates a sprite mask which hides/reveals this party member's bottom half
 public class SpriteMaskTrigger : MonoBehaviour {
     [Header("Set in Inspector")]
-    [SerializeField] GameObject         spriteMaskGameObject;
+    [SerializeField] GameObject         spriteMaskGO;
 
-    [SerializeField] List<GameObject>   borderSprites; // (blue, brown, green)
-
-    void DeactivateAllSprites() {
-        // Deactivate all border sprites (blue, brown, green)
-        for (int i = 0; i < borderSprites.Count; i++) {
-            borderSprites[i].SetActive(false);
-        }
-
-        // Deactivate sprite mask gameObject
-        spriteMaskGameObject.SetActive(false);
-    }
+    [SerializeField] SpriteRenderer     maskBorderSRend;
+    [SerializeField] List<Sprite>       maskBorderSprites; // (blue, brown, green)
 
     void ActivateSprites(int ndx) {
-        // Deactivate sprites
-        DeactivateAllSprites();
+        // Set specific border sprite (blue, brown, green)
+        maskBorderSRend.sprite = maskBorderSprites[ndx];
 
-        // Activate specific border sprite (blue, brown, green)
-        borderSprites[ndx].SetActive(true);
+        // Activate mask border gameObject
+        maskBorderSRend.gameObject.SetActive(true);
 
         // Activate sprite mask gameObject
-        spriteMaskGameObject.SetActive(true);
+        spriteMaskGO.SetActive(true);
     }
 
     void OnTriggerEnter2D(Collider2D coll) {
@@ -44,12 +35,12 @@ public class SpriteMaskTrigger : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D coll) {
         if (!GameManager.S.paused) {
-            if (coll.gameObject.CompareTag("SubmergedBlue")) {
-                DeactivateAllSprites();
-            } else if (coll.gameObject.CompareTag("SubmergedBrown")) {
-                DeactivateAllSprites();
-            } else if (coll.gameObject.CompareTag("SubmergedGreen")) {
-                DeactivateAllSprites();
+            if (coll.gameObject.CompareTag("SubmergedBlue") || coll.gameObject.CompareTag("SubmergedBrown") || coll.gameObject.CompareTag("SubmergedGreen")) {
+                // Deactivate mask border gameObject
+                maskBorderSRend.gameObject.SetActive(false);
+
+                // Deactivate sprite mask gameObject
+                spriteMaskGO.SetActive(false);
             }
         }
     }
