@@ -28,7 +28,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 
 	// Variables related to predetermined default names
 	private int dontCareNdx;
-	private List<string> dontCareNames = new List<string>() { "Butthead", "Mildew", "Gunt", "Love Gum", "Moon Unit" };
+	private List<string> dontCareNames = new List<string>() { "Bud", "Champ", "Chief", "Cookie", "Cupcake", "Darling", "Deadbeat", "Dude", "Dumpling", "Dunce", "Giggles", "Goon", "Junior", "Kiddo", "Killer", "Lazy Bones", "Muscles", "Peanut", "Pumpkin", "Princess", "Slacker", "Slick", "Sport", "Stud", "Trouble" };
 
 	// Allows parts of Loop() to be called once rather than repeatedly every frame.
 	public bool canUpdate;
