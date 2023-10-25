@@ -139,8 +139,6 @@ public class GameManager : MonoBehaviour {
 		WarpManager.S.HasVisited(currentScene);
 
 		// Camera
-		CamManager.S.camMode = eCamMode.followAll;
-		CamManager.S.ChangeTarget(Player.S.gameObject, false);
 		Camera.main.orthographicSize = 6;
 
 		// Dectivate battle UI and gameobjects
@@ -249,15 +247,11 @@ public class GameManager : MonoBehaviour {
 				Player.S.canMove = true;
 				Player.S.alreadyTriggered = false;
 
-				// Freeze Camera
-				if (currentScene == "Motel_1" || currentScene == "Shop_1") {
-					// Freeze Camera
-					CamManager.S.camMode = eCamMode.freezeCam;
-
-				} else {
-					// Set camera to Player position
+				// If follow all, set cam to player position
+				if(CamManager.S.camMode == eCamMode.followAll) {
 					Camera.main.transform.position = Player.S.gameObject.transform.position;
 				}
+
 				break;
 		}
 
