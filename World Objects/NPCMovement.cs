@@ -14,14 +14,17 @@ public class NPCMovement : MonoBehaviour {
 	// Min and max values for how long to wait 
 	public Vector2 waitDuration = new Vector2(0.75f, 1.25f);
 
+	public bool isStandingStill = false;
+
+	// 0 = right, 1 = up, 2 = left, 3 = down
+	public int walkDirection;
+
 	[Header("Set Dynamically")]
 	private Animator anim;
 
 	private float speed = 2f;
 
 	private bool isWalking;
-	private int walkDirection;
-	// 0 = right, 1 = up, 2 = left, 3 = down
 
 	private float timer = 0;
 
@@ -33,7 +36,12 @@ public class NPCMovement : MonoBehaviour {
 
 		movePoint.parent = null;
 
-		StartCoroutine("FixedUpdateCoroutine");
+        if (!isStandingStill) {
+			StartCoroutine("FixedUpdateCoroutine");
+        } else {
+			// Set animation based on walk direction
+			SetWalkDirectionAnimation();
+		}
 	}
 
 	public IEnumerator FixedUpdateCoroutine() {
@@ -99,16 +107,25 @@ public class NPCMovement : MonoBehaviour {
 	public void Walk() {
 		isWalking = true;
 
+		// Set animation based on walk direction
+		SetWalkDirectionAnimation();
+	}
+
+	private void SetWalkDirectionAnimation() {
 		// Set animation
-        switch (walkDirection) {
+		switch (walkDirection) {
 			case 1: anim.CrossFade("Walk_Up", 0); break;
 			case 3: anim.CrossFade("Walk_Down", 0); break;
-			case 0: anim.CrossFade("Walk_Side", 0);
+			case 0:
+				anim.CrossFade("Walk_Side", 0);
 				// Flip
-				if (facingRight) { Utilities.S.Flip(gameObject, ref facingRight); } break;
-			case 2: anim.CrossFade("Walk_Side", 0);
+				if (facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+				break;
+			case 2:
+				anim.CrossFade("Walk_Side", 0);
 				// Flip
-				if (!facingRight) { Utilities.S.Flip(gameObject, ref facingRight); } break;
+				if (!facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+				break;
 		}
 	}
 
