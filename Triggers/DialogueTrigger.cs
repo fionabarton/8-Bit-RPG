@@ -13,6 +13,9 @@ public class DialogueTrigger : ActivateOnButtonPress {
     // Store the indexes of quests that when completed affect which dialogue to display 
     public List<int>		questNdx;
 
+	// Display the dialogue box at the top OR bottom of the screen
+	public bool				moveDialogueBoxDown = false;
+
 	[Header ("Set Dynamically")]
 	// Store unaltered versions of the lists of dialogue
 	public List<string>		messagesClone0;
@@ -58,16 +61,16 @@ public class DialogueTrigger : ActivateOnButtonPress {
 		// Display dialogue associated with the highest quest completed
 		switch (highestQuestCompleted()) {
 			case 0:
-				DialogueManager.S.DisplayText(messages0);
+				DialogueManager.S.DisplayText(messages0, moveDialogueBoxDown);
 				break;
 			case 1:
-				DialogueManager.S.DisplayText(messages1);
+				DialogueManager.S.DisplayText(messages1, moveDialogueBoxDown);
 				break;
 			case 2:
-				DialogueManager.S.DisplayText(messages2);
+				DialogueManager.S.DisplayText(messages2, moveDialogueBoxDown);
 				break;
 			case 3:
-				DialogueManager.S.DisplayText(messages3);
+				DialogueManager.S.DisplayText(messages3, moveDialogueBoxDown);
 				break;
 		}
 
@@ -119,7 +122,7 @@ public class DialogueTrigger : ActivateOnButtonPress {
 						AudioManager.S.PlaySFX(eSoundName.highBeep1);
 
 						// Display the list of dialogue with one less element/line
-						DialogueManager.S.DisplayText(tMessage);
+						DialogueManager.S.DisplayText(tMessage, moveDialogueBoxDown);
 					}
                 }
 			}
