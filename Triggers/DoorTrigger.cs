@@ -12,6 +12,7 @@ public class DoorTrigger : ActivateOnButtonPress {
 	public Sprite 			lockedDoorSprite, closedDoorSprite, openDoorSprite;
 
 	public BoxCollider2D	solidColl;
+	public BoxCollider2D	triggerColl;
 
 	[Header("Set Dynamically")]
 	public SpriteRenderer	sRend;
@@ -64,8 +65,9 @@ public class DoorTrigger : ActivateOnButtonPress {
 		// Change sprite
 		sRend.sprite = openDoorSprite;
 		
-		// Disable solid collider
+		// Disable colliders
 		solidColl.enabled = false;
+		triggerColl.enabled = false;
 
 		// Deactivate trigger
 		triggerHasBeenDeactivated = true;
