@@ -31,7 +31,7 @@ public class ChestTrigger : ActivateOnButtonPress {
 			StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 		} else {
 			// Display Dialogue
-			DialogueManager.S.DisplayText("You've already looted this chest. It's empty, you greedy pig.");
+			DialogueManager.S.DisplayText("You've already looted this chest.\nIt's empty, you greedy pig.");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -47,7 +47,7 @@ public class ChestTrigger : ActivateOnButtonPress {
 		Inventory.S.AddItemToInventory(tItem);
 
 		// Display Dialogue 
-		DialogueManager.S.DisplayText ("Wow, a " + tItem.name + "! The party adds it to their inventory!");
+		DialogueManager.S.DisplayText ("Wow, a " + tItem.name + "!\nThe party adds it to their inventory!");
 
 		chestIsOpen = true;
 
