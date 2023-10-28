@@ -11,12 +11,28 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
     // Shop Inventory
     public List<eItem> itemsToPopulateInventory;
 
-    public eShopkeeperMode mode = eShopkeeperMode.pickBuyOrSell; // 0: Nothing, 1: Buy, 2: Sell
+    public string message = "<color=yellow><Shop Keeper></color> Wanna buy some hot junk? Or maybe you'd rather sell some hot junk instead? Hmmm?";
+
+    // Sets which direction the NPC faces on start
+    // 0 = right, 1 = up, 2 = left, 3 = down
+    public int walkDirection;
 
     [Header("Set Dynamically")]
+    private Animator anim;
+
     public List<Item> inventory = new List<Item>();
 
+    public eShopkeeperMode mode = eShopkeeperMode.pickBuyOrSell; // 0: Nothing, 1: Buy, 2: Sell
+
+    // Flip
+    private bool facingRight;
+
     private void Start() {
+        anim = GetComponent<Animator>();
+
+        // Set animation based on walk direction
+        SetWalkDirectionAnimation();
+
         // Convert eItem enumeration into Item
         inventory.Clear();
         for (int i = 0; i < itemsToPopulateInventory.Count; i++) {
@@ -31,8 +47,11 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         CamManager.S.ChangeTarget(gameObject, true);
 
         // Set Text
-        DialogueManager.S.DisplayText("<color=yellow><Shop Keeper></color> Wanna buy some hot junk? Or maybe you'd rather sell some hot junk instead? Hmmm?");
+        DialogueManager.S.DisplayText(message);
         GameManager.S.gameSubMenu.SetText("Buy junk!", "Sell junk!", "No thanks.", "", 3);
+
+        // Face towards player
+        FacePlayer();
 
         // Activate Sub Menu after Dialogue 
         DialogueManager.S.activateSubMenu = true;
@@ -134,6 +153,45 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
 
             // Unsubscribe ResetTrigger() from the OnShopScreenDeactivated event
             EventManager.OnShopScreenDeactivated -= ResetTrigger;
+        }
+    }
+
+    private void SetWalkDirectionAnimation() {
+        // Set animation
+        switch (walkDirection) {
+            case 1: anim.CrossFade("Walk_Up", 0); break;
+            case 3: anim.CrossFade("Walk_Down", 0); break;
+            case 0:
+                anim.CrossFade("Walk_Side", 0);
+                // Flip
+                if (facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+                break;
+            case 2:
+                anim.CrossFade("Walk_Side", 0);
+                // Flip
+                if (!facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+                break;
+        }
+    }
+
+    // Face direction of Player
+    public void FacePlayer() {
+        if (Player.S.gameObject.transform.position.x < transform.position.x &&
+            !Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Left
+                                                                                  // If facing right, flip
+            if (transform.localScale.x > 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+            anim.Play("Walk_Side", 0, 1);
+        } else if (Player.S.gameObject.transform.position.x > transform.position.x &&
+            !Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Right
+                                                                                  // If facing left, flip
+            if (transform.localScale.x < 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+            anim.Play("Walk_Side", 0, 1);
+        } else if (Player.S.gameObject.transform.position.y < transform.position.y &&
+            Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Down
+            anim.Play("Walk_Down", 0, 1);
+        } else if (Player.S.gameObject.transform.position.y > transform.position.y &&
+            Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Up
+            anim.Play("Walk_Up", 0, 1);
         }
     }
 }

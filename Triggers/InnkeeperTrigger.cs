@@ -2,14 +2,42 @@
 using UnityEngine;
 
 public class InnkeeperTrigger : ActivateOnButtonPress {
-	protected override void Action() {
+	[Header("Set in Inspector")]
+	public string	message = "<color=yellow><Inn Keeper></color> Rooms are 10 gold a night. Restores your HP & MP. Would you like to spend the night?";
+	public int		cost = 10;
+
+	// Sets which direction the NPC faces on start
+	// 0 = right, 1 = up, 2 = left, 3 = down
+	public int walkDirection;
+
+	[Header("Set Dynamically")]
+	private Animator anim;
+	
+	// Flip
+	private bool facingRight;
+
+    private void Start() {
+		anim = GetComponent<Animator>();
+
+		if (anim != null) {
+			// Set animation based on walk direction
+			SetWalkDirectionAnimation();
+		}
+    }
+
+    protected override void Action() {
 		// Set Camera to Innkeeper gameObject
 		CamManager.S.ChangeTarget(gameObject, true);
 
 		// Set SubMenu Text
 		GameManager.S.gameSubMenu.SetText("Yes", "No");
 
-		DialogueManager.S.DisplayText("<color=yellow><Inn Keeper></color> Rooms are 10 gold a night. Restores your HP & MP. Would you like to spend the night?");
+		DialogueManager.S.DisplayText(message);
+
+		// Face towards player
+		if (anim != null) {
+			FacePlayer();
+		}
 
 		// Activate Sub Menu after Dialogue 
 		DialogueManager.S.activateSubMenu = true;
@@ -34,11 +62,9 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 		if (!GameManager.S.paused) {
 			AudioManager.S.PlaySFX(eSoundName.confirm);
 
-			int price = 10;
-
-			if (Party.S.gold >= price) {
-				// Subtract item price from Player's Gold
-				Party.S.gold -= price;
+			if (Party.S.gold >= cost) {
+				// Subtract item cost from Player's Gold
+				Party.S.gold -= cost;
 
 				// Max HP/MP
 				Party.S.stats[0].HP = Party.S.stats[0].maxHP;
@@ -98,5 +124,44 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 
 		DialogueManager.S.ResetSettings();
 		DialogueManager.S.DisplayText("That's cool. Later, bro.");
+	}
+
+	private void SetWalkDirectionAnimation() {
+		// Set animation
+		switch (walkDirection) {
+			case 1: anim.CrossFade("Walk_Up", 0); break;
+			case 3: anim.CrossFade("Walk_Down", 0); break;
+			case 0:
+				anim.CrossFade("Walk_Side", 0);
+				// Flip
+				if (facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+				break;
+			case 2:
+				anim.CrossFade("Walk_Side", 0);
+				// Flip
+				if (!facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+				break;
+		}
+	}
+
+	// Face direction of Player
+	public void FacePlayer() {
+		if (Player.S.gameObject.transform.position.x < transform.position.x &&
+			!Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Left
+																				  // If facing right, flip
+			if (transform.localScale.x > 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+			anim.Play("Walk_Side", 0, 1);
+		} else if (Player.S.gameObject.transform.position.x > transform.position.x &&
+			!Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Right
+																				  // If facing left, flip
+			if (transform.localScale.x < 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+			anim.Play("Walk_Side", 0, 1);
+		} else if (Player.S.gameObject.transform.position.y < transform.position.y &&
+			Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Down
+			anim.Play("Walk_Down", 0, 1);
+		} else if (Player.S.gameObject.transform.position.y > transform.position.y &&
+			Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Up
+			anim.Play("Walk_Up", 0, 1);
+		}
 	}
 }
