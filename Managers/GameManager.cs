@@ -185,11 +185,14 @@ public class GameManager : MonoBehaviour {
 			case "Playground":
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
-			case "New Scene":
-				AudioManager.S.PlaySong(eSongName.things);
-				break;
 			case "Battle":
 				AudioManager.S.PlaySong(eSongName.ninja);
+				break;
+			case "Convenience_store_1":
+				AudioManager.S.PlaySong(eSongName.soap);
+				break;
+			case "Shack_interior":
+				AudioManager.S.PlaySong(eSongName.never);
 				break;
 			default:
 				break;
