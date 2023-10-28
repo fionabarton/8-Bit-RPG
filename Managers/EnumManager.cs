@@ -38,6 +38,8 @@ public enum eKeyboardInputMenuMode { editName, nameConfirmation, nameConfirmed, 
 
 public enum eMovement { randomWalk, patrol, pursueWalk, pursueRun, pursueWait, pursueDelayedTargetPos, flee, idle, reverse, auto };
 
+public enum eNPCMovement { allDirections, horizontal, vertical };
+
 public enum eParallax { autoScroll, scrollWithPlayer, childedToPlayer };
 
 public enum ePasswordMode { inactive, inputPassword, checkPassword };
