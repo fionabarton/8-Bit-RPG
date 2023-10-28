@@ -21,4 +21,10 @@ public class BattleTrigger : ActivateOnCollision {
         // Get/set enemies based on location
         Player.S.enemyStats = Player.S.enemyManager.GetEnemies(locationNdx);
     }
+
+    protected override void OnTriggerExit2D(Collider2D coll) {
+        base.OnTriggerExit2D(coll);
+
+        Player.S.canEncounter = false;
+    }
 }
