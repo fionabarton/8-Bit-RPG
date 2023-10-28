@@ -16,6 +16,9 @@ public class NPCMovement : MonoBehaviour {
 
 	public bool isStandingStill = false;
 
+	public eNPCMovement movementMode = eNPCMovement.allDirections;
+
+	// Sets which direction the NPC faces on start
 	// 0 = right, 1 = up, 2 = left, 3 = down
 	public int walkDirection;
 
@@ -63,7 +66,25 @@ public class NPCMovement : MonoBehaviour {
 					// If timer < 0, get a new direction and start moving
 					if (timer < 0) {
 						// Get new random direction
-						walkDirection = Random.Range(0, 4);
+						switch (movementMode) {
+							case eNPCMovement.allDirections:
+								walkDirection = Random.Range(0, 4);
+								break;
+							case eNPCMovement.horizontal:
+								if(Random.value > 0.5f) {
+									walkDirection = 0;
+								} else {
+									walkDirection = 2;
+								}
+								break;
+							case eNPCMovement.vertical:
+								if (Random.value > 0.5f) {
+									walkDirection = 1;
+								} else {
+									walkDirection = 3;
+								}
+								break;
+						}
 
 						// Move movePoint and start moving towards it 
 						switch (walkDirection) {
@@ -145,13 +166,11 @@ public class NPCMovement : MonoBehaviour {
 			!Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Left
 			// If facing right, flip
 			if (transform.localScale.x > 0) { Utilities.S.Flip(gameObject, ref facingRight); }
-
 			anim.Play("Walk_Side", 0, 1);
 		} else if (Player.S.gameObject.transform.position.x > transform.position.x &&
 			!Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Right
 			// If facing left, flip
 			if (transform.localScale.x < 0) { Utilities.S.Flip(gameObject, ref facingRight); }
-
 			anim.Play("Walk_Side", 0, 1);
 		} else if (Player.S.gameObject.transform.position.y < transform.position.y &&
 			Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Down
