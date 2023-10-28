@@ -74,5 +74,8 @@ public class DoorTrigger : ActivateOnButtonPress {
 
 		// Set Camera to Player gameObject
 		CamManager.S.ChangeTarget(Player.S.gameObject, true);
+
+		// Audio: Deny
+		AudioManager.S.PlaySFX(eSoundName.damage2);
 	}
 }
