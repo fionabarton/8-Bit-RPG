@@ -8,6 +8,23 @@ public class AddPartyMemberTrigger : ActivateOnButtonPress {
     public string offerMessage = "Hey, want me to join the party?";
     public string noMessage = "That's cool, man. Feel free to ask me again though.";
 
+    // Sets which direction the NPC faces on start
+    // 0 = right, 1 = up, 2 = left, 3 = down
+    public int walkDirection;
+
+    [Header("Set Dynamically")]
+    private Animator anim;
+
+    // Flip
+    private bool facingRight;
+
+    void Start() {
+        anim = GetComponent<Animator>();
+
+        // Set animation based on walk direction
+        SetWalkDirectionAnimation();
+    }
+
     protected override void Action() {
         // Set camera to this gameObject
         CamManager.S.ChangeTarget(gameObject, true);
@@ -21,6 +38,11 @@ public class AddPartyMemberTrigger : ActivateOnButtonPress {
         DialogueManager.S.activateSubMenu = true;
         // Don't activate Text Box Cursor 
         DialogueManager.S.dontActivateCursor = true;
+
+        // Face towards player
+        if (anim != null) {
+            FacePlayer();
+        }
 
         // Set OnClick Methods
         Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
@@ -51,5 +73,44 @@ public class AddPartyMemberTrigger : ActivateOnButtonPress {
 
         DialogueManager.S.ResetSettings();
         DialogueManager.S.DisplayText(noMessage);
+    }
+
+    private void SetWalkDirectionAnimation() {
+        // Set animation
+        switch (walkDirection) {
+            case 1: anim.CrossFade("Walk_Up", 0); break;
+            case 3: anim.CrossFade("Walk_Down", 0); break;
+            case 0:
+                anim.CrossFade("Walk_Side", 0);
+                // Flip
+                if (facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+                break;
+            case 2:
+                anim.CrossFade("Walk_Side", 0);
+                // Flip
+                if (!facingRight) { Utilities.S.Flip(gameObject, ref facingRight); }
+                break;
+        }
+    }
+
+    // Face direction of Player
+    public void FacePlayer() {
+        if (Player.S.gameObject.transform.position.x < transform.position.x &&
+            !Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Left
+                                                                                  // If facing right, flip
+            if (transform.localScale.x > 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+            anim.Play("Walk_Side", 0, 1);
+        } else if (Player.S.gameObject.transform.position.x > transform.position.x &&
+            !Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Right
+                                                                                  // If facing left, flip
+            if (transform.localScale.x < 0) { Utilities.S.Flip(gameObject, ref facingRight); }
+            anim.Play("Walk_Side", 0, 1);
+        } else if (Player.S.gameObject.transform.position.y < transform.position.y &&
+            Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Down
+            anim.Play("Walk_Down", 0, 1);
+        } else if (Player.S.gameObject.transform.position.y > transform.position.y &&
+            Utilities.S.isCloserHorizontally(gameObject, Player.S.gameObject)) { // Up
+            anim.Play("Walk_Up", 0, 1);
+        }
     }
 }
