@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ActivateOnCollision : MonoBehaviour {
+	[Header("Set in Inspector")]
+	public string tagToCompare = "PlayerTrigger";
+
 	protected virtual void OnTriggerEnter2D(Collider2D coll) {
 		if (!GameManager.S.paused) {
-			if (coll.gameObject.CompareTag("PlayerTrigger")) {
+			if (coll.gameObject.CompareTag(tagToCompare)) {
 				// Update Delgate
 				UpdateManager.updateDelegate += Loop;
 
@@ -15,7 +18,7 @@ public class ActivateOnCollision : MonoBehaviour {
 	}
 
 	protected virtual void OnTriggerExit2D(Collider2D coll) {
-		if (coll.gameObject.CompareTag("PlayerTrigger")) {
+		if (coll.gameObject.CompareTag(tagToCompare)) {
 			// Update Delgate
 			UpdateManager.updateDelegate -= Loop;
 		}
