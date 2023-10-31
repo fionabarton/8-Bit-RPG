@@ -39,7 +39,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 	private Animator inputBoxAnim;
 
 	// Scene to load after confirming name
-	public string sceneToLoad = "Playground";
+	public string sceneToLoad = "Shack_interior";
 
 	public int partyMemberNdx;
 
@@ -56,7 +56,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		gameObject.SetActive(false);
 	}
 
-	public void Activate(int _partyMemberNdx = 0, string _sceneToLoad = "Playground") {
+	public void Activate(int _partyMemberNdx = 0, string _sceneToLoad = "Shack_interior") {
 		if (GameManager.S.currentScene != "Title_Screen") {
 			// Deactivate 'Back To Menu' button  
 			buttonsGO[93].SetActive(false);
