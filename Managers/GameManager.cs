@@ -203,6 +203,10 @@ public class GameManager : MonoBehaviour {
 			case "Title_Screen":
 				TitleMenu.S.Activate();
 				break;
+			case "Shack_interior":
+				// Set Freeze Camera Position
+				CamManager.S.camMode = eCamMode.freezeCam;
+				break;
 			case "Battle":
 				// Activate battle UI and gameobjects
 				Battle.S.UI.battleMenu.SetActive(true);
