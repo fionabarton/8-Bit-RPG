@@ -41,6 +41,9 @@ public class Player : MonoBehaviour {
 
 	public bool			hasRunningShoes = true;
 
+	// Indicates which game objects (specifically bounds) should be active depending on the player's ground level
+	public bool			isOnLowerLevel = false;
+
 	private static Player _S;
 	public static Player S { get { return _S; } set { _S = value; } }
 
