@@ -17,6 +17,8 @@ public class ChestTrigger : ActivateOnButtonPress {
 	public Sprite			openChest, closedChest;
 	public SpriteRenderer	sRend;
 
+	public string			alreadyLootedMessage = "You've already looted this chest.\nIt's empty, you greedy pig.";
+
 	[Header("Set Dynamically")]
 	public bool				chestIsOpen;
 
@@ -31,7 +33,7 @@ public class ChestTrigger : ActivateOnButtonPress {
 			StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 		} else {
 			// Display Dialogue
-			DialogueManager.S.DisplayText("You've already looted this chest.\nIt's empty, you greedy pig.");
+			DialogueManager.S.DisplayText(alreadyLootedMessage);
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
