@@ -93,13 +93,16 @@ public class GameManager : MonoBehaviour {
 			!ExitGameMenu.S.gameObject.activeInHierarchy) {
 			if (!IsBattling()) {
 				if (currentScene != "Title_Screen") {
-					if (!PauseMenu.S.gameObject.activeInHierarchy) {
-						if (Input.GetButtonDown("Pause")) {
-							PauseMenu.S.Pause();
-						}
-					} else {
-						if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
-							PauseMenu.S.UnPause(true);
+					if(!DialogueManager.S.TextBoxSpriteGO.activeInHierarchy &&
+						!KeyboardInputMenu.S.gameObject.activeInHierarchy) {
+						if (!PauseMenu.S.gameObject.activeInHierarchy) {
+							if (Input.GetButtonDown("Pause")) {
+								PauseMenu.S.Pause();
+							}
+						} else {
+							if (Input.GetButtonDown("Pause") || Input.GetButtonDown("SNES Y Button")) {
+								PauseMenu.S.UnPause(true);
+							}
 						}
 					}
 				}
@@ -182,6 +185,9 @@ public class GameManager : MonoBehaviour {
 			case "Title_Screen":
 				AudioManager.S.PlaySong(eSongName.soap);
 				break;
+			case "Overworld_1":
+				AudioManager.S.PlaySong(eSongName.things);
+				break;
 			case "Playground":
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
@@ -192,7 +198,7 @@ public class GameManager : MonoBehaviour {
 				AudioManager.S.PlaySong(eSongName.soap);
 				break;
 			case "Shack_interior":
-				AudioManager.S.PlaySong(eSongName.never);
+				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
 			default:
 				break;
