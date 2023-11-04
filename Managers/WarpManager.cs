@@ -31,6 +31,7 @@ public class WarpManager : MonoBehaviour {
 		locations.Add(new WarpLocation("Brown Valley", "New Scene", new Vector3(0, 0, 0), "Enemies are afoot in this region; beware, fool!", 3));
 		locations.Add(new WarpLocation("Mountain Top", "Town_1", new Vector3(0, -11, 0), "A vaguely interesting area populated by a few vaguely interesting businesses.", 1));
 		locations.Add(new WarpLocation("Purple Cave", "Area_5", new Vector3(0, 2, 0), "Get to the end of this regal cave and face the ultimate foe!\nBeware: the walls don't have colliders yet!", 1));
+		locations.Add(new WarpLocation("Your Shack", "Shack_interior", new Vector3(0, 0, 0), "A dumpy shack that you happen to live in. Nice!", 1));
 	}
 
 	// Record that the player has visited this location
@@ -173,11 +174,11 @@ public class WarpManager : MonoBehaviour {
 
 		if (!warpToNewScene) {
 			// Set PlayerPos to destinationPos
-			Player.S.gameObject.transform.position = destinationPos;
 			Player.S.followers.followersGO[0].transform.position = destinationPos;
 			Player.S.followers.followersGO[1].transform.position = destinationPos;
 		} else {
 			// Set PlayerRespawnPos to destinationPos
+			Player.S.gameObject.transform.position = destinationPos;
 			Player.S.respawnPos = destinationPos;
 			Player.S.followers.followersGO[0].transform.position = destinationPos;
 			Player.S.followers.followersGO[1].transform.position = destinationPos;
