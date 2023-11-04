@@ -35,11 +35,14 @@ public class DoorManager : MonoBehaviour {
 						if (tDoor.ndx == i) {
 							if (isUnlocked [i]) {
 								// Switch eDoorMode
-								tDoor.doorMode = eDoorMode.closed;
+								tDoor.doorMode = eDoorMode.open;
 								// Change Sprite
-								tDoor.sRend.sprite = tDoor.closedDoorSprite;
-								// Disable Collider
+								tDoor.sRend.sprite = tDoor.openDoorSprite;
+								// Disable colliders
 								tDoor.solidColl.enabled = false;
+								tDoor.triggerColl.enabled = false;
+								// Deactivate trigger
+								tDoor.triggerHasBeenDeactivated = true;
 							} 
 						}
 					}
