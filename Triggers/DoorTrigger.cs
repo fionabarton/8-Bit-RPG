@@ -43,10 +43,21 @@ public class DoorTrigger : ActivateOnButtonPress {
 
 	void UnlockDoor(){
 		// Switch eDoorMode
-		doorMode = eDoorMode.closed;
+		doorMode = eDoorMode.open;
 
 		// Change Sprite
-		sRend.sprite = closedDoorSprite;
+		sRend.sprite = openDoorSprite;
+
+		// Get and position Poof game object
+		GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+		ObjectPool.S.PosAndEnableObj(poof, gameObject);
+
+		// Disable colliders
+		solidColl.enabled = false;
+		triggerColl.enabled = false;
+
+		// Deactivate trigger
+		triggerHasBeenDeactivated = true;
 
 		// Remove Item from Inventory
 		Inventory.S.RemoveItemFromInventory (Items.S.GetItem(eItem.smallKey));
@@ -64,7 +75,11 @@ public class DoorTrigger : ActivateOnButtonPress {
 		
 		// Change sprite
 		sRend.sprite = openDoorSprite;
-		
+
+		// Get and position Poof game object
+		GameObject poof = ObjectPool.S.GetPooledObject("Poof");
+		ObjectPool.S.PosAndEnableObj(poof, gameObject);
+
 		// Disable colliders
 		solidColl.enabled = false;
 		triggerColl.enabled = false;
