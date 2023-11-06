@@ -21,7 +21,7 @@ public class WarpTrigger : MonoBehaviour {
     // Warp on contact
     void OnTriggerEnter2D(Collider2D coll) {
         if (warpOnContact) {
-            if (coll.gameObject.CompareTag("Player")) {
+            if (coll.gameObject.CompareTag("Player MAIN")) {
                 StartCoroutine(WarpManager.S.Warp(playerWarpPos, warpToNewScene, sceneName, camFollows, camWarpPos));
             }
         }
@@ -35,7 +35,7 @@ public class WarpTrigger : MonoBehaviour {
 
     // Warp on Button Press
     void OnTriggerStay2D(Collider2D coll) {
-        if (coll.gameObject.CompareTag("Player")) {
+        if (coll.gameObject.CompareTag("Player MAIN")) {
             //Blob.S.rigid.sleepMode = RigidbodySleepMode2D.NeverSleep;
 
             if (Input.GetButtonDown("SNES B Button")) {

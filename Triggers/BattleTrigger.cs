@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//
 public class BattleTrigger : ActivateOnCollision {
     [Header("Set in Inspector")]
     public bool canEncounter = false;
@@ -25,6 +26,8 @@ public class BattleTrigger : ActivateOnCollision {
     protected override void OnTriggerExit2D(Collider2D coll) {
         base.OnTriggerExit2D(coll);
 
-        Player.S.canEncounter = false;
+        if (coll.gameObject.CompareTag("Player MAIN")) {
+            Player.S.canEncounter = false;
+        }
     }
 }
