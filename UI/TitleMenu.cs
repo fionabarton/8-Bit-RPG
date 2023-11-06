@@ -129,7 +129,7 @@ public class TitleMenu : MonoBehaviour {
     void ActivateNameInput() {
         Deactivate();
 
-        KeyboardInputMenu.S.Activate(2);
+        KeyboardInputMenu.S.Activate();
 
         // Open Curtains
         //Curtain.S.Open();
