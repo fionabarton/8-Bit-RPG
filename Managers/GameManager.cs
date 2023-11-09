@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour {
 		// Ensures InteractableCursor is child object of camera, otherwise it can be destroyed on scene change
 		InteractableCursor.S.Deactivate();
 
-		//canInput = false;
+		Player.S.canMove = false;
 
 		// Disable player collider
 		Player.S.coll.enabled = false;
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour {
 		////////////// Music //////////////
 		switch (currentScene) {
 			case "Title_Screen":
-				AudioManager.S.PlaySong(eSongName.soap);
+				AudioManager.S.PlaySong(eSongName.zelda);
 				break;
 			case "Overworld_1":
 				AudioManager.S.PlaySong(eSongName.things);
@@ -200,7 +200,18 @@ public class GameManager : MonoBehaviour {
 			case "Shack_interior":
 				AudioManager.S.PlaySong(eSongName.nineteenForty);
 				break;
+			case "Cave_1":
+				AudioManager.S.PlaySong(eSongName.gMinor);
+				break;
 			default:
+				break;
+		}
+
+		// Set up scenes w/ unique circumstances 
+		switch (currentScene) {
+			case "Shack_interior": 
+				// Set Freeze Camera Position
+				CamManager.S.camMode = eCamMode.freezeCam;
 				break;
 		}
 
@@ -208,10 +219,6 @@ public class GameManager : MonoBehaviour {
 		switch (currentScene) {
 			case "Title_Screen":
 				TitleMenu.S.Activate();
-				break;
-			case "Shack_interior":
-				// Set Freeze Camera Position
-				CamManager.S.camMode = eCamMode.freezeCam;
 				break;
 			case "Battle":
 				// Activate battle UI and gameobjects
@@ -252,16 +259,18 @@ public class GameManager : MonoBehaviour {
 				Player.S.followers.animations.Clear();
 				Player.S.followers.facingRights.Clear();
 
-				// Reset sorting orders
-				Player.S.followers.partySRends[0].sortingOrder = 1;
-				Player.S.followers.partySRends[1].sortingOrder = 0;
-				Player.S.followers.partySRends[2].sortingOrder = 2;
+				// Reset the party's sprite renderer sorting orders
+				Player.S.followers.partySRends[0].sortingOrder = 2;
+				Player.S.followers.partySRends[1].sortingOrder = 1;
+				Player.S.followers.partySRends[2].sortingOrder = 0;
 
-				Player.S.canMove = true;
-				Player.S.alreadyTriggered = false;
+				// Reset the party's sorting group sorting orders
+				Player.S.followers.partySortingGroups[0].sortingOrder = 2;
+				Player.S.followers.partySortingGroups[1].sortingOrder = 1;
+				Player.S.followers.partySortingGroups[2].sortingOrder = 0;
 
 				// If follow all, set cam to player position
-				if(CamManager.S.camMode == eCamMode.followAll) {
+				if (CamManager.S.camMode == eCamMode.followAll) {
 					Camera.main.transform.position = Player.S.gameObject.transform.position;
 				}
 
@@ -271,7 +280,11 @@ public class GameManager : MonoBehaviour {
 		// Wait 0.05f seconds
 		yield return new WaitForSeconds(0.05f);
 
-		//canInput = true;
+		// Unfreeze player
+		if(currentScene != "Title_Screen") {
+			Player.S.canMove = true;
+			Player.S.alreadyTriggered = false;
+		}
 
 		// Enable player collider
 		Player.S.coll.enabled = true;
