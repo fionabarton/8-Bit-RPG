@@ -4,18 +4,42 @@ using UnityEngine;
 
 public class SaveTrigger : ActivateOnButtonPress {
 	protected override void Action() {
-        // Set Camera to Item gameObject
+        // Set Camera to SaveTrigger gameObject
         CamManager.S.ChangeTarget(gameObject, true);
 
-        // Get and position Poof game object
-        GameObject poof = ObjectPool.S.GetPooledObject("Poof");
-        ObjectPool.S.PosAndEnableObj(poof, gameObject);
+        // Set SubMenu Text
+        GameManager.S.gameSubMenu.SetText("Yes", "No");
+
+        DialogueManager.S.DisplayText("What up, babe?\nDo you feel like making a call to\nsave, load, or delete your game file?");
+
+        // Activate Sub Menu after Dialogue 
+        DialogueManager.S.activateSubMenu = true;
+        // Don't activate Text Box Cursor 
+        DialogueManager.S.dontActivateCursor = true;
+
+        // Set OnClick Methods
+        Utilities.S.RemoveListeners(GameManager.S.gameSubMenu.buttonCS);
+        GameManager.S.gameSubMenu.buttonCS[0].onClick.AddListener(Yes);
+        GameManager.S.gameSubMenu.buttonCS[1].onClick.AddListener(No);
+
+        // Set button navigation
+        Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[1]);
+        Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
 
         // Interactable Trigger (without this, occasionally results in console warning)
         InteractableCursor.S.Deactivate();
+    }
 
+    public void Yes() {
         SaveMenu.S.Activate();
-	}
+    }
+
+    public void No() {
+        AudioManager.S.PlaySFX(eSoundName.deny);
+
+        DialogueManager.S.ResetSettings();
+        DialogueManager.S.DisplayText("That's cool. Later, babe.");
+    }
 
     public void ThisLoop() {
         // Remove ThisLoop() from UpdateManager delegate on scene change.
@@ -23,14 +47,6 @@ public class SaveTrigger : ActivateOnButtonPress {
         // Would prefer a better solution... 
         if (!GameManager.S.canInput) {
             UpdateManager.updateDelegate -= ThisLoop;
-        }
-
-        if (SaveMenu.S.gameObject.activeInHierarchy) {
-            if (SaveMenu.S.saveScreenMode == eSaveScreenMode.pickAction) {
-                if (Input.GetButtonDown("SNES Y Button")) {
-                    ResetTrigger();
-                }
-            }
         }
     }
 
