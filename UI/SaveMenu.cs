@@ -214,6 +214,12 @@ public class SaveMenu : MonoBehaviour {
 
 				if (Input.GetButtonDown("SNES Y Button")) {
 					Deactivate(true);
+
+					// Display text
+					if(GameManager.S.currentScene != "Title_Screen") {
+						DialogueManager.S.ResetSettings();
+						DialogueManager.S.DisplayText("Thanks for the call.\nCatch ya later, babe!");
+					}
 				}
 				break;
 			case eSaveScreenMode.pickFile:
