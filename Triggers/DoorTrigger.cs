@@ -30,6 +30,9 @@ public class DoorTrigger : ActivateOnButtonPress {
 			// If Player has Key, unlock the door
 			if (Inventory.S.GetItemCount(Items.S.GetItem(eItem.smallKey)) > 0) {
 				UnlockDoor();
+
+				// Audio: Win
+				StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 			} else {
 				// Display Text
 				DialogueManager.S.DisplayText("This door is locked. Find a key, jerk!");
