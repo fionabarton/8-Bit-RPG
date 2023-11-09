@@ -366,7 +366,7 @@ public class KeyboardInputMenu : MonoBehaviour {
 		AudioManager.S.PlaySFX(eSoundName.deny);
 
 		// Audio: Soap
-		AudioManager.S.PlaySong(eSongName.soap);
+		AudioManager.S.PlaySong(eSongName.zelda);
 
 		Deactivate();
         TitleMenu.S.Activate();
