@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour {
 		yield return new WaitForSeconds(0.05f);
 
 		// Unfreeze player
-		if(currentScene != "Title_Screen") {
+		if(currentScene != "Title_Screen" && currentScene != "Battle") {
 			Player.S.canMove = true;
 			Player.S.alreadyTriggered = false;
 		}
