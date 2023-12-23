@@ -43,7 +43,7 @@ public class BattleEnd : MonoBehaviour {
 			// Animation: Enemy RUN
 			_.enemySprites[ndx].SetActive(false);
 
-			_.dialogue.DisplayText(_.enemyStats[ndx].name + " ran away!\nCOWARD! HO HO HO!");
+			_.dialogue.DisplayText(_.enemyStats[ndx].GetRunSuccessMessage());
 
 			// Subtract EXP/Gold
 			_.expToAdd -= _.enemyStats[ndx].EXP;
@@ -61,7 +61,7 @@ public class BattleEnd : MonoBehaviour {
 
 			CheckIfAllEnemiesDead();
 		} else {
-			_.dialogue.DisplayText(_.enemyStats[ndx].name + " attempts to run...\n...but the party has blocked the path!");
+			_.dialogue.DisplayText(_.enemyStats[ndx].GetRunFailureMessage());
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);

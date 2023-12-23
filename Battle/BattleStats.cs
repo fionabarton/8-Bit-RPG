@@ -89,33 +89,62 @@ public class BattleStats : MonoBehaviour {
 		int randomNdx = 0;
 		float randomValue = Random.value;
 
-		if (_.partyQty == 0) {
-			randomNdx = 0;
-		} else if (_.partyQty == 1) {
-			if (randomValue > 0.5f) {
-				for (int i = 0; i < _.playerDead.Count; i++) {
-					if (!_.playerDead[i]) {
-						randomNdx = i;
-						break;
-					}
-				}
+        if (randomValue < 0.33f) {
+			if (!_.playerDead[0]) {
+				randomNdx = 0;
 			} else {
-				for (int i = _.playerDead.Count - 1; i >= 0; i--) {
-					if (!_.playerDead[i]) {
-						randomNdx = i;
-						break;
+				if (Random.value > 0.5f) {
+					if (!_.playerDead[1]) {
+						randomNdx = 1;
+					} else if (!_.playerDead[2]) {
+						randomNdx = 2;
+					}
+				} else {
+					if (!_.playerDead[2]) {
+						randomNdx = 2;
+					} else if (!_.playerDead[1]) {
+						randomNdx = 1;
 					}
 				}
 			}
-		} else if (_.partyQty == 2) {
-			if (randomValue >= 0 && randomValue <= 0.33f) {
-				randomNdx = 0;
-			} else if (randomValue > 0.33f && randomValue <= 0.66f) {
+		} else if (randomValue >= 0.33f && randomValue < 0.66f) {
+			if (!_.playerDead[1]) {
 				randomNdx = 1;
-			} else if (randomValue > 0.66f && randomValue <= 1.0f) {
+			} else {
+				if (Random.value > 0.5f) {
+					if (!_.playerDead[0]) {
+						randomNdx = 0;
+					} else if (!_.playerDead[2]) {
+						randomNdx = 2;
+					}
+				} else {
+					if (!_.playerDead[2]) {
+						randomNdx = 2;
+					} else if (!_.playerDead[0]) {
+						randomNdx = 0;
+					}
+				}
+			}
+		} else {
+			if (!_.playerDead[2]) {
 				randomNdx = 2;
+			} else {
+				if (Random.value > 0.5f) {
+					if (!_.playerDead[0]) {
+						randomNdx = 0;
+					} else if (!_.playerDead[1]) {
+						randomNdx = 1;
+					}
+				} else {
+					if (!_.playerDead[1]) {
+						randomNdx = 1;
+					} else if (!_.playerDead[0]) {
+						randomNdx = 0;
+					}
+				}
 			}
 		}
+
 		return randomNdx;
 	}
 

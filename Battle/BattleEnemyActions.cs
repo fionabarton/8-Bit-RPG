@@ -83,7 +83,7 @@ public class BattleEnemyActions : MonoBehaviour {
 	public void Defend() {
 		StatusEffects.S.AddDefender(false, _.EnemyNdx());
 
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " defends themself until their next turn!");
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetDefendMessage());
 
 		_.NextTurn();
 	}
@@ -100,7 +100,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Audio: Deny
 		AudioManager.S.PlaySFX(eSoundName.deny);
 
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " is stunned and doesn't move!\nWhat a rube!");
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetStunnedMessage());
 		_.NextTurn();
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,7 +241,7 @@ public class BattleEnemyActions : MonoBehaviour {
 			ColorScreen.S.PlayClip("Flicker", 2);
 		} else {
 			// Not enough MP
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast Fireblast...\n...But doesn't have enough MP to do so!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackAllButNoMPMessage());
 
 			// Set mini party member animations
 			_.UI.SetPartyMemberAnim("Success");
@@ -261,9 +261,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		// ...but 10% chance if Defender WIS is more than Attacker's 
 		if (Random.value <= 0.05f || (_.enemyStats[_.EnemyNdx()].WIS > Party.S.stats[0].WIS && Random.value < 0.10f)) {
 			if (Random.value <= 0.5f) {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to cast Fireblast... but missed the party completely!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackAllMissedMessage1());
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " cast Fireblast, but the party deftly dodged out of the way!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackAllMissedMessage2());
 			}
 
 			// Set mini party member animations
@@ -332,8 +332,9 @@ public class BattleEnemyActions : MonoBehaviour {
 					deadPlayers.Add(i);
 				}
 			}
-
-			_.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!");
+			
+			//_.dialogue.DisplayText("Used Fireblast Spell!\nHit ENTIRE party for an average of " + Utilities.S.CalculateAverage(totalAttackDamage, (Party.S.partyNdx + 1)) + " HP!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackAllHitMessage(totalAttackDamage, (Party.S.partyNdx + 1)));
 
 			// Audio: Fireblast
 			AudioManager.S.PlaySFX(sfx);
@@ -357,7 +358,7 @@ public class BattleEnemyActions : MonoBehaviour {
 
 		_.enemyStats[_.EnemyNdx()].isCallingForHelp = true;
 
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " is getting ready to call for help!");
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetCallForBackupNextTurnMessage());
 		_.NextTurn();
 	}
 
@@ -370,7 +371,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		if (_.enemyAmount < 5) {
 			CallForBackupHelper(_.enemyAmount);
 		} else {
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...but no one came!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetCallForBackupFailureMessage());
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -381,7 +382,7 @@ public class BattleEnemyActions : MonoBehaviour {
 
 	public void CallForBackupHelper(int enemyNdx, eSoundName sfx = eSoundName.run) {
 		// Display Text
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " called for backup...\n...and someone came!");
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetCallForBackupSuccessMessage());
 
 		// Add to EnemyAmount 
 		_.enemyAmount += 1;
@@ -454,7 +455,7 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Audio: Buff
 		AudioManager.S.PlaySFX(sfx);
 
-		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " is getting ready to do something cool...\n...what could it be?!");
+		_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetChargeMessage());
 		_.NextTurn();
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -515,7 +516,7 @@ public class BattleEnemyActions : MonoBehaviour {
 					PlaySingleAttackAnimsAndSFX(_.targetNdx, true, false);
 
 					// Display text: item stolen
-					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " swiped a " + tItem.name + " from " + Party.S.stats[_.targetNdx].name + ".\n" + WordManager.S.GetRandomInterjection() + "!");
+					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetStealSuccessMessage(tItem.name, Party.S.stats[_.targetNdx].name));
 				} else {
 					// Set mini party member animations
 					_.UI.SetPartyMemberAnim("Success");
@@ -524,7 +525,7 @@ public class BattleEnemyActions : MonoBehaviour {
 					AudioManager.S.PlaySFX(eSoundName.deny);
 
 					// Display text: can't steal an important item
-					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal a " + tItem.name + " from " + Party.S.stats[_.targetNdx].name + "...\n...but it can't be stolen!\n" + WordManager.S.GetRandomExclamation() + "!");
+					_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetStealButImportantItemMessage(tItem.name, Party.S.stats[_.targetNdx].name));
 				}
 			} else {
 				// Set mini party member animations
@@ -534,14 +535,14 @@ public class BattleEnemyActions : MonoBehaviour {
 				AudioManager.S.PlaySFX(eSoundName.deny);
 
 				// Display text: miss
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to loot an item from " + Party.S.stats[_.targetNdx].name + "...\n...but missed the mark!\n" + WordManager.S.GetRandomExclamation() + "!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetStealFailureMessage(Party.S.stats[_.targetNdx].name));
 			}
 		} else {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 
 			// Display text: no items to steal
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to steal an item from " + Party.S.stats[_.targetNdx].name + "...\n...but they've got nothing!\n" + WordManager.S.GetRandomExclamation() + "!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetStealButTargetHasNothingMessage(Party.S.stats[_.targetNdx].name));
 		}
 
 		_.NextTurn();
