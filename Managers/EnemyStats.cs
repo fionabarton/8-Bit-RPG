@@ -53,67 +53,142 @@ public class EnemyStats : ScriptableObject {
 	public int battleID;
 
 	// Text messages describing how each action was performed
-	// Attack messages
-	public string attackHitMessage(string attackerName) {
-		string a = "";
-		return a;
-    }
-	// public string attackHitMessage =
-	// public string attackCriticalHitMessage =
-	// public string attackMissedMessage1 =
-	// public string attackMissedMessage2 =
-	// public string attackMissedNoQTEDamageMessage1 =
-	// public string attackMissedNoQTEDamageMessage2 =
+	// Attack messages ///////////////////////////////////////////////////////////////////////
+	// Attack: missed, but QTE Damage
+	public string attackMissedButQTEDamageMessage1 = "'s attack attempt nearly failed, but scraped ";
+	public string GetAttackMissedButQTEDamageMessage1(string targetName, int attackDamage) {
+		string message = name + attackMissedButQTEDamageMessage1 + targetName + " for " + attackDamage + " points!";
+		return message;
+	}
+	public string attackMissedButQTEDamageMessage2 = " nearly missed the mark, but knicked ";
+	public string GetAttackMissedButQTEDamageMessage2(string targetName, int attackDamage) {
+		string message = name + attackMissedButQTEDamageMessage2 + targetName + " for " + attackDamage + " points!";
+		return message;
+	}
+	// Attack: missed, no QTE Damage
+	public string attackMissedNoQTEDamageMessage1A = " attempted to attack ";
+	public string attackMissedNoQTEDamageMessage1B = "... but missed!";
+	public string GetAttackMissedNoQTEDamageMessage1(string targetName) {
+		string message = name + attackMissedNoQTEDamageMessage1A + targetName + attackMissedNoQTEDamageMessage1B;
+		return message;
+	}
+	public string attackMissedNoQTEDamageMessage2A = " missed the mark! ";
+	public string attackMissedNoQTEDamageMessage2B = " dodged out of the way!";
+	public string GetAttackMissedNoQTEDamageMessage2(string targetName) {
+		string message = name + attackMissedNoQTEDamageMessage2A + targetName + attackMissedNoQTEDamageMessage2B;
+		return message;
+	}
+	// Attack: critical hit
+	public string attackCriticalHitMessageA = "Critical hit!\n";
+	public string attackCriticalHitMessageB = " struck ";
+	public string GetAttackCriticalHitMessage(string targetName, int attackDamage) {
+		string message = attackCriticalHitMessageA + name + attackCriticalHitMessageB + targetName + " for " + attackDamage + " points!";
+		return message;
+	}
+	// Attack: normal hit
+	public string attackHitMessage = " struck ";
+	public string GetAttackHitMessage(string targetName, int attackDamage) {
+		string message = name + attackHitMessage + targetName + " for " + attackDamage + " points!";
+		return message;
+	}
 
-	// Defend message
+	// Defend message ///////////////////////////////////////////////////////////////////////
 	public string defendMessage = " defends themself until their next turn!";
 	public string GetDefendMessage() {
 		string message = name + defendMessage;
 		return message;
 	}
 
-	// Run messages
+	// Run messages ///////////////////////////////////////////////////////////////////////
+	// Run: success
 	public string runSuccessMessage = " ran away!\nCOWARD! HO HO HO!";
 	public string GetRunSuccessMessage() {
 		string message = name + runSuccessMessage;
 		return message;
 	}
+	// Run: failure
 	public string runFailureMessage = " attempts to run...\n...but the party has blocked the path!";
 	public string GetRunFailureMessage() {
 		string message = name + runFailureMessage;
 		return message;
 	}
 
-	// Stunned message
+	// Stunned message ///////////////////////////////////////////////////////////////////////
 	public string stunnedMessage = " is stunned and doesn't move!\nWhat a rube!";
 	public string GetStunnedMessage() {
 		string message = name + stunnedMessage;
 		return message;
 	}
 
-	// Heal messages
-	// public string healButNoMPMessage = " attempts to cast a Heal Spell...\n...But doesn't have enough MP to do so!";
-	// public string healSelfToMaxMessage = " casts a Heal Spell!\nHealed itself back to Max HP!";
-	// public string healOtherToMaxMessageA = ""; 
-	// public string healOtherToMaxMessageB = ""; 
-	// public string healSelfMessageA = ""; 
-	// public string healSelfMessageB = ""; 
-	// public string healOtherMessageA = ""; 
-	// public string healOtherMessageB = ""; 
+	// Heal messages ///////////////////////////////////////////////////////////////////////
+	// Heal: no MP
+	public string healButNoMPMessage = " attempts to cast a Heal Spell...\n...But doesn't have enough MP to do so!";
+	public string GetHealButNoMPMessage() {
+		string message = name + healButNoMPMessage;
+		return message;
+	}
+	// Heal: self to max
+	public string healSelfToMaxMessage = " casts a Heal Spell!\nHealed itself back to Max HP!";
+	public string GetHealSelfToMaxMessage() {
+		string message = name + healSelfToMaxMessage;
+		return message;
+	}
+	// Heal: other to max
+	public string healOtherToMaxMessageA = " casts a Heal Spell!\nHealed "; 
+	public string healOtherToMaxMessageB = " back to Max HP!"; 
+	public string GetHealOtherToMaxMessage(string targetName) {
+		string message = name + healOtherToMaxMessageA + targetName + healOtherToMaxMessageB;
+		return message;
+	}
+	// Heal: self 
+	public string healSelfMessageA = " casts a Heal Spell!\nHealed itself for "; 
+	public string healSelfMessageB = " HP!"; 
+	public string GetHealSelfMessage(int amountToHeal) {
+		string message = name + healSelfMessageA + amountToHeal + healSelfMessageB;
+		return message;
+	}
+	// Heal: other
+	public string healOtherMessageA = " casts a Heal Spell!\nHealed "; 
+    public string healOtherMessageB = " HP!"; 
+	public string GetHealOtherMessage(string targetName, int amountToHeal) {
+		string message = name + healOtherMessageA + targetName + " for " + amountToHeal + healOtherMessageB;
+		return message;
+	}
 
-	// Attack single messages
-	// public string attackSingleButNoMPMessage = " attempts to cast Fireball...\n...But doesn't have enough MP to do so!";
-	// public string attackSingleMissedMessage1 = " attempted to cast Fireball... but missed the party completely!";
-	// public string attackSingleMissedMessage2 = " cast Fireball, but the party deftly dodged out of the way!";
-	// public string attackSingleHitMessageA = "";
-	// public string attackSingleHitMessageB = "";
+	// Attack single messages ///////////////////////////////////////////////////////////////////////
+	// Attack single: no MP
+	public string attackSingleButNoMPMessage = " attempts to cast Fireball...\n...But doesn't have enough MP to do so!";
+	public string GetAttackSingleButNoMPMessage() {
+		string message = name + attackSingleButNoMPMessage;
+		return message;
+	}
+	// Attack single: missed
+	public string attackSingleMissedMessage1 = " attempted to cast Fireball... but missed the party completely!";
+	public string GetAttackSingleMissedMessage1() {
+		string message = name + attackSingleMissedMessage1;
+		return message;
+	}
+	public string attackSingleMissedMessage2 = " cast Fireball, but the party deftly dodged out of the way!";
+	public string GetAttackSingleMissedMessage2() {
+		string message = name + attackSingleMissedMessage2;
+		return message;
+	}
+	// Attack single: hit
+	public string attackSingleHitMessageA = "Used Fireball Spell!\nHit ";
+	public string attackSingleHitMessageB = " HP!";
+	public string GetAttackSingleHitMessage(string targetName, int attackDamage) {
+		string message = attackSingleHitMessageA + targetName + " for " + attackDamage + attackSingleHitMessageB;
+		return message;
+	}
 
-	// Attack all messages
+	// Attack all messages ///////////////////////////////////////////////////////////////////////
+	// Attack all: no MP
 	public string attackAllButNoMPMessage = " attempts to cast Fireblast...\n...But doesn't have enough MP to do so!";
 	public string GetAttackAllButNoMPMessage() {
 		string message = name + attackAllButNoMPMessage;
 		return message;
 	}
+	// Attack single: missed
 	public string attackAllMissedMessage1 = " attempted to cast Fireblast... but missed the party completely!";
 	public string GetAttackAllMissedMessage1() {
 		string message = name + attackAllMissedMessage1;
@@ -124,6 +199,7 @@ public class EnemyStats : ScriptableObject {
 		string message = name + attackAllMissedMessage2;
 		return message;
 	}
+	// Attack single: hit
 	public string attackAllHitMessageA = "Used Fireblast Spell!\nHit ENTIRE party for an average of ";
 	public string attackAllHitMessageB = " HP!";
 	public string GetAttackAllHitMessage(int a, int b) {
@@ -131,48 +207,55 @@ public class EnemyStats : ScriptableObject {
 		return message;
 	}
 
-	// Call for backup messages
+	// Call for backup messages ///////////////////////////////////////////////////////////////////////
+	// Call for backup: getting ready
 	public string callForBackupNextTurnMessage = " is getting ready to call for help!";
 	public string GetCallForBackupNextTurnMessage() {
 		string message = name + callForBackupNextTurnMessage;
 		return message;
 	}
+	// Call for backup: failure
 	public string callForBackupFailureMessage = " called for backup...\n...but no one came!";
 	public string GetCallForBackupFailureMessage() {
 		string message = name + callForBackupFailureMessage;
 		return message;
 	}
+	// Call for backup: success
 	public string callForBackupSuccessMessage = " called for backup...\n...and someone came!";
 	public string GetCallForBackupSuccessMessage() {
 		string message = name + callForBackupSuccessMessage;
 		return message;
 	}
 
-	// Charge message
+	// Charge message ///////////////////////////////////////////////////////////////////////
 	public string chargeMessage = " is getting ready to do something cool...\n...what could it be?!";
 	public string GetChargeMessage() {
 		string message = name + chargeMessage;
 		return message;
 	}
 
-	// Steal messages
+	// Steal messages ///////////////////////////////////////////////////////////////////////
+	// Steal: success
 	public string stealSuccessMessage = " swiped a ";
 	public string GetStealSuccessMessage(string itemName, string targetName) {
 		string message = name + stealSuccessMessage + itemName + " from " + targetName + ".\n" + WordManager.S.GetRandomInterjection() + "!";
 		return message;
 	}
+	// Steal: but important item
 	public string stealButImportantItemMessageA = " attempted to steal a ";
 	public string stealButImportantItemMessageB = "...\n...but it can't be stolen!\n";
 	public string GetStealButImportantItemMessage(string itemName, string targetName) {
 		string message = name + stealButImportantItemMessageA + itemName + " from " + targetName + stealButImportantItemMessageB + WordManager.S.GetRandomExclamation() + "!";
 		return message;
 	}
+	// Steal: failure
 	public string stealFailureMessageA = " attempted to loot an item from ";
 	public string stealFailureMessageB = "...\n...but missed the mark!\n";
 	public string GetStealFailureMessage(string targetName) {
 		string message = name + stealFailureMessageA + targetName + stealFailureMessageB + WordManager.S.GetRandomExclamation() + "!";
 		return message;
 	}
+	// Steal: but target has nothing
 	public string stealButTargetHasNothingMessageA = " attempted to steal an item from ";
 	public string stealButTargetHasNothingMessageB = "...\n...but they've got nothing!\n";
 	public string GetStealButTargetHasNothingMessage(string targetName) {
