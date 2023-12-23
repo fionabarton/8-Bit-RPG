@@ -13,11 +13,7 @@ public class BattleEnemyActions : MonoBehaviour {
 	// Attack ONE Party Member
 	public void Attack() {
 		// Calculate Attack Damage
-		_.stats.GetPhysicalAttackDamage(_.enemyStats[_.EnemyNdx()].LVL,
-									   _.enemyStats[_.EnemyNdx()].STR, _.enemyStats[_.EnemyNdx()].AGI,
-									   Party.S.stats[_.targetNdx].DEF, Party.S.stats[_.targetNdx].AGI,
-									   _.enemyStats[_.EnemyNdx()].name, Party.S.stats[_.targetNdx].name,
-										Party.S.stats[_.targetNdx].HP, true, _.targetNdx);
+		_.stats.GetAttackPartyMemberDamage(Party.S.stats[_.targetNdx], _.enemyStats[_.EnemyNdx()], true, _.targetNdx);
 
 		// Subtract Player Health
 		GameManager.S.SubtractPlayerHP(_.targetNdx, _.attackDamage, true);
@@ -112,7 +108,7 @@ public class BattleEnemyActions : MonoBehaviour {
 			ColorScreen.S.PlayClip("Swell", 1);
 		} else {
 			// Not enough MP
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast a Heal Spell...\n...But doesn't have enough MP to do so!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetHealButNoMPMessage());
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
@@ -138,18 +134,18 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Display Text
 		if (amountToHeal >= maxAmountToHeal) {
 			if (_.targetNdx == _.EnemyNdx()) {
-				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].name + " casts a Heal Spell!\nHealed itself back to Max HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].GetHealSelfToMaxMessage());
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[_.targetNdx].name + " back to Max HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetHealOtherToMaxMessage(_.enemyStats[_.targetNdx].name));
 			}
 
 			// Prevents Floating Score being higher than the acutal amount healed
 			amountToHeal = maxAmountToHeal;
 		} else {
 			if (_.targetNdx == _.EnemyNdx()) {
-				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].name + " casts a Heal Spell!\nHealed itself for " + amountToHeal + " HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.targetNdx].GetHealSelfMessage(amountToHeal));
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " casts a Heal Spell!\nHealed " + _.enemyStats[_.targetNdx].name + " for " + amountToHeal + " HP!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetHealOtherMessage(_.enemyStats[_.targetNdx].name, amountToHeal));
 			}
 		}
 
@@ -173,7 +169,7 @@ public class BattleEnemyActions : MonoBehaviour {
 			ColorScreen.S.PlayClip("Flicker", 3);
 		} else {
 			// Not enough MP
-			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempts to cast Fireball...\n...But doesn't have enough MP to do so!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackSingleButNoMPMessage());
 
 			// Set mini party member animations
 			_.UI.SetPartyMemberAnim("Success");
@@ -193,9 +189,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		// ...but 10% chance if Defender WIS is more than Attacker's 
 		if (Random.value <= 0.05f || (_.enemyStats[_.EnemyNdx()].WIS > Party.S.stats[0].WIS && Random.value < 0.10f)) {
 			if (Random.value <= 0.5f) {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " attempted to cast Fireball... but missed the party completely!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackSingleMissedMessage1());
 			} else {
-				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].name + " cast Fireball, but the party deftly dodged out of the way!");
+				_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackSingleMissedMessage2());
 			}
 
 			// Set mini party member animations
@@ -215,7 +211,7 @@ public class BattleEnemyActions : MonoBehaviour {
 			// Play attack animations, SFX, and spawn objects
 			PlaySingleAttackAnimsAndSFX(_.targetNdx);
 
-			_.dialogue.DisplayText("Used Fireball Spell!\nHit " + Party.S.stats[_.targetNdx].name + " for " + _.attackDamage + " HP!");
+			_.dialogue.DisplayText(_.enemyStats[_.EnemyNdx()].GetAttackSingleHitMessage(Party.S.stats[_.targetNdx].name, _.attackDamage));
 
 			// Audio: Fireblast
 			AudioManager.S.PlaySFX(sfx);

@@ -80,11 +80,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 	public void AttackEnemy(int ndx) {
 		// Calculate Attack Damage
-		_.stats.GetPhysicalAttackDamage(Party.S.stats[_.PlayerNdx()].LVL,
-								Party.S.stats[_.PlayerNdx()].STR, Party.S.stats[_.PlayerNdx()].AGI,
-								_.enemyStats[ndx].DEF, _.enemyStats[ndx].AGI,
-								Party.S.stats[_.PlayerNdx()].name, _.enemyStats[ndx].name,
-								_.enemyStats[ndx].HP, false, ndx);
+		_.stats.GetAttackEnemyDamage(Party.S.stats[_.PlayerNdx()], _.enemyStats[ndx], false, ndx);
 
 		// Subtract Enemy Health
 		GameManager.S.SubtractEnemyHP(ndx, _.attackDamage);

@@ -149,7 +149,7 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// Get basic physical attack damage
-	public void GetPhysicalAttackDamage(int attackerLVL, int attackerSTR, int attackerAGI, int defenderDEF, int defenderAGI, string attackerName, string defenderName, int defenderHP, bool targetIsPlayer, int targetNdx) {
+	public void GetAttackEnemyDamage(PartyStats partyMember, EnemyStats enemy, bool targetIsPlayer, int targetNdx) {
 		// Reset Attack Damage
 		_.attackDamage = 0;
 
@@ -158,13 +158,9 @@ public class BattleStats : MonoBehaviour {
 
 		// 5% chance to Miss/Dodge...
 		// ...AND 10% chance to Miss/Dodge if Defender AGI is more than Attacker's 
-		if (Random.value <= 0.05f || (defenderAGI > attackerAGI && Random.value < 0.10f)) {
+		if (Random.value <= 0.05f || (enemy.AGI > partyMember.AGI && Random.value < 0.10f)) {
 			// Set mini party member animations
-			if (targetIsPlayer) {
-				_.UI.SetPartyMemberAnim("Idle", "Success", targetNdx);
-			} else {
-				_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
-			}
+			_.UI.SetPartyMemberAnim("Idle", "Fail", _.PlayerNdx());
 
 			// If there's any QTE bonus damage...
 			if (_.qteBonusDamage > 0) {
@@ -172,18 +168,18 @@ public class BattleStats : MonoBehaviour {
 				_.attackDamage = _.qteBonusDamage;
 
 				// If the bonus damage doesn't kill the defender...
-				if (defenderHP > _.qteBonusDamage) {
+				if (enemy.HP > _.qteBonusDamage) {
 					if (Random.value <= 0.5f) {
-						_.dialogue.DisplayText(attackerName + "'s attack attempt nearly failed, but scraped " + defenderName + " for " + _.attackDamage + " points!");
+						_.dialogue.DisplayText(partyMember.name + "'s attack attempt nearly failed, but scraped " + enemy.name + " for " + _.attackDamage + " points!");
 					} else {
-						_.dialogue.DisplayText(attackerName + " nearly missed the mark, but knicked " + defenderName + " for " + _.attackDamage + " points!");
+						_.dialogue.DisplayText(partyMember.name + " nearly missed the mark, but knicked " + enemy.name + " for " + _.attackDamage + " points!");
 					}
 				}
 			} else {
 				if (Random.value <= 0.5f) {
-					_.dialogue.DisplayText(attackerName + " attempted to attack " + defenderName + "... but missed!");
+					_.dialogue.DisplayText(partyMember.name + " attempted to attack " + enemy.name + "... but missed!");
 				} else {
-					_.dialogue.DisplayText(attackerName + " missed the mark! " + defenderName + " dodged out of the way!");
+					_.dialogue.DisplayText(partyMember.name + " missed the mark! " + enemy.name + " dodged out of the way!");
 				}
 			}
 		} else {
@@ -191,18 +187,18 @@ public class BattleStats : MonoBehaviour {
 			// Doubles the amount of damage dice to be rolled
 			bool isCriticalHit = false;
 			if (Random.value < 0.05f) {
-				attackerLVL *= 2;
+				partyMember.LVL *= 2;
 				isCriticalHit = true;
 			}
 
 			// For each level, roll one die & add its value to attackDamage
-			for (int i = 0; i < attackerLVL; i++) {
+			for (int i = 0; i < partyMember.LVL; i++) {
 				_.attackDamage += Random.Range(1, 4);
 			}
 
 			// Apply modifiers (attacker's STR & defenders DEF)
-			_.attackDamage += attackerSTR;
-			_.attackDamage -= defenderDEF;
+			_.attackDamage += partyMember.STR;
+			_.attackDamage -= enemy.DEF;
 
 			// If no damage is done...
 			if (_.attackDamage <= 0) {
@@ -221,17 +217,93 @@ public class BattleStats : MonoBehaviour {
 			StatusEffects.S.CheckIfDefending(targetIsPlayer, targetNdx);
 
 			// Set mini party member animations
-			if (targetIsPlayer) {
-				_.UI.SetPartyMemberAnim("Idle", "Damage", targetNdx);
-			} else {
-				_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
-			}
+			_.UI.SetPartyMemberAnim("Idle", "Success", _.PlayerNdx());
 
 			// Display Text
 			if (isCriticalHit) {
-				_.dialogue.DisplayText("Critical hit!\n" + attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
+				_.dialogue.DisplayText("Critical hit!\n" + partyMember.name + " struck " + enemy.name + " for " + _.attackDamage + " points!");
 			} else {
-				_.dialogue.DisplayText(attackerName + " struck " + defenderName + " for " + _.attackDamage + " points!");
+				_.dialogue.DisplayText(partyMember.name + " struck " + enemy.name + " for " + _.attackDamage + " points!");
+			}
+		}
+	}
+
+	// Get basic physical attack damage
+	public void GetAttackPartyMemberDamage(PartyStats partyMember, EnemyStats enemy, bool targetIsPlayer, int targetNdx) {
+		// Reset Attack Damage
+		_.attackDamage = 0;
+
+		// Activate display message
+		_.UI.ActivateDisplayMessage();
+
+		// 5% chance to Miss/Dodge...
+		// ...AND 10% chance to Miss/Dodge if Defender AGI is more than Attacker's 
+		if (Random.value <= 0.05f || (partyMember.AGI > enemy.AGI && Random.value < 0.10f)) {
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Success", targetNdx);
+
+			// If there's any QTE bonus damage...
+			if (_.qteBonusDamage > 0) {
+				// Add QTE Bonus Damage
+				_.attackDamage = _.qteBonusDamage;
+
+				// If the bonus damage doesn't kill the defender...
+				if (partyMember.HP > _.qteBonusDamage) {
+					if (Random.value <= 0.5f) {
+						_.dialogue.DisplayText(enemy.GetAttackMissedButQTEDamageMessage1(partyMember.name, _.attackDamage));
+					} else {
+						_.dialogue.DisplayText(enemy.GetAttackMissedButQTEDamageMessage2(partyMember.name, _.attackDamage));
+					}
+				}
+			} else {
+				if (Random.value <= 0.5f) {
+					_.dialogue.DisplayText(enemy.GetAttackMissedNoQTEDamageMessage1(partyMember.name));
+				} else {
+					_.dialogue.DisplayText(enemy.GetAttackMissedNoQTEDamageMessage2(partyMember.name));
+				}
+			}
+		} else {
+			// 5% chance for Critical Hit
+			// Doubles the amount of damage dice to be rolled
+			bool isCriticalHit = false;
+			if (Random.value < 0.05f) {
+				enemy.LVL *= 2;
+				isCriticalHit = true;
+			}
+
+			// For each level, roll one die & add its value to attackDamage
+			for (int i = 0; i < enemy.LVL; i++) {
+				_.attackDamage += Random.Range(1, 4);
+			}
+
+			// Apply modifiers (attacker's STR & defenders DEF)
+			_.attackDamage += enemy.STR;
+			_.attackDamage -= partyMember.DEF;
+
+			// If no damage is done...
+			if (_.attackDamage <= 0) {
+				_.attackDamage = 0;
+
+				// 50% chance of increasing damage to 1 HP
+				if (Random.value > 0.5f) {
+					_.attackDamage = 1;
+				}
+			}
+
+			// Add QTE Bonus Damage
+			_.attackDamage += _.qteBonusDamage;
+
+			// If DEFENDING, cut AttackDamage in HALF
+			StatusEffects.S.CheckIfDefending(targetIsPlayer, targetNdx);
+
+			// Set mini party member animations
+			_.UI.SetPartyMemberAnim("Idle", "Damage", targetNdx);
+
+			// Display Text
+			if (isCriticalHit) {
+				_.dialogue.DisplayText(enemy.GetAttackCriticalHitMessage(partyMember.name, _.attackDamage));
+			} else {
+				_.dialogue.DisplayText(enemy.GetAttackHitMessage(partyMember.name, _.attackDamage));
 			}
 		}
 	}
