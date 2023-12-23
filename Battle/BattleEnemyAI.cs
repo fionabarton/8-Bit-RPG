@@ -127,8 +127,10 @@ public class BattleEnemyAI : MonoBehaviour {
                 }
                 break;
             default:
-                //CallRandomAction();
-                _.enemyActions.AttemptAttackAll();
+                // Set target
+                _.targetNdx = _.stats.GetRandomPlayerNdx();
+
+                CallRandomAction();
                 break;
         }
     }
