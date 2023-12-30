@@ -27,11 +27,12 @@ public class BattleStats : MonoBehaviour {
 	}
 
 	// Returns the index of the enemy with the lowest HP
-	// If all enemies at full HP, returns -1
+	// If all enemies at full HP, returns a random enemy index
 	public int GetEnemyWithLowestHP() {
 		int ndx = -1;
 		int lowestHP = 9999;
 
+		// Get the enemy with lowest HP
 		for (int i = 0; i < _.enemyStats.Count; i++) {
 			if (!_.enemyStats[i].isDead) {
 				if (_.enemyStats[i].HP < _.enemyStats[i].maxHP) {
@@ -42,6 +43,12 @@ public class BattleStats : MonoBehaviour {
 				}
 			}
 		}
+
+		// If all enemies at full HP, select one at random instead
+		if(ndx == -1) {
+			ndx = Random.Range(0, _.enemyStats.Count);
+        }
+
 		return ndx;
 	}
 
