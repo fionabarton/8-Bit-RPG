@@ -59,7 +59,7 @@ public class BattleEnd : MonoBehaviour {
 
 			RemoveEnemy(ndx);
 
-			CheckIfAllEnemiesDead();
+			CheckIfAllEnemiesDead(true);
 		} else {
 			_.dialogue.DisplayText(_.enemyStats[ndx].GetRunFailureMessage());
 
@@ -108,7 +108,7 @@ public class BattleEnd : MonoBehaviour {
 		CheckIfAllEnemiesDead();
 	}
 
-	public void CheckIfAllEnemiesDead() {
+	public void CheckIfAllEnemiesDead(bool enemyRanAway = false) {
 		// Add Exp & Gold or Next Turn
 		if (_.enemyAmount <= 0) {
 			// Remove temporary status effects 
@@ -130,8 +130,11 @@ public class BattleEnd : MonoBehaviour {
 				_.mode = eBattleMode.addExpAndGoldNoDrops;
 			}
 		} else {
-			//  Remove dead combatant index
-			_.deadCombatantNdxs.RemoveAt(0);
+			// If the enemy ran away this turn...
+            if (!enemyRanAway) {
+				//  ...remove dead combatant index
+				_.deadCombatantNdxs.RemoveAt(0);
+			}
 
 			// If no more dead combatants to announce, go to next turn
 			if (_.deadCombatantNdxs.Count <= 0) {
