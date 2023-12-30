@@ -57,7 +57,7 @@ public class BattleEnemyAI : MonoBehaviour {
                         // If enemy knows heal...
                         if (KnowsAction(eAction.heal) && enemyMP >= 3) {
                             // Set target
-                            _.targetNdx = _.stats.GetEnemyWithLowestHP();
+                            //_.targetNdx = _.stats.GetEnemyWithLowestHP();
 
                             // Heal or defend
                             ChanceToCallAction(eAction.heal, eAction.defend);
@@ -82,7 +82,6 @@ public class BattleEnemyAI : MonoBehaviour {
                         // Attack single or attack
                         ChanceToCallAction(eAction.attackSingle, eAction.attack);
                     } else {
-
                         // Attack 
                         ChanceToCallAction(eAction.attack);
                     }

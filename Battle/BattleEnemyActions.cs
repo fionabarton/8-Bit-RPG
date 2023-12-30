@@ -122,6 +122,9 @@ public class BattleEnemyActions : MonoBehaviour {
 		// Subtract Spell cost from Enemy's MP
 		_.enemyStats[_.EnemyNdx()].MP -= mpCost;
 
+		// Set target
+		_.targetNdx = _.stats.GetEnemyWithLowestHP();
+
 		// Get amount and max amount to heal
 		int amountToHeal = Random.Range(minVal, maxVal);
 		int maxAmountToHeal = _.enemyStats[_.targetNdx].maxHP - _.enemyStats[_.targetNdx].HP;
