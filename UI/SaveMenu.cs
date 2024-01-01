@@ -476,23 +476,26 @@ public class SaveMenu : MonoBehaviour {
 		if (PlayerPrefs.HasKey(fileNdx + "Player1Exp")) { Party.S.stats[0].EXP = PlayerPrefs.GetInt(fileNdx + "Player1Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player2Exp")) { Party.S.stats[1].EXP = PlayerPrefs.GetInt(fileNdx + "Player2Exp"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Player3Exp")) { Party.S.stats[2].EXP = PlayerPrefs.GetInt(fileNdx + "Player3Exp"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1IsPoisoned")) { StatusEffects.S.playerIsPoisoned[0] = Convert.ToBoolean(PlayerPrefs.GetInt(fileNdx + "Player1IsPoisoned")); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2IsPoisoned")) { StatusEffects.S.playerIsPoisoned[1] = Convert.ToBoolean(PlayerPrefs.GetInt(fileNdx + "Player2IsPoisoned")); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3IsPoisoned")) { StatusEffects.S.playerIsPoisoned[2] = Convert.ToBoolean(PlayerPrefs.GetInt(fileNdx + "Player3IsPoisoned")); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1Name")) { Party.S.stats[0].name = PlayerPrefs.GetString(fileNdx + "Player1Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2Name")) { Party.S.stats[1].name = PlayerPrefs.GetString(fileNdx + "Player2Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3Name")) { Party.S.stats[2].name = PlayerPrefs.GetString(fileNdx + "Player3Name"); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player1Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player1Gear"), 0); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player2Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player2Gear"), 1); }
+		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
 		if (PlayerPrefs.HasKey(fileNdx + "Gold")) { Party.S.gold = PlayerPrefs.GetInt(fileNdx + "Gold"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Steps")) { Player.S.stepCount = PlayerPrefs.GetInt(fileNdx + "Steps"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Time")) { PauseMenu.S.fileStatsNumText.text = PlayerPrefs.GetString(fileNdx + "Time"); } // Stores Time in 0:00 format
 		if (PlayerPrefs.HasKey(fileNdx + "Seconds")) { PauseMenu.S.seconds = PlayerPrefs.GetInt(fileNdx + "Seconds"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Minutes")) { PauseMenu.S.minutes = PlayerPrefs.GetInt(fileNdx + "Minutes"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player1Name")) { Party.S.stats[0].name = PlayerPrefs.GetString(fileNdx + "Player1Name"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player2Name")) { Party.S.stats[1].name = PlayerPrefs.GetString(fileNdx + "Player2Name"); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player3Name")) { Party.S.stats[2].name = PlayerPrefs.GetString(fileNdx + "Player3Name"); }
 		if (PlayerPrefs.HasKey(fileNdx + "LocationNdx")) { WarpManager.S.locationNdx = PlayerPrefs.GetInt(fileNdx + "LocationNdx"); }
 		if (PlayerPrefs.HasKey(fileNdx + "LocationName")) { WarpManager.S.locationName = PlayerPrefs.GetString(fileNdx + "LocationName"); }
 		if (PlayerPrefs.HasKey(fileNdx + "VisitedLocations")) { WarpManager.S.visitedLocationNdxs = PlayerPrefs.GetString(fileNdx + "VisitedLocations"); }
 		if (PlayerPrefs.HasKey(fileNdx + "Inventory")) { Inventory.S.GetInventoryFromString(PlayerPrefs.GetString(fileNdx + "Inventory")); }
 		if (PlayerPrefs.HasKey(fileNdx + "UnlockedDoors")) { DoorManager.S.UnlockDoorsFromString(PlayerPrefs.GetString(fileNdx + "UnlockedDoors")); }
 		if (PlayerPrefs.HasKey(fileNdx + "OpenChests")) { ChestManager.S.OpenChestsFromString(PlayerPrefs.GetString(fileNdx + "OpenChests")); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player1Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player1Gear"), 0); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player2Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player2Gear"), 1); }
-		if (PlayerPrefs.HasKey(fileNdx + "Player3Gear")) { EquipMenu.S.GetEquippedGearString(PlayerPrefs.GetString(fileNdx + "Player3Gear"), 2); }
 		if (PlayerPrefs.HasKey(fileNdx + "QuestsCompleted")) { QuestManager.S.GetIsCompletedFromString(PlayerPrefs.GetString(fileNdx + "QuestsCompleted")); }
 		if (PlayerPrefs.HasKey(fileNdx + "KeyItemsDeactivated")) { KeyItemManager.S.DeactivateItemsFromString(PlayerPrefs.GetString(fileNdx + "KeyItemsDeactivated")); }
 		if (PlayerPrefs.HasKey(fileNdx + "PartyNdx")) { Party.S.partyNdx = PlayerPrefs.GetInt(fileNdx + "PartyNdx"); }
@@ -568,23 +571,26 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetInt(fileNdx + "Player1MP", Party.S.stats[0].MP);
 		PlayerPrefs.SetInt(fileNdx + "Player2MP", Party.S.stats[1].MP);
 		PlayerPrefs.SetInt(fileNdx + "Player3MP", Party.S.stats[2].MP);
+		PlayerPrefs.SetInt(fileNdx + "Player1IsPoisoned", Convert.ToInt32(StatusEffects.S.playerIsPoisoned[0]));
+		PlayerPrefs.SetInt(fileNdx + "Player2IsPoisoned", Convert.ToInt32(StatusEffects.S.playerIsPoisoned[1]));
+		PlayerPrefs.SetInt(fileNdx + "Player3IsPoisoned", Convert.ToInt32(StatusEffects.S.playerIsPoisoned[2]));
+		PlayerPrefs.SetString(fileNdx + "Player1Name", Party.S.stats[0].name);
+		PlayerPrefs.SetString(fileNdx + "Player2Name", Party.S.stats[1].name);
+		PlayerPrefs.SetString(fileNdx + "Player3Name", Party.S.stats[2].name);
+		PlayerPrefs.SetString(fileNdx + "Player1Gear", EquipMenu.S.GetEquippedGearString(0));
+		PlayerPrefs.SetString(fileNdx + "Player2Gear", EquipMenu.S.GetEquippedGearString(1));
+		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
 		PlayerPrefs.SetInt(fileNdx + "Gold", Party.S.gold);
 		PlayerPrefs.SetInt(fileNdx + "Steps", Player.S.stepCount);
 		PlayerPrefs.SetString(fileNdx + "Time", PauseMenu.S.GetTime()); // Stores Time in 0:00 format
 		PlayerPrefs.SetInt(fileNdx + "Seconds", PauseMenu.S.seconds);
-		PlayerPrefs.SetInt(fileNdx + "Minutes", PauseMenu.S.minutes);
-		PlayerPrefs.SetString(fileNdx + "Player1Name", Party.S.stats[0].name);
-		PlayerPrefs.SetString(fileNdx + "Player2Name", Party.S.stats[1].name);
-		PlayerPrefs.SetString(fileNdx + "Player3Name", Party.S.stats[2].name);
+		PlayerPrefs.SetInt(fileNdx + "Minutes", PauseMenu.S.minutes);		
 		PlayerPrefs.SetInt(fileNdx + "LocationNdx", WarpManager.S.locationNdx);
 		PlayerPrefs.SetString(fileNdx + "LocationName", WarpManager.S.locationName);
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", WarpManager.S.visitedLocationNdxs);
 		PlayerPrefs.SetString(fileNdx + "Inventory", Inventory.S.GetInventoryString());
 		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", DoorManager.S.GetIsUnlockedString());
 		PlayerPrefs.SetString(fileNdx + "OpenChests", ChestManager.S.GetIsOpenString());
-		PlayerPrefs.SetString(fileNdx + "Player1Gear", EquipMenu.S.GetEquippedGearString(0));
-		PlayerPrefs.SetString(fileNdx + "Player2Gear", EquipMenu.S.GetEquippedGearString(1));
-		PlayerPrefs.SetString(fileNdx + "Player3Gear", EquipMenu.S.GetEquippedGearString(2));
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", QuestManager.S.GetIsCompletedString());
 		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", KeyItemManager.S.GetIsDeactivatedString());
 		PlayerPrefs.SetInt(fileNdx + "PartyNdx", Party.S.partyNdx);
@@ -607,23 +613,26 @@ public class SaveMenu : MonoBehaviour {
 		PlayerPrefs.SetInt(fileNdx + "Player1MP", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player2MP", 0);
 		PlayerPrefs.SetInt(fileNdx + "Player3MP", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player1IsPoisoned", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player2IsPoisoned", 0);
+		PlayerPrefs.SetInt(fileNdx + "Player3IsPoisoned", 0);
+		PlayerPrefs.SetString(fileNdx + "Player1Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player2Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player3Name", "");
+		PlayerPrefs.SetString(fileNdx + "Player1Gear", "");
+		PlayerPrefs.SetString(fileNdx + "Player2Gear", "");
+		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
 		PlayerPrefs.SetInt(fileNdx + "Gold", 0);
 		PlayerPrefs.SetInt(fileNdx + "Steps", 0);
 		PlayerPrefs.SetString(fileNdx + "Time", "0:00"); // Stores Time in 0:00 format
 		PlayerPrefs.SetInt(fileNdx + "Seconds", 0);
 		PlayerPrefs.SetInt(fileNdx + "Minutes", 0);
-		PlayerPrefs.SetString(fileNdx + "Player1Name", "");
-		PlayerPrefs.SetString(fileNdx + "Player2Name", "");
-		PlayerPrefs.SetString(fileNdx + "Player3Name", "");
 		PlayerPrefs.SetInt(fileNdx + "LocationNdx", 0);
 		PlayerPrefs.SetString(fileNdx + "LocationName", "");
 		PlayerPrefs.SetString(fileNdx + "VisitedLocations", "");
 		PlayerPrefs.SetString(fileNdx + "Inventory", "");
 		PlayerPrefs.SetString(fileNdx + "UnlockedDoors", "");
 		PlayerPrefs.SetString(fileNdx + "OpenChests", "");
-		PlayerPrefs.SetString(fileNdx + "Player1Gear", "");
-		PlayerPrefs.SetString(fileNdx + "Player2Gear", "");
-		PlayerPrefs.SetString(fileNdx + "Player3Gear", "");
 		PlayerPrefs.SetString(fileNdx + "QuestsCompleted", "");
 		PlayerPrefs.SetString(fileNdx + "KeyItemsDeactivated", "");
 		PlayerPrefs.SetInt(fileNdx + "PartyNdx", 0);
