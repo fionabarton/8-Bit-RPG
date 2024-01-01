@@ -20,14 +20,14 @@ public class StatusEffects : MonoBehaviour {
 	public List<GameObject> playerSleepingIcons;
 	public List<GameObject> enemySleepingIcons;
 
-	// PlayerButtons Poisoned Icons (Overworld)
-	public List<GameObject> playerButtonsPoisonedIcons;
+	// Overworld Poisoned Icons 
+	public List<GameObject> overworldPoisonedIcons;
 
-	// PauseScreen Poisoned Icons (Overworld)
+	// Pause Screen Poisoned Icons (Overworld)
 	public List<GameObject> pauseScreenPoisonedIcons;
 
-	// Player GameObject Poisoned Icon (Overworld)
-	public GameObject playerPoisonedIcon;
+	// Player Flicker (in overworld, each party member's sprite flickers when they take damage from being poisoned)
+	public List<Flicker> playerFlickers;
 
 	[Header("Set Dynamically")]
 	// Defending party members & enemies
@@ -500,18 +500,20 @@ public class StatusEffects : MonoBehaviour {
 
 	// If a party member is poisoned, enable their overworld poisoned icon
 	public void SetOverworldPoisonIcons() {
-		playerPoisonedIcon.SetActive(false);
+		// Deactivate ALL poisoned icons
+		Utilities.S.SetActiveList(overworldPoisonedIcons, false);
+		Utilities.S.SetActiveList(pauseScreenPoisonedIcons, false);
+
 		for (int i = 0; i <= Party.S.partyNdx; i++) {
 			// If poisoned...
 			if (CheckIfPoisoned(true, i)) {
 				// ...activate poisoned icons
-				//playerButtonsPoisonedIcons[i].SetActive(true);
-				//pauseScreenPoisonedIcons[i].SetActive(true);
-				playerPoisonedIcon.SetActive(true);
+				overworldPoisonedIcons[i].SetActive(true);
+				pauseScreenPoisonedIcons[i].SetActive(true);
 			} else {
 				// ...deactivate poisoned icons
-				//playerButtonsPoisonedIcons[i].SetActive(false);
-				//pauseScreenPoisonedIcons[i].SetActive(false);
+				overworldPoisonedIcons[i].SetActive(false);
+				pauseScreenPoisonedIcons[i].SetActive(false);
 			}
 		}
 	}
