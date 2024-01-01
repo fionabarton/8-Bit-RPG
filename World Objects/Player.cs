@@ -254,7 +254,7 @@ public class Player : MonoBehaviour {
 						StatusEffects.S.playerFlickers[i].StartInvincibility(0.5f, 0.1f, false);
 
 						// Display Floating Score
-						GameManager.S.InstantiateFloatingScore(StatusEffects.S.overworldPoisonedIcons[i], "-1", Color.red);
+						GameManager.S.InstantiateFloatingScore(StatusEffects.S.overworldPoisonedIcons[i], "-1", Color.red, 0, true);
 					}
 				}
 			}
