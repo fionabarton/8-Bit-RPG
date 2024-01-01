@@ -195,9 +195,9 @@ public class BattleEnemyAI : MonoBehaviour {
             case 7: _.enemyActions.CallForBackupNextTurn(); break;
             case 8: _.enemyActions.AttemptAttackSingle(); break;
             case 9: _.enemyActions.Charge(); break;
-            //case 10: _.enemyActions.Poison(); break;
-            //case 11: _.enemyActions.Paralyze(); break;
-            //case 12: _.enemyActions.Sleep(); break;
+            case 10: _.enemyActions.Poison(); break;
+            case 11: _.enemyActions.Paralyze(); break;
+            case 12: _.enemyActions.Sleep(); break;
             case 13: _.enemyActions.AttemptSteal(); break;
             default: _.enemyActions.Attack(); break;
         }
