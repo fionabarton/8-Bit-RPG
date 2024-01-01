@@ -419,9 +419,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ************************ \\
-	public void InstantiateFloatingScore(GameObject gameObject, string message, Color color, float yPosOffset = 0) {
+	public void InstantiateFloatingScore(GameObject gameObject, string message, Color color, float yPosOffset = 0, bool isRenderedBelowUI = false) {
 		// Get and position Floating Score game object
-		GameObject floatingScore = ObjectPool.S.GetPooledObject("FloatingScore");
+		GameObject floatingScore;
+		if (!isRenderedBelowUI) {
+			floatingScore = ObjectPool.S.GetPooledObject("FloatingScore");
+		} else {
+			floatingScore = ObjectPool.S.GetPooledObject("FloatingScore(BelowUI)");
+		}
 		ObjectPool.S.PosAndEnableObj(floatingScore, gameObject);
 
 		// Set floating score y-pos
