@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// If a party member is poisoned, have their sprite "flicker" with each step.
 public class Flicker : MonoBehaviour {
+	[Header("Set in Inspector")]
+	public SpriteRenderer sRend;
+
 	[Header("Set Dynamically")]
 	public bool isInvincible; // enables StartBattle() in RPGEnemy.cs upon collision w/ Enemies
 	public bool isFlashing;
@@ -18,7 +22,7 @@ public class Flicker : MonoBehaviour {
 				} else {
 					if (Time.time >= timeToFlash) {
 						// "Flash" the sprite by enabling its SpriteRenderer
-						Player.S.sRend.enabled = !Player.S.sRend.enabled;
+						sRend.enabled = !sRend.enabled;
 
 						// Increase the rate at which the sprite will flash
 						flashRate -= 0.01f;
@@ -58,12 +62,7 @@ public class Flicker : MonoBehaviour {
 		isFlashing = false;
 
 		// Enable SpriteRenderer
-		Player.S.sRend.enabled = true;
-
-		// Disable then enable the player’s box collider to call OnCollisionEnter2D
-		// on an Enemy script if it has already collided with an enemy
-		//Player.S.boxColl.enabled = false;
-		//Player.S.boxColl.enabled = true;
+		sRend.enabled = true;
 
 		// Remove FixedLoop() from UpdateManager
 		UpdateManager.fixedUpdateDelegate -= FixedLoop;

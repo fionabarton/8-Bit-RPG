@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
 	const float			walkSpeed = 3f;
 	const float			runSpeed = 6f;
 	private float		speed = walkSpeed;
-	private bool		facingRight = true;
+	public bool			facingRight = true;
 	private static bool exists;
 	public bool			canMove = true;
 	public float		destination;
@@ -251,10 +251,10 @@ public class Player : MonoBehaviour {
 						AudioManager.S.PlayRandomDamageSFX();
 
 						// Start flickering
-						flicker.StartInvincibility(0.5f, 0.1f, false);
+						StatusEffects.S.playerFlickers[i].StartInvincibility(0.5f, 0.1f, false);
 
 						// Display Floating Score
-						GameManager.S.InstantiateFloatingScore(gameObject, "-1", Color.red);
+						GameManager.S.InstantiateFloatingScore(StatusEffects.S.overworldPoisonedIcons[i], "-1", Color.red);
 					}
 				}
 			}
