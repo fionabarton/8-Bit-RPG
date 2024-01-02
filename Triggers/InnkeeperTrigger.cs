@@ -66,13 +66,18 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 				// Subtract item cost from Player's Gold
 				Party.S.gold -= cost;
 
-				// Max HP/MP
+				// Set HP/MP to max
 				Party.S.stats[0].HP = Party.S.stats[0].maxHP;
 				Party.S.stats[0].MP = Party.S.stats[0].maxMP;
 				Party.S.stats[1].HP = Party.S.stats[1].maxHP;
 				Party.S.stats[1].MP = Party.S.stats[1].maxMP;
 				Party.S.stats[2].HP = Party.S.stats[2].maxHP;
 				Party.S.stats[2].MP = Party.S.stats[2].maxMP;
+
+				// Cure poison
+				StatusEffects.S.playerIsPoisoned[0] = false;
+				StatusEffects.S.playerIsPoisoned[1] = false;
+				StatusEffects.S.playerIsPoisoned[2] = false;
 
 				StartCoroutine("CloseCurtains");
 			} else {
@@ -92,7 +97,12 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 		// Audio: Win
 		StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 
+		// Wait for 1.5 seconds
 		yield return new WaitForSeconds(1.5f);
+
+		// Deactivate poisoned icons
+		StatusEffects.S.SetOverworldPoisonIcons();
+
 		StartCoroutine("OpenCurtains");
 	}
 	// 2) Open curtains
