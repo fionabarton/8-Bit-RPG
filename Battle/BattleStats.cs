@@ -193,13 +193,14 @@ public class BattleStats : MonoBehaviour {
 			// 5% chance for Critical Hit
 			// Doubles the amount of damage dice to be rolled
 			bool isCriticalHit = false;
+			int critBonusDamageRolls = 0;
 			if (Random.value < 0.05f) {
-				partyMember.LVL *= 2;
 				isCriticalHit = true;
+				critBonusDamageRolls = partyMember.LVL;
 			}
 
 			// For each level, roll one die & add its value to attackDamage
-			for (int i = 0; i < partyMember.LVL; i++) {
+			for (int i = 0; i < (partyMember.LVL + critBonusDamageRolls); i++) {
 				_.attackDamage += Random.Range(1, 4);
 			}
 
@@ -273,13 +274,14 @@ public class BattleStats : MonoBehaviour {
 			// 5% chance for Critical Hit
 			// Doubles the amount of damage dice to be rolled
 			bool isCriticalHit = false;
+			int critBonusDamageRolls = 0;
 			if (Random.value < 0.05f) {
-				enemy.LVL *= 2;
 				isCriticalHit = true;
+				critBonusDamageRolls = enemy.LVL;
 			}
 
 			// For each level, roll one die & add its value to attackDamage
-			for (int i = 0; i < enemy.LVL; i++) {
+			for (int i = 0; i < (enemy.LVL + critBonusDamageRolls); i++) {
 				_.attackDamage += Random.Range(1, 4);
 			}
 
