@@ -188,7 +188,12 @@ public class StatusEffects : MonoBehaviour {
 
             // Deactivate status ailment icon
             enemyPoisonedIcons[ndx].SetActive(false);
-        }
+
+			// Display text
+			if (displayText) {
+				_.dialogue.DisplayText(_.enemyStats[ndx].name + " is no longer poisoned!");
+			}
+		}
 
 		// Audio: Buff 2
 		AudioManager.S.PlaySFX(eSoundName.buff2);
@@ -317,7 +322,12 @@ public class StatusEffects : MonoBehaviour {
 
             // Deactivate status ailment icon
             enemyParalyzedIcons[ndx].SetActive(false);
-        }
+
+			// Display text
+			if (displayText) {
+				_.dialogue.DisplayText(_.enemyStats[ndx].name + " is no longer paralyzed!");
+			}
+		}
 
 		// Audio: Buff 2
 		AudioManager.S.PlaySFX(eSoundName.buff2);
@@ -425,7 +435,12 @@ public class StatusEffects : MonoBehaviour {
 
             // Deactivate status ailment icon
             enemySleepingIcons[ndx].SetActive(false);
-        }
+
+			// Display text
+			if (displayText) {
+				_.dialogue.DisplayText(_.enemyStats[ndx].name + " is no longer asleep!");
+			}
+		}
 
 		// Audio: Buff 2
 		AudioManager.S.PlaySFX(eSoundName.buff2);
