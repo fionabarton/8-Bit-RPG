@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Applies parallax scrolling (background image moves past the cam more slowly than foreground images) to this game object
+// Applies parallax scrolling (background image moves past the cam more slowly than foreground images) to this game object.
 public class Parallax : MonoBehaviour {
 	[Header("Set in Inspector")]
 	public eParallax	mode;

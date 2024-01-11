@@ -8,6 +8,8 @@ public class QuestReaction : MonoBehaviour {
 	// Actions to perform
 	public eQuestAction questIsCompletedAction;
 
+	// List of actions to perform
+	
 	// Deactivate GameObject if associated Quest has been Completed
 	void OnEnable() {
 		// If associated quest has been completed...
