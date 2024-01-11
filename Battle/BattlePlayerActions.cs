@@ -70,7 +70,7 @@ public class BattlePlayerActions : MonoBehaviour {
 
 	public void ClickedAttackEnemy(int ndx) {
 		_.targetNdx = ndx;
-		_.animNdx = _.PlayerNdx();
+		_.activeCombatantAnimNdx = _.PlayerNdx();
 
 		AttackEnemy(ndx);
 

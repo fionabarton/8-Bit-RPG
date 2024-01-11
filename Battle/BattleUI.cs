@@ -429,6 +429,9 @@ public class BattleUI : MonoBehaviour {
 			// Update Health Bars
 			ProgressBars.S.enemyHealthBarsCS[i].UpdateBar(_.enemyStats[i].HP, _.enemyStats[i].maxHP);
 		}
+
+		// Update activated status ailment icons
+		StatusEffects.S.UpdateActivatedEnemyStatusIcons();
 	}
 
 	// On vertical input, scroll the spell list when the first or last slot is selected

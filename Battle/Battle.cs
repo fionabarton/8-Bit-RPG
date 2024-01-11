@@ -56,7 +56,7 @@ public class Battle : MonoBehaviour {
 	public int targetNdx;
 
 	// Stores index of player or enemy that's taking their turn
-	public int animNdx;
+	public int activeCombatantAnimNdx;
 
 	public float chanceToRun = 0.5f;
 
@@ -70,6 +70,9 @@ public class Battle : MonoBehaviour {
 
 	// Dynamic list that stores the indexes of which members/enemies died this turn
 	public List<int> deadCombatantNdxs;
+
+	// List that tracks what status ailments are afflicting the active combatant
+	public List<bool> activeCombatantHasAilments = new List<bool> { false, false, false };
 
 	public BattleInitiative initiative;
 	public BattleDialogue dialogue;
@@ -153,7 +156,7 @@ public class Battle : MonoBehaviour {
 						if (Input.GetButtonDown("SNES B Button")) {
 							PlayerTurn();
 						}
-						break;
+                        break;
 					case eBattleMode.qteInitialize:
 						qte.Loop();
 
@@ -219,13 +222,86 @@ public class Battle : MonoBehaviour {
 							}
 						}
 						break;
-					case eBattleMode.statusAilment:
+					case eBattleMode.checkIfParalyzed:
+						// If this turn is a player's turn...
+						if (PlayerNdx() != -1) {
+							if (StatusEffects.S.CheckIfParalyzed(true, PlayerNdx())) {
+                                if (Input.GetButtonDown("SNES B Button")) {
+                                    StatusEffects.S.Paralyzed(Party.S.stats[PlayerNdx()].name, true, PlayerNdx());
+								}
+							} else {
+								mode = eBattleMode.checkIfSleeping;
+							}
+						} else {
+							if (StatusEffects.S.CheckIfParalyzed(false, EnemyNdx())) {
+                                if (Input.GetButtonDown("SNES B Button")) {
+                                    StatusEffects.S.Paralyzed(enemyStats[EnemyNdx()].name, false, EnemyNdx());
+								}
+							} else {
+								mode = eBattleMode.checkIfSleeping;
+							}
+						}
+						break;
+					case eBattleMode.checkIfSleeping:
+						// If this turn is a player's turn...
+						if (PlayerNdx() != -1) {
+							if (StatusEffects.S.CheckIfSleeping(true, PlayerNdx())) {
+								if (Input.GetButtonDown("SNES B Button")) {
+									StatusEffects.S.Sleeping(Party.S.stats[PlayerNdx()].name, true, PlayerNdx());
+								}
+							} else {
+								// If paralyzed, skip turn
+								if (StatusEffects.S.CheckIfParalyzed(true, PlayerNdx())) {
+									if (Input.GetButtonDown("SNES B Button")) {
+										// Skip turn
+										NextTurn();
+
+										// If next turn is a player's turn...
+										if (PlayerNdx() != -1) {
+											PlayerTurn();
+										} else {
+											EnemyTurn();
+										}
+									}
+								} else {
+									if (Input.GetButtonDown("SNES B Button")) {
+										PlayerTurn(true, false);
+									}
+								}
+							}
+						} else {
+							if (StatusEffects.S.CheckIfSleeping(false, EnemyNdx())) {
+								if (Input.GetButtonDown("SNES B Button")) {
+									StatusEffects.S.Sleeping(enemyStats[EnemyNdx()].name, false, EnemyNdx());
+								}
+							} else {
+								// If paralyzed, skip turn
+								if (StatusEffects.S.CheckIfParalyzed(false, EnemyNdx())) {
+									if (Input.GetButtonDown("SNES B Button")) {
+										// Skip turn
+										NextTurn();
+
+										// If next turn is a player's turn...
+										if (PlayerNdx() != -1) {
+											PlayerTurn();
+										} else {
+											EnemyTurn();
+										}
+									}
+								} else {
+									if (Input.GetButtonDown("SNES B Button")) {
+										EnemyTurn(false);
+									}
+								}
+							}
+						}
+						break;
+					case eBattleMode.doneSleeping:
 						if (Input.GetButtonDown("SNES B Button")) {
 							// If this turn is a player's turn...
 							if (PlayerNdx() != -1) {
-								// If paralyzed or sleeping...
-								if (StatusEffects.S.CheckIfParalyzed(true, PlayerNdx()) ||
-									StatusEffects.S.CheckIfSleeping(true, PlayerNdx())) {
+								// If paralyzed, skip turn
+								if (StatusEffects.S.CheckIfParalyzed(true, PlayerNdx())) {
 									// Skip turn
 									NextTurn();
 
@@ -239,21 +315,36 @@ public class Battle : MonoBehaviour {
 									PlayerTurn(true, false);
 								}
 							} else {
-								// If paralyzed or sleeping...
-								if (StatusEffects.S.CheckIfParalyzed(false, EnemyNdx()) ||
-									StatusEffects.S.CheckIfSleeping(false, EnemyNdx())) {
-									// Skip turn
-									NextTurn();
+								if (StatusEffects.S.CheckIfParalyzed(false, EnemyNdx())) {
+									if (Input.GetButtonDown("SNES B Button")) {
+										// Skip turn
+										NextTurn();
 
-									// If next turn is a player's turn...
-									if (PlayerNdx() != -1) {
-										PlayerTurn();
-									} else {
-										EnemyTurn();
+										// If next turn is a player's turn...
+										if (PlayerNdx() != -1) {
+											PlayerTurn();
+										} else {
+											EnemyTurn();
+										}
 									}
 								} else {
-									EnemyTurn(false);
+									if (Input.GetButtonDown("SNES B Button")) {
+										EnemyTurn(false);
+									}
 								}
+							}
+						}
+						break;
+					case eBattleMode.isSleeping:
+						if (Input.GetButtonDown("SNES B Button")) {
+							// This combatant is sleeping, so skip their turn
+							NextTurn();
+
+							// If next turn is a player's turn...
+							if (PlayerNdx() != -1) {
+								PlayerTurn();
+							} else {
+								EnemyTurn();
 							}
 						}
 						break;
@@ -498,7 +589,15 @@ public class Battle : MonoBehaviour {
 
 		// If player has status ailment...
 		if (checkForAilment) {
-			if (HasAilment(Party.S.stats[PlayerNdx()].name, true, PlayerNdx())) {
+			// If poisoned...
+			if (StatusEffects.S.CheckIfPoisoned(true, PlayerNdx())) {
+				StatusEffects.S.Poisoned(Party.S.stats[PlayerNdx()].name, true, PlayerNdx());
+				return;
+            } else if (StatusEffects.S.CheckIfParalyzed(true, PlayerNdx())) {
+				StatusEffects.S.Paralyzed(Party.S.stats[PlayerNdx()].name, true, PlayerNdx());
+				return;
+			} else if (StatusEffects.S.CheckIfSleeping(true, PlayerNdx())) {
+				StatusEffects.S.Sleeping(Party.S.stats[PlayerNdx()].name, true, PlayerNdx());
 				return;
 			}
 		}
@@ -540,10 +639,18 @@ public class Battle : MonoBehaviour {
 
         // If enemy has status ailment...
         if (checkForAilment) {
-            if (HasAilment(enemyStats[EnemyNdx()].name, false, EnemyNdx())) {
-                return;
-            }
-        }
+			// If poisoned...
+			if (StatusEffects.S.CheckIfPoisoned(false, EnemyNdx())) {
+				StatusEffects.S.Poisoned(enemyStats[EnemyNdx()].name, false, EnemyNdx());
+				return;
+			} else if (StatusEffects.S.CheckIfParalyzed(false, EnemyNdx())) {
+				StatusEffects.S.Paralyzed(enemyStats[EnemyNdx()].name, false, EnemyNdx());
+				return;
+			} else if (StatusEffects.S.CheckIfSleeping(false, EnemyNdx())) {
+				StatusEffects.S.Sleeping(enemyStats[EnemyNdx()].name, false, EnemyNdx());
+				return;
+			}
+		}
 
         // Activate display message
         UI.ActivateDisplayMessage();
@@ -581,27 +688,6 @@ public class Battle : MonoBehaviour {
 		for (int i = 0; i < partyStatAnims.Count; i++) {
 			UI.UpdatePartyStats(i);
 		}
-	}
-
-	bool HasAilment(string name, bool isPlayer, int ndx) {
-		// If poisoned...
-		if (StatusEffects.S.CheckIfPoisoned(isPlayer, ndx)) {
-			StatusEffects.S.Poisoned(name, isPlayer, ndx);
-			return true;
-		}
-
-		// If paralyzed...
-		if (StatusEffects.S.CheckIfParalyzed(isPlayer, ndx)) {
-			StatusEffects.S.Paralyzed(name, isPlayer, ndx);
-			return true;
-		}
-
-		// If sleeping...
-		if (StatusEffects.S.CheckIfSleeping(isPlayer, ndx)) {
-			StatusEffects.S.Sleeping(name, isPlayer, ndx);
-			return true;
-		}
-		return false;
 	}
 
 	// Reset next turn move index & deactivate help bubble
