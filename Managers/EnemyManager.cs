@@ -43,15 +43,15 @@ public class EnemyManager : MonoBehaviour {
                 float randomVal = Random.value;
 
                 // Randomly select a group of enemies
-                if(randomVal >= 0.5f) {
-                    for (int i = 0; i < 5; i++) {
-                        // Explicitly select enemies from this group
-                        tEnemies.Add(enemies0[i]);
-                    }
+                //if(randomVal >= 0.5f) {
+                //    for (int i = 0; i < 5; i++) {
+                //        // Explicitly select enemies from this group
+                //        tEnemies.Add(enemies0[i]);
+                //    }
 
-                    // Explictly set enemy amount
-                    Player.S.enemyAmount = 1;
-                } else {
+                //    // Explictly set enemy amount
+                //    Player.S.enemyAmount = 1;
+                //} else {
                     for (int i = 0; i < 5; i++) {
                         // Randomly select enemies from this group
                         randomNdx = Random.Range(0, enemies2.Count);
@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour {
 
                     // Randomize enemy amount
                     Player.S.enemyAmount = 999;
-                }              
+                //}              
                 break;
         }
 

@@ -52,6 +52,12 @@ public class EnemyStats : ScriptableObject {
 	// Set dynamically when entering battle
 	public int battleID;
 
+	// Status effects
+	public bool isDefending;
+	public bool isPoisoned;
+	public int isParalyzed;
+	public int isSleeping;
+
 	// Text messages describing how each action was performed
 	// Attack messages ///////////////////////////////////////////////////////////////////////
 	// Attack: missed, but QTE Damage

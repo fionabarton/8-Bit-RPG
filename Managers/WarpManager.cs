@@ -199,9 +199,9 @@ public class WarpManager : MonoBehaviour {
 		Player.S.followers.facingRights.Clear();
 
         // Reset sorting orders
-        Player.S.followers.partySRends[0].sortingOrder = 1;
-        Player.S.followers.partySRends[1].sortingOrder = 0;
-        Player.S.followers.partySRends[2].sortingOrder = 2;
+        Player.S.followers.partySRends[0].sortingOrder = 2;
+        Player.S.followers.partySRends[1].sortingOrder = 1;
+        Player.S.followers.partySRends[2].sortingOrder = 0;
 
 		// Camera Settings
 		if (camFollows) {

@@ -182,11 +182,12 @@ public class Party : MonoBehaviour {
 	// SpellNdx (Mathf.Min used to prevent spellNdx from exceeding
 	// the amount of spells each party member is capable of learning)
 	public int GetSpellNdx(int playerNdx, int LVL) {
-		if (playerNdx == 0) {
-			return Mathf.Min((int)(0.5f * LVL), stats[playerNdx].spells.Count); // Blob: Lvl 1 = 0
-		} else {
-			return Mathf.Min((int)(1.0f * LVL + 1), stats[playerNdx].spells.Count); // Chani: Lvl 1 = 2
-		}
+		return 13;
+		//if (playerNdx == 0) {
+		//	return Mathf.Min((int)(0.5f * LVL), stats[playerNdx].spells.Count); // Blob: Lvl 1 = 0
+		//} else {
+		//	return Mathf.Min((int)(1.0f * LVL + 1), stats[playerNdx].spells.Count); // Chani: Lvl 1 = 2
+		//}
 	}
 
 	public void SetSpellNdx(int playerNdx) {
