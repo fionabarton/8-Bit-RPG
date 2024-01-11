@@ -3,6 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// x-ray/3-D glasses
+/// spud sandwich 
+/// fuzzy vest
+/// platform shoes
+/// potato gun 
+/// joy buzzer 
+/// whoopee cushion 
+/// snapping gum 
+/// diecast toy car 
+/// putty 
+/// kazoo 
+/// finger puppets
+/// finger trap
+/// pinwheel 
+/// finger trap 
+/// disappearing ink
+/// Soup Thermos
+/// Sneezing/itching/belch powder
+/// Silly string
+/// </summary>
+
 public class Items : MonoBehaviour {
     [Header("Set in Inspector")]
     // TBR: Has yet to be implemented; will be used to display image of item on ItemScreen
