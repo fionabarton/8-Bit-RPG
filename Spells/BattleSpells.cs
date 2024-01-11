@@ -745,7 +745,7 @@ public class BattleSpells : MonoBehaviour {
 
 		// Switch Mode
 		if (StatusEffects.S.HasStatusAilment(true, _.PlayerNdx())) {
-			_.mode = eBattleMode.statusAilment;
+			_.mode = eBattleMode.checkIfParalyzed;
 		} else {
 			_.mode = eBattleMode.playerTurn;
 		}
