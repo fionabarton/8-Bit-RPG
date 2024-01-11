@@ -30,18 +30,14 @@ public class StatusEffects : MonoBehaviour {
 	public List<Flicker> playerFlickers;
 
 	[Header("Set Dynamically")]
-	// Defending party members & enemies
+	// Defending party members 
 	public List<bool> playerIsDefending = new List<bool>();
-	public List<bool> enemyIsDefending = new List<bool>();
 
 	// Party members & enemies afflicted by status effects: Paralysis, Sleep, Poison
 	// If 0, then the combatant is NOT paralyzed or sleeping
 	public List<int> playerIsParalyzed = new List<int>();
-	public List<int> enemyIsParalyzed = new List<int>();
 	public List<int> playerIsSleeping = new List<int>();
-	public List<int> enemyIsSleeping = new List<int>();
 	public List<bool> playerIsPoisoned = new List<bool>();
-	public List<bool> enemyIsPoisoned = new List<bool>();
 
 	private static StatusEffects _S;
 	public static StatusEffects S { get { return _S; } set { _S = value; } }
@@ -56,16 +52,9 @@ public class StatusEffects : MonoBehaviour {
 		_ = Battle.S;
 
 		playerIsDefending = new List<bool>() { false, false, false };
-		enemyIsDefending = new List<bool>() { false, false, false, false, false };
-
 		playerIsParalyzed = new List<int>() { 0, 0, 0 };
-		enemyIsParalyzed = new List<int>() { 0, 0, 0, 0, 0 };
-
 		playerIsSleeping = new List<int>() { 0, 0, 0 };
-		enemyIsSleeping = new List<int>() { 0, 0, 0, 0, 0 };
-
 		playerIsPoisoned = new List<bool>() { false, false, false };
-		enemyIsPoisoned = new List<bool>() { false, false, false, false, false };
 	}
 
 	// Called at start of a battle
@@ -94,13 +83,6 @@ public class StatusEffects : MonoBehaviour {
                 playerPoisonedIcons[i].SetActive(true);
             }
 		}
-
-		for (int i = 0; i < enemyIsPoisoned.Count; i++) {
-			enemyIsDefending[i] = false;
-			enemyIsPoisoned[i] = false;
-			enemyIsParalyzed[i] = 0;
-			enemyIsSleeping[i] = 0;
-		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +94,7 @@ public class StatusEffects : MonoBehaviour {
 			playerIsDefending[ndx] = true;
 			playerShields[ndx].SetActive(true);
 		} else {
-			enemyIsDefending[ndx] = true;
+			_.enemyStats[ndx].isDefending = true;
 			enemyShields[ndx].SetActive(true);
 		}
 
@@ -125,18 +107,18 @@ public class StatusEffects : MonoBehaviour {
             playerIsDefending[ndx] = false;
             playerShields[ndx].SetActive(false);
         } else {
-            enemyIsDefending[ndx] = false;
-            enemyShields[ndx].SetActive(false);
+			_.enemyStats[ndx].isDefending = false;
+			enemyShields[ndx].SetActive(false);
         }
     }
 	// If defending, cut attackDamage in half
 	public void CheckIfDefending(bool isPlayer, int ndx) {
 		if (isPlayer) {
-			if (playerIsDefending[ndx] == true) {
+			if (playerIsDefending[ndx]) {
 				_.attackDamage /= 2;
 			}
 		} else {
-			if (enemyIsDefending[ndx] == true) {
+			if (_.enemyStats[ndx].isDefending) {
 				_.attackDamage /= 2;
 			}
 		}
@@ -148,10 +130,10 @@ public class StatusEffects : MonoBehaviour {
 	public void AddPoisoned(int ndx) {
 		// If this turn is a player's turn...
 		if (_.PlayerNdx() != -1) {
-			enemyIsPoisoned[ndx] = true;
+			_.enemyStats[ndx].isPoisoned = true;
 
-            // Activate poisoned icon
-            enemyPoisonedIcons[ndx].SetActive(true);
+			// Activate poisoned icon
+			enemyPoisonedIcons[ndx].SetActive(true);
 
             _.dialogue.DisplayText(Party.S.stats[_.PlayerNdx()].name + " has poisoned " + _.enemyStats[ndx].name + " indefinitely" + "...\n...not nice!");
 		} else {
@@ -184,10 +166,10 @@ public class StatusEffects : MonoBehaviour {
 				_.dialogue.DisplayText(Party.S.stats[ndx].name + " is no longer poisoned!");
 			}
 		} else {
-			enemyIsPoisoned[ndx] = false;
+			_.enemyStats[ndx].isPoisoned = false;
 
-            // Deactivate status ailment icon
-            enemyPoisonedIcons[ndx].SetActive(false);
+			// Deactivate status ailment icon
+			enemyPoisonedIcons[ndx].SetActive(false);
 
 			// Display text
 			if (displayText) {
@@ -204,7 +186,7 @@ public class StatusEffects : MonoBehaviour {
 				return true;
 			}
 		} else {
-			if (enemyIsPoisoned[ndx] == true) {
+			if (_.enemyStats[ndx].isPoisoned == true) {
 				return true;
 			}
 		}
@@ -264,7 +246,9 @@ public class StatusEffects : MonoBehaviour {
 				return;
 			}
 		}
-		_.mode = eBattleMode.statusAilment;
+
+		// Check if paralyzed
+		_.mode = eBattleMode.checkIfParalyzed;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -273,10 +257,10 @@ public class StatusEffects : MonoBehaviour {
 	public void AddParalyzed(int ndx) {
 		// If this turn is a player's turn...
 		if (_.PlayerNdx() != -1) {
-			enemyIsParalyzed[ndx] = Random.Range(2, 4);
+            _.enemyStats[ndx].isParalyzed = Random.Range(2, 4);
 
-            // Activate paralyzed icon
-            enemyParalyzedIcons[ndx].SetActive(true);
+			// Activate paralyzed icon
+			enemyParalyzedIcons[ndx].SetActive(true);
 
             // Reset next turn move index & deactivate help bubble
             _.StopCallingForHelp(ndx);
@@ -318,10 +302,10 @@ public class StatusEffects : MonoBehaviour {
 				_.dialogue.DisplayText(Party.S.stats[ndx].name + " is no longer paralyzed!");
 			}
 		} else {
-			enemyIsParalyzed[ndx] = 0;
+			_.enemyStats[ndx].isParalyzed = 0;
 
-            // Deactivate status ailment icon
-            enemyParalyzedIcons[ndx].SetActive(false);
+			// Deactivate status ailment icon
+			enemyParalyzedIcons[ndx].SetActive(false);
 
 			// Display text
 			if (displayText) {
@@ -338,10 +322,11 @@ public class StatusEffects : MonoBehaviour {
 				return true;
 			}
 		} else {
-			if (enemyIsParalyzed[ndx] > 0) {
+			if (_.enemyStats[ndx].isParalyzed > 0) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -354,9 +339,9 @@ public class StatusEffects : MonoBehaviour {
 				counterIsDepleted = true;
 			}
 		} else {
-			enemyIsParalyzed[ndx] -= 1;
+			_.enemyStats[ndx].isParalyzed -= 1;
 
-			if (enemyIsParalyzed[ndx] <= 0) {
+			if (_.enemyStats[ndx].isParalyzed <= 0) {
 				counterIsDepleted = true;
 			}
 		}
@@ -377,7 +362,9 @@ public class StatusEffects : MonoBehaviour {
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
 		}
-		_.mode = eBattleMode.statusAilment;
+
+		// Check if sleeping
+		_.mode = eBattleMode.checkIfSleeping;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -386,10 +373,10 @@ public class StatusEffects : MonoBehaviour {
 	public void AddSleeping(int ndx) {
 		// If this turn is a player's turn...
 		if (_.PlayerNdx() != -1) {
-			enemyIsSleeping[ndx] = Random.Range(2, 4);
+			_.enemyStats[ndx].isSleeping = Random.Range(2, 4);
 
-            // Activate sleeping icon
-            enemySleepingIcons[ndx].SetActive(true);
+			// Activate sleeping icon
+			enemySleepingIcons[ndx].SetActive(true);
 
             // Reset next turn move index & deactivate help bubble
             _.StopCallingForHelp(ndx);
@@ -431,10 +418,10 @@ public class StatusEffects : MonoBehaviour {
 				_.dialogue.DisplayText(Party.S.stats[ndx].name + " is no longer asleep!");
 			}
 		} else {
-			enemyIsSleeping[ndx] = 0;
+			_.enemyStats[ndx].isSleeping = 0;
 
-            // Deactivate status ailment icon
-            enemySleepingIcons[ndx].SetActive(false);
+			// Deactivate status ailment icon
+			enemySleepingIcons[ndx].SetActive(false);
 
 			// Display text
 			if (displayText) {
@@ -451,7 +438,7 @@ public class StatusEffects : MonoBehaviour {
 				return true;
 			}
 		} else {
-			if (enemyIsSleeping[ndx] > 0) {
+			if (_.enemyStats[ndx].isSleeping > 0) {
 				return true;
 			}
 		}
@@ -467,9 +454,9 @@ public class StatusEffects : MonoBehaviour {
 				counterIsDepleted = true;
 			}
 		} else {
-			enemyIsSleeping[ndx] -= 1;
+			_.enemyStats[ndx].isSleeping -= 1;
 
-			if (enemyIsSleeping[ndx] <= 0) {
+			if (_.enemyStats[ndx].isSleeping <= 0) {
 				counterIsDepleted = true;
 			}
 		}
@@ -479,18 +466,18 @@ public class StatusEffects : MonoBehaviour {
 			// ...no longer sleeping
 			RemoveSleeping(isPlayer, ndx);
 
-			if (isPlayer) {
-				// Anim
-				//_.playerAnimator[ndx].CrossFade("Win_Battle", 0);
-			}
+			// Announce they're done sleeping
+			_.mode = eBattleMode.doneSleeping;
 		} else {
 			// Display text
 			_.dialogue.DisplayText(sleeping + " is asleep and won't wake up!");
 
 			// Audio: Deny
 			AudioManager.S.PlaySFX(eSoundName.deny);
+
+			// Announce they're sleeping
+			_.mode = eBattleMode.isSleeping;
 		}
-		_.mode = eBattleMode.statusAilment;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////
@@ -529,6 +516,35 @@ public class StatusEffects : MonoBehaviour {
 				// ...deactivate poisoned icons
 				overworldPoisonedIcons[i].SetActive(false);
 				pauseScreenPoisonedIcons[i].SetActive(false);
+			}
+		}
+	}
+
+	// In battle, activates status effect icons for all affected enemy combatants 
+	public void UpdateActivatedEnemyStatusIcons() {
+		// Deactivate all enemy status icons
+		Utilities.S.SetActiveList(enemyShields, false);
+		Utilities.S.SetActiveList(enemyPoisonedIcons, false);
+		Utilities.S.SetActiveList(enemyParalyzedIcons, false);
+		Utilities.S.SetActiveList(enemySleepingIcons, false);
+
+		// Activate icon if affected by status effect 
+		for (int i = 0; i < _.enemyStats.Count; i++) {
+			// Defending
+			if (_.enemyStats[i].isDefending) {
+				enemyShields[i].SetActive(true);
+			}
+			// Poisoned
+			if (_.enemyStats[i].isPoisoned) {
+				enemyPoisonedIcons[i].SetActive(true);
+			}
+			// Paralyzed
+			if (_.enemyStats[i].isParalyzed > 0) {
+				enemyParalyzedIcons[i].SetActive(true);
+			}
+			// Sleeping
+			if (_.enemyStats[i].isSleeping > 0) {
+				enemySleepingIcons[i].SetActive(true);
 			}
 		}
 	}

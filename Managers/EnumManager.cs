@@ -10,7 +10,7 @@ public enum eBattleMode {
     qteInitialize, qte, itemMenu, spellMenu, gearMenu, triedToRunFromBoss,
     enemyTurn, enemyAction,
     dropItem, addExpAndGold, addExpAndGoldNoDrops, partyDeath, levelUp, returnToWorld, noInputPermitted,
-    statusAilment, playerDead, enemyDead
+    checkIfParalyzed, checkIfSleeping, doneSleeping, isSleeping, playerDead, enemyDead
 };
 
 public enum eCamMode { freezeCam, followAll, followUp, followDown, followLR, noTarget };
