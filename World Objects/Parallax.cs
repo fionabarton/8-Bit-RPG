@@ -22,46 +22,44 @@ public class Parallax : MonoBehaviour {
 	}
 
 	public IEnumerator FixedUpdateCoroutine () {
-		if (!GameManager.S.paused) { 
-			// Get this game object's position
-			pos = transform.position;
+		// Get this game object's position
+		pos = transform.position;
 
-			switch (mode) {
-                case eParallax.autoScroll:
-                    pos.x += speedModifier * Time.fixedDeltaTime;
-                    break;
+		switch (mode) {
+            case eParallax.autoScroll:
+                pos.x += speedModifier * Time.fixedDeltaTime;
+                break;
 
-                case eParallax.scrollWithPlayer:
-					// Get current player position
-					currentPlayerPos = Player.S.gameObject.transform.position;
+            case eParallax.scrollWithPlayer:
+				// Get current player position
+				currentPlayerPos = Player.S.gameObject.transform.position;
 
-					// If player is moving horizontally, apply parallax scrolling
-					if(currentPlayerPos != previousFramePlayerPos) {
-						if (Input.GetAxisRaw("Horizontal") > 0) {
-                            if (!Player.S.hasRunningShoes) {
-								pos.x += speedModifier * Time.fixedDeltaTime;
-							} else {
-								pos.x += (speedModifier * 2) * Time.fixedDeltaTime;
-							}	
-						} else if (Input.GetAxisRaw("Horizontal") < 0) {
-							if (!Player.S.hasRunningShoes) {
-								pos.x -= speedModifier * Time.fixedDeltaTime;
-							} else {
-								pos.x -= (speedModifier * 2) * Time.fixedDeltaTime;
-							}
+				// If player is moving horizontally, apply parallax scrolling
+				if(currentPlayerPos != previousFramePlayerPos) {
+					if (Input.GetAxisRaw("Horizontal") > 0) {
+                        if (!Player.S.hasRunningShoes) {
+							pos.x += speedModifier * Time.fixedDeltaTime;
+						} else {
+							pos.x += (speedModifier * 2) * Time.fixedDeltaTime;
+						}	
+					} else if (Input.GetAxisRaw("Horizontal") < 0) {
+						if (!Player.S.hasRunningShoes) {
+							pos.x -= speedModifier * Time.fixedDeltaTime;
+						} else {
+							pos.x -= (speedModifier * 2) * Time.fixedDeltaTime;
 						}
 					}
+				}
  
-					// Cache player position for next frame
-					previousFramePlayerPos = Player.S.gameObject.transform.position;
-					break;
-            }
+				// Cache player position for next frame
+				previousFramePlayerPos = Player.S.gameObject.transform.position;
+				break;
+        }
 
-			// Set this game object's position
-			transform.position = pos;
+		// Set this game object's position
+		transform.position = pos;
 
-			yield return new WaitForFixedUpdate ();
-			StartCoroutine ("FixedUpdateCoroutine");
-		}
+		yield return new WaitForFixedUpdate ();
+		StartCoroutine ("FixedUpdateCoroutine");
 	}
 }
