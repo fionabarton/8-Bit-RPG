@@ -15,12 +15,26 @@ public class AudioManager : MonoBehaviour {
 
 	public float previousVolumeLvl;
 
+	// On start battle, cache currently played song's time, then after battle when the scene is reloaded,
+	// the song will played at the time it was stopped at
+	public float previousTime;
+
 	private static AudioManager _S;
 	public static AudioManager S { get { return _S; } set { _S = value; } }
 
 	void Awake() {
 		S = this;
 	}
+
+	/*
+	 * 1) On scene load, 
+	 *		if the previous scene's name == "Battle", 
+	 *			Store current songNdx & time
+	 * 2) Play new song
+	 * 3) On scene load, 
+	 *		if the previous scene's name == "Battle", 
+	 *			Play song with stored songNdx & time
+	 */
 
 	void Start() {
 		// Add Loop() to UpdateManager
@@ -94,6 +108,12 @@ public class AudioManager : MonoBehaviour {
 
 		// Reset current song time
 		bgmCS[currentSongNdx].time = 0;
+
+		// If previous scene was "Battle",
+		// set song time to the cached value of when it was stopped (right before the battle started)
+		if (GameManager.S.previousScene == "Battle" && songName != eSongName.startBattle) {
+			bgmCS[currentSongNdx].time = previousTime;
+        }
 
 		// Stop ALL BGM
 		for (int i = 0; i < bgmCS.Count; i++) {

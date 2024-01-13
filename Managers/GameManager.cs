@@ -233,9 +233,6 @@ public class GameManager : MonoBehaviour {
 				// Add Update & Fixed Update Delegate
 				UpdateManager.updateDelegate += Battle.S.Loop;
 				UpdateManager.fixedUpdateDelegate += Battle.S.FixedLoop;
-
-				// Audio: Ninja
-				AudioManager.S.PlaySong(eSongName.ninja);
 				
 				Player.S.canMove = false;
 				break;
