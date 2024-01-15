@@ -34,8 +34,9 @@ public class Parallax : MonoBehaviour {
 				// Get current player position
 				currentPlayerPos = Player.S.gameObject.transform.position;
 
-				// If player is moving horizontally, apply parallax scrolling
+				// If player is moving, apply parallax scrolling
 				if(currentPlayerPos != previousFramePlayerPos) {
+					// Horizontal 
 					if (Input.GetAxisRaw("Horizontal") > 0) {
                         if (!Player.S.hasRunningShoes) {
 							pos.x += speedModifier * Time.fixedDeltaTime;
@@ -47,6 +48,21 @@ public class Parallax : MonoBehaviour {
 							pos.x -= speedModifier * Time.fixedDeltaTime;
 						} else {
 							pos.x -= (speedModifier * 2) * Time.fixedDeltaTime;
+						}
+					}
+
+					// Vertical
+					if (Input.GetAxisRaw("Vertical") > 0) {
+                        if (!Player.S.hasRunningShoes) {
+							pos.y += (speedModifier * 0.5f) * Time.fixedDeltaTime;
+						} else {
+							pos.y += (speedModifier * 0.5f) * Time.fixedDeltaTime;
+						}	
+					} else if (Input.GetAxisRaw("Vertical") < 0) {
+						if (!Player.S.hasRunningShoes) {
+							pos.y -= speedModifier * Time.fixedDeltaTime;
+						} else {
+							pos.y -= speedModifier * Time.fixedDeltaTime;
 						}
 					}
 				}
