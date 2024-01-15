@@ -277,6 +277,9 @@ public class ItemMenu : MonoBehaviour {
 				} else {
 					Items.S.battle.CantUseItemInBattle();
 				}
+
+				// Deactivate item description message
+				Battle.S.UI.descriptionMessageGO.SetActive(false);
 			} else { // if Overworld
 				if (item.name == "Health Potion") {
 					Items.S.world.AddFunctionToButton(Items.S.world.HPPotion, "Heal which party member?", item);
@@ -292,8 +295,6 @@ public class ItemMenu : MonoBehaviour {
 					Items.S.world.CantUseItem();
 				}
 			}
-
-			//Battle.S.PlayerTurn();
 		}
 	}
 }
