@@ -494,7 +494,11 @@ public class SpellMenu : MonoBehaviour {
 			} else {
 				Spells.S.CantUseSpell("Can't use this skill during battle!");
 			}
-		} else { // if Overworld
+
+			// Deactivate skill description message
+			Battle.S.UI.descriptionMessageGO.SetActive(false);
+		}
+		else { // if Overworld
 			if (spell.name == "Heal") {
 				Spells.S.world.AddFunctionToButton(Spells.S.world.HealSelectedPartyMember, "Heal which party member?", spell);
 			} else if (spell.name == "Warp") {
