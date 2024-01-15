@@ -40,6 +40,10 @@ public class BattleUI : MonoBehaviour {
 	public Text optionsButtonsNameHeaderText;
 	public Text optionsButtonsAmountHeaderText;
 
+	// Description display message (provides text description of Items & Skills)
+	public GameObject descriptionMessageGO;
+	public Text descriptionMessageText;
+
 	// Enemy sprites/buttons
 	public List<GameObject> enemyButtonsGO;
 	public List<Button> enemyButtonsCS;
@@ -216,16 +220,7 @@ public class BattleUI : MonoBehaviour {
 			}
 		}
 	}
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -4.875f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -1.625f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 1.625f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 4.875f, 0);
 
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[0], -6.5f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[1], -3.25f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[2], 0, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[3], 3.25f, 0);
-	//Utilities.S.SetLocalPosition(Battle.S.enemySprites[4], 6.5f, 0);
 	public void TargetAllEnemies() {
 		// Deactivate all cursors
 		Utilities.S.SetActiveList(enemyButtonsCursors, false);
@@ -477,7 +472,8 @@ public class BattleUI : MonoBehaviour {
 
 					if (itemOrSpellNames) {
 						AssignItemNames();
-                    } else {
+					}
+					else {
 						AssignSpellNames();
 					}
 
@@ -509,6 +505,25 @@ public class BattleUI : MonoBehaviour {
 			// Audio: Selection (when a new gameObject is selected)
 			Utilities.S.PlayButtonSelectedSFX(ref previousSelectedOptionButtonGO);
 		}
+
+		// Display item or skill description text
+		if (itemOrSpellNames) {
+			descriptionMessageText.text = Inventory.S.GetBattleItemList()[firstSlotNdx + GetSelectedOptionsSlotIndex()].description;
+		} else {
+			descriptionMessageText.text = Party.S.stats[_.PlayerNdx()].spells[firstSlotNdx + GetSelectedOptionsSlotIndex()].description;
+		}
+	}
+
+	// Check if an option slot is selected and return its index
+	public int GetSelectedOptionsSlotIndex() {
+		for(int i = 0; i < optionButtonsGO.Count; i++) {
+			if (UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject == optionButtonsGO[i]) {
+				return i;
+			}
+		}
+
+		Debug.Log("Did not return a valid value!");
+		return -1;
 	}
 
 	// Allows scrolling when the vertical axis is held down 
@@ -580,7 +595,6 @@ public class BattleUI : MonoBehaviour {
 				string ndx = (firstSlotNdx + i + 1).ToString();
 				optionButtonsText[i].text = ndx + ") " + Inventory.S.GetBattleItemList()[firstSlotNdx + i].name;
 				amountButtonsText[i].text = "x" + Inventory.S.GetItemCount(Inventory.S.GetBattleItemList()[firstSlotNdx + i]).ToString();
-				//Inventory.S.GetItemList()[firstSlotNdx + i].type = 
 			}
 		}
 	}
@@ -663,5 +677,14 @@ public class BattleUI : MonoBehaviour {
 		// Set 'Name' and 'Amount' text 
 		optionsButtonsNameHeaderText.text = nameText;
 		optionsButtonsAmountHeaderText.text = amountText;
+	}
+
+	// Set sorting layer and order in layer for all enemy sprite renderers
+	// '0' is normal, '-1' is to appear behind item/skill description message
+	public void SetEnemySpritesSortingOrder(string layerName, int orderInLayer) {
+        for(int i = 0; i < _.enemySRends.Count; i++) {
+			_.enemySRends[i].sortingLayerName = layerName;
+			_.enemySRends[i].sortingOrder = orderInLayer;
+		}
 	}
 }

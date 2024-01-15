@@ -320,8 +320,14 @@ public class BattlePlayerActions : MonoBehaviour {
 			Utilities.S.SetSelectedGO(_.UI.optionButtonsGO[0]);
 			_.UI.previousSelectedOptionButtonGO = _.UI.optionButtonsGO[0];
 
-			// Activates text header above option slots 
+			// Activate text header above option slots 
 			_.UI.ActivateOptionsButtonTextHeader("Skill Name", "MP Cost");
+
+			// Activate description message
+			_.UI.descriptionMessageGO.SetActive(true);
+
+			// Set enemy sprites order in layer to appear behind skills description message
+			_.UI.SetEnemySpritesSortingOrder("UI", -1);
 
 			// Deactivate unused option slots
 			_.UI.DeactivateUnusedSlots(Party.S.stats[_.PlayerNdx()].spellNdx);
@@ -372,8 +378,14 @@ public class BattlePlayerActions : MonoBehaviour {
 			Utilities.S.SetSelectedGO(_.UI.optionButtonsGO[0]);
 			_.UI.previousSelectedOptionButtonGO = _.UI.optionButtonsGO[0];
 
-			// Activates text header above option slots 
+			// Activate text header above option slots 
 			_.UI.ActivateOptionsButtonTextHeader("Item Name", "Amount Owned");
+
+			// Activate description message
+			_.UI.descriptionMessageGO.SetActive(true);
+
+			// Set enemy sprites order in layer to appear behind items description message
+			_.UI.SetEnemySpritesSortingOrder("UI", -1);
 
 			// Deactivate unused option slots
 			_.UI.DeactivateUnusedSlots(Inventory.S.GetItemList().Count);

@@ -506,6 +506,12 @@ public class Battle : MonoBehaviour {
 		// Deactivate Enemy "Help" Word Bubbles
 		Utilities.S.SetActiveList(UI.enemyHelpBubblesGO, false);
 
+		// Deactivate description message
+		UI.descriptionMessageGO.SetActive(false);
+
+		// Set enemy sprites order in layer to appear in front of items/skills description message
+		UI.SetEnemySpritesSortingOrder("Above UI", 0);
+
 		// Reset Exp/Gold to add
 		expToAdd = 0;
 		goldToAdd = 0;
@@ -691,6 +697,12 @@ public class Battle : MonoBehaviour {
 
 		// Deactivate options buttons text header (ex. "Item Name", "MP Cost")
 		UI.optionsButtonsHeaderTextGO.SetActive(false);
+
+		// Deactivate description message
+		UI.descriptionMessageGO.SetActive(false);
+
+		// Set enemy sprites order in layer to appear in front of items/skills description message
+		UI.SetEnemySpritesSortingOrder("Above UI", 0);
 	}
 
 	// Reset next turn move index & deactivate help bubble
