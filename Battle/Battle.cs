@@ -688,6 +688,9 @@ public class Battle : MonoBehaviour {
 		for (int i = 0; i < partyStatAnims.Count; i++) {
 			UI.UpdatePartyStats(i);
 		}
+
+		// Deactivate options buttons text header (ex. "Item Name", "MP Cost")
+		UI.optionsButtonsHeaderTextGO.SetActive(false);
 	}
 
 	// Reset next turn move index & deactivate help bubble

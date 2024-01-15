@@ -5,7 +5,10 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour {
 	[Header("Set in Inspector")]
+	// Text display
 	public GameObject displayMessageGO;
+
+	// Player actions
 	public GameObject playerActionButtonsGO;
 
 	public GameObject battleMenu;
@@ -31,6 +34,11 @@ public class BattleUI : MonoBehaviour {
 	public List<Text> optionButtonsText;
 	public List<GameObject> amountButtonsGO;
 	public List<Text> amountButtonsText;
+
+	// Option buttons headers (ex. "Item Name", "MP Cost")
+	public GameObject optionsButtonsHeaderTextGO;
+	public Text optionsButtonsNameHeaderText;
+	public Text optionsButtonsAmountHeaderText;
 
 	// Enemy sprites/buttons
 	public List<GameObject> enemyButtonsGO;
@@ -645,5 +653,15 @@ public class BattleUI : MonoBehaviour {
 				sRend.sortingLayerName = layerName;
 			}
 		}
+	}
+
+	// Activates text header above options buttons (ex. "Item Name", "MP Cost")
+	public void ActivateOptionsButtonTextHeader(string nameText, string amountText) {
+		// Activate header parent gameobject
+		optionsButtonsHeaderTextGO.SetActive(true);
+
+		// Set 'Name' and 'Amount' text 
+		optionsButtonsNameHeaderText.text = nameText;
+		optionsButtonsAmountHeaderText.text = amountText;
 	}
 }
