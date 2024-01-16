@@ -66,14 +66,22 @@ public class ShopScreen_DisplayPotentialStats : MonoBehaviour {
 			// Find difference between current & potential Stats
 			List<int> statDifference = new List<int>() { potential[0] - Party.S.stats[i].STR, potential[1] - Party.S.stats[i].DEF, potential[2] - Party.S.stats[i].WIS, potential[3] - Party.S.stats[i].AGI };
 
+			// This item has the same stats as the equipped item and would not change the party members stats
+			if(statDifference[0] == 0 && statDifference[1] == 0 && statDifference[2] == 0 && statDifference[3] == 0) {
+				statsNameText[i].text = "No stat\nchange!";
+				statsAmountText[i].text = "";
+				anim[i].CrossFade("Idle", 0);
+				continue;
+			}
+
 			string nameString = "";
 			string amountString = "";
 			int totaStatDifference = 0;
 
 			// Build stat name and amount strings
-			for (int j = 0; j < statDifference.Count; j++) {
-				if (statDifference[j] != 0) {
-					switch (j) {
+			for (int k = 0; k < statDifference.Count; k++) {
+				if (statDifference[k] != 0) {
+					switch (k) {
 						case 0:
 							nameString += "STR\n";
 							break;
@@ -88,12 +96,12 @@ public class ShopScreen_DisplayPotentialStats : MonoBehaviour {
 							break;
 					}
 
-					if (statDifference[j] > 0) {
+					if (statDifference[k] > 0) {
 						amountString += "+";
 					}
 
-					amountString += statDifference[j] + "\n";
-					totaStatDifference += statDifference[j];
+					amountString += statDifference[k] + "\n";
+					totaStatDifference += statDifference[k];
 				}
 			}
 
