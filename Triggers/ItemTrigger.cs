@@ -13,9 +13,24 @@ public class ItemTrigger : ActivateOnButtonPress {
 	// If != 0, this is a quest item. Gives the index of which quest is completed to QuestManager.cs
 	public int		questItemNdx = -1;
 
-	protected override void Action() {
+	// Deactivated when item is picked up by player 
+	public GameObject solidColliderGO;
+
+	[Header("Set Dynamically")]
+	private SpriteRenderer	sRend;
+	private BoxCollider2D	boxColl;
+
+    private void Start() {
+		sRend = GetComponent<SpriteRenderer>();
+		boxColl = GetComponent<BoxCollider2D>();
+	}
+
+    protected override void Action() {
 		// Set Camera to Item gameObject
 		CamManager.S.ChangeTarget(gameObject, true);
+
+		// Audio: Win
+		StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 
 		// Get and position Poof game object
 		GameObject poof = ObjectPool.S.GetPooledObject("Poof");
@@ -30,8 +45,11 @@ public class ItemTrigger : ActivateOnButtonPress {
 		// Display Dialogue 
 		DialogueManager.S.DisplayText("Neat, a " + Items.S.items[(int)item].name + "! The party adds it to their inventory!");
 
-		// Deactivate gameObject
-		gameObject.SetActive(false);
+		// Deactivate sprite renderer, trigger, & collider
+		// (Would prefer deactivating gameobject, but that would kill the audio coroutine called above)
+		sRend.enabled = false;
+		boxColl.enabled = false;
+		solidColliderGO.SetActive(false);
 
 		// Deactivate...PERMANENTLY! (KeyItemManager.cs)
 		if (keyItemNdx != -1) {
