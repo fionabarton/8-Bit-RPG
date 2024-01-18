@@ -8,35 +8,27 @@ public class Flicker : MonoBehaviour {
 	public SpriteRenderer sRend;
 
 	[Header("Set Dynamically")]
-	public bool isInvincible; // enables StartBattle() in RPGEnemy.cs upon collision w/ Enemies
+	public bool isInvincible; 
 	public bool isFlashing;
 	private float timeToFlash;
 	private float flashRate;
 	private float timeToEndInvincibility;
 
 	public void FixedLoop() {
-		if (!GameManager.S.paused) {
-			if (isFlashing) {
-				if (Time.time >= timeToEndInvincibility) {
-					EndInvincibility();
-				} else {
-					if (Time.time >= timeToFlash) {
-						// "Flash" the sprite by enabling its SpriteRenderer
-						sRend.enabled = !sRend.enabled;
+		if (isFlashing) {
+			if (Time.time >= timeToEndInvincibility) {
+				EndInvincibility();
+			} else {
+				if (Time.time >= timeToFlash) {
+					// "Flash" the sprite by enabling its SpriteRenderer
+					sRend.enabled = !sRend.enabled;
 
-						// Increase the rate at which the sprite will flash
-						flashRate -= 0.01f;
+					// Increase the rate at which the sprite will flash
+					flashRate -= 0.01f;
 
-						// Reset the timer
-						timeToFlash = Time.time + flashRate;
-					}
+					// Reset the timer
+					timeToFlash = Time.time + flashRate;
 				}
-			}
-		} else {
-			if (!GameManager.S.IsBattling()) {
-				// Effectively "pauses" both timers when the game is paused
-				timeToEndInvincibility += Time.fixedDeltaTime;
-				timeToFlash += Time.fixedDeltaTime;
 			}
 		}
 	}
