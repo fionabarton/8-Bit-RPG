@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour {
 	public string previousScene;
 	private string previousPreviousScene;
 
+	public bool isNamingNewPartyMember;
+
 	private static GameManager _S;
 	public static GameManager S { get { return _S; } set { _S = value; } }
 
@@ -128,6 +130,8 @@ public class GameManager : MonoBehaviour {
 
 		// Disable player collider
 		Player.S.coll.enabled = false;
+
+		isNamingNewPartyMember = false;
 
 		SceneManager.LoadScene(levelToLoad);
 		StartCoroutine("LoadSettingsCo");

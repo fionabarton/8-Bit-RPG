@@ -43,11 +43,13 @@ public class DialogueManager : MonoBehaviour {
 	}
 
 	public void ThisLoop() {
-		if (Input.GetButtonDown("SNES B Button")) {
-			if (!GameManager.S.paused) {
-				// Deactivate Text Box (On Button Press)
-				if (dialogueFinished && ndx <= 0) {
-					Invoke("EndDialogue", 0.1f);
+		if (!GameManager.S.paused) {
+            if (!GameManager.S.isNamingNewPartyMember) {
+				if (Input.GetButtonDown("SNES B Button")) {
+					// Deactivate Text Box (On Button Press)
+					if (dialogueFinished && ndx <= 0) {
+						Invoke("EndDialogue", 0.1f);
+					}
 				}
 			}
 		}
