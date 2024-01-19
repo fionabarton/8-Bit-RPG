@@ -6,6 +6,9 @@ public class DoorTrigger : ActivateOnButtonPress {
 	[Header("Set in Inspector")]
 	public eDoorMode 		doorMode;
 
+	public string			doorIsLockedMessage = "This door is locked. Find a key, jerk!";
+	public string			doorIsUnlockedMessage = "Great! You unlocked the stupid door!";
+
 	// Gives the index of which door has already been unlocked to DoorManager.cs
 	public int				ndx; // For DoorManager
 
@@ -35,7 +38,7 @@ public class DoorTrigger : ActivateOnButtonPress {
 				StartCoroutine(AudioManager.S.PlaySongThenResumePreviousSong(6));
 			} else {
 				// Display Text
-				DialogueManager.S.DisplayText("This door is locked. Find a key, jerk!");
+				DialogueManager.S.DisplayText(doorIsLockedMessage);
 			}
 			break;
 		case eDoorMode.closed:
@@ -66,7 +69,7 @@ public class DoorTrigger : ActivateOnButtonPress {
 		Inventory.S.RemoveItemFromInventory (Items.S.GetItem(eItem.smallKey));
 
 		// Display Text
-		DialogueManager.S.DisplayText ("Great! You unlocked the stupid door!");
+		DialogueManager.S.DisplayText (doorIsUnlockedMessage);
 
 		// Door Manager
 		DoorManager.S.isUnlocked[ndx] = true;

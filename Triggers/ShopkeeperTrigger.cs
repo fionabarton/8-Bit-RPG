@@ -11,7 +11,10 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
     // Shop Inventory
     public List<eItem> itemsToPopulateInventory;
 
-    public string message = "<color=yellow><Shop Keeper></color> Wanna buy some hot junk? Or maybe you'd rather sell some hot junk instead? Hmmm?";
+    public string offerMessage = "<color=yellow><Shop Keeper></color> Wanna buy some hot junk? Or maybe you'd rather sell some hot junk instead? Hmmm?";
+    public string buyMessage = "Fantastic! What would you like to buy? Hmmm?";
+    public string sellMessage = "How grand! What would you like to sell? Hmmm?";
+    public string noMessage = "Hmmm? Oh, okay, that's cool. Please come again soon!";
 
     // Sets which direction the NPC faces on start
     // 0 = right, 1 = up, 2 = left, 3 = down
@@ -47,7 +50,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         CamManager.S.ChangeTarget(gameObject, true);
 
         // Set Text
-        DialogueManager.S.DisplayText(message);
+        DialogueManager.S.DisplayText(offerMessage);
         GameManager.S.gameSubMenu.SetText("Buy junk!", "Sell junk!", "No thanks.", "", 3);
 
         // Face towards player
@@ -77,7 +80,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         AudioManager.S.PlaySFX(eSoundName.confirm);
 
         DialogueManager.S.ResetSettings();
-        DialogueManager.S.DisplayText("Fantastic! What would you like to buy? Hmmm?");
+        DialogueManager.S.DisplayText(buyMessage);
         mode = eShopkeeperMode.pickedBuy;
     }
 
@@ -86,7 +89,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         AudioManager.S.PlaySFX(eSoundName.confirm);
 
         DialogueManager.S.ResetSettings();
-        DialogueManager.S.DisplayText("How grand! What would you like to sell? Hmmm?");
+        DialogueManager.S.DisplayText(sellMessage);
         mode = eShopkeeperMode.pickedSell;
     }
 
@@ -95,7 +98,7 @@ public class ShopkeeperTrigger : ActivateOnButtonPress {
         AudioManager.S.PlaySFX(eSoundName.deny);
 
         DialogueManager.S.ResetSettings();
-        DialogueManager.S.DisplayText("Hmmm? Oh, okay, that's cool. Please come again soon!");
+        DialogueManager.S.DisplayText(noMessage);
     }
 
     public void ThisLoop() {

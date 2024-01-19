@@ -2,24 +2,29 @@ using UnityEngine;
 
 public class AddPartyMemberTrigger : ActivateOnButtonPress {
     [Header("Set in Inspector")]
-    public int questNdx = -1;
-    public int partyMemberNdx;
+    public int      questNdx = -1;
+    public int      partyMemberNdx;
 
-    public string offerMessage = "Hey, want me to join the party?";
-    public string noMessage = "That's cool, man. Feel free to ask me again though.";
+    public string   offerMessage = "Hey, want me to join the party?";
+    public string   yesMessage = "Good choice. You won't regret it!";
+    public string   noMessage = "That's cool, man. Feel free to ask me again though.";
 
     // Sets which direction the NPC faces on start
     // 0 = right, 1 = up, 2 = left, 3 = down
-    public int walkDirection;
+    public int      walkDirection;
 
     [Header("Set Dynamically")]
     private Animator anim;
 
     // Flip
-    private bool facingRight;
+    private bool    facingRight;
+
+    bool            playerHasAcceptedOffer = false;
+    BoxCollider2D   boxColl;
 
     void Start() {
         anim = GetComponent<Animator>();
+        boxColl = GetComponent<BoxCollider2D>();
 
         // Set animation based on walk direction
         SetWalkDirectionAnimation();
@@ -54,17 +59,40 @@ public class AddPartyMemberTrigger : ActivateOnButtonPress {
         Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
     }
 
+    public void Update() {
+        // If player said yes to offer, on button press start battle
+        if (playerHasAcceptedOffer) {
+            if (Input.GetButtonDown("SNES B Button")) {
+                if (!GameManager.S.paused) {
+                    if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
+                        playerHasAcceptedOffer = false;
+                        
+                        // Deactivate dialogue box & trigger
+                        DialogueManager.S.DeactivateTextBox(false);
+                        boxColl.enabled = false;
+
+                        QuestManager.S.quests[questNdx].isCompleted = true;
+
+                        // Activate KeyboardInput
+                        KeyboardInputMenu.S.Activate(partyMemberNdx, GameManager.S.currentScene);
+
+                        // Audio: Buff 1
+                        AudioManager.S.PlaySFX(eSoundName.buff1);
+                    }
+                }
+            }
+        }
+    }
+
     void Yes() {
-        DialogueManager.S.DeactivateTextBox();
-        DialogueManager.S.ResetSettings();
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSoundName.confirm);
 
-        QuestManager.S.quests[questNdx].isCompleted = true;
+        // Display dialogue 
+        DialogueManager.S.DisplayText(yesMessage);
 
-        // Activate KeyboardInput
-        KeyboardInputMenu.S.Activate(partyMemberNdx, GameManager.S.currentScene);
-
-        // Audio: Buff 1
-        AudioManager.S.PlaySFX(eSoundName.buff1);
+        playerHasAcceptedOffer = true;
+        GameManager.S.isNamingNewPartyMember = true;
     }
 
     void No() {

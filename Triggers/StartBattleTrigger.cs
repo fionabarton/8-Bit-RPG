@@ -10,14 +10,19 @@ public class StartBattleTrigger : ActivateOnButtonPress {
     public List<EnemyStats> enemies;
 
     public string offerMessage = "Hey, wanna fight me?";
+    public string yesMessage = "Yes? Well, then come at me, bro!";
     public string noMessage = "No? How rude!";
 
+    bool playerHasAcceptedOffer = false;
+
     DialogueTrigger dialogueTrigger;
+    BoxCollider2D boxColl;
 
     private void Start() {
         // Disable if quest is completed
         if (!QuestManager.S.quests[questNdx].isCompleted) {
             dialogueTrigger = GetComponent<DialogueTrigger>();
+            boxColl = GetComponent<BoxCollider2D>();
         } else {
             base.OnTriggerExit2D(Player.S.playerTriggerGO.GetComponent<BoxCollider2D>());
 
@@ -53,19 +58,42 @@ public class StartBattleTrigger : ActivateOnButtonPress {
         Utilities.S.SetButtonNavigation(GameManager.S.gameSubMenu.buttonCS[1], GameManager.S.gameSubMenu.buttonCS[0], GameManager.S.gameSubMenu.buttonCS[0]);
     }
 
-    void Yes() {
-        DialogueManager.S.DeactivateTextBox(false);
+    public void Update() {
+        // If player said yes to offer, on button press start battle
+        if (playerHasAcceptedOffer) {
+            if (Input.GetButtonDown("SNES B Button")) {
+                if (!GameManager.S.paused) {
+                    if (DialogueManager.S.dialogueFinished && DialogueManager.S.ndx <= 0) {
+                        // Deactivate dialogue box & trigger
+                        DialogueManager.S.DeactivateTextBox(false);
+                        boxColl.enabled = false;
 
-        // Start battle
-        Player.S.enemyStats = enemies;
-        Player.S.enemyAmount = enemyAmount;
-        StartCoroutine(Player.S.StartBattle());
+                        // Start battle
+                        Player.S.enemyStats = enemies;
+                        Player.S.enemyAmount = enemyAmount;
+                        StartCoroutine(Player.S.StartBattle());
+                    }
+                }
+            }
+        }
+    }
+
+    void Yes() {
+        // Audio: Confirm
+        AudioManager.S.PlaySFX(eSoundName.confirm);
+
+        // Display dialogue 
+        DialogueManager.S.ResetSettings();
+        DialogueManager.S.DisplayText(yesMessage);
+
+        playerHasAcceptedOffer = true;
     }
 
     void No() {
         // Audio: Deny
         AudioManager.S.PlaySFX(eSoundName.deny);
 
+        // Display dialogue 
         DialogueManager.S.ResetSettings();
         DialogueManager.S.DisplayText(noMessage);
     }

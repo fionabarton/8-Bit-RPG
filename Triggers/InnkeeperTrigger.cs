@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class InnkeeperTrigger : ActivateOnButtonPress {
 	[Header("Set in Inspector")]
-	public string	message = "<color=yellow><Inn Keeper></color> Rooms are 10 gold a night. Restores your HP & MP. Would you like to spend the night?";
+	public string	offerMessage = "<color=yellow><Inn Keeper></color> Rooms are 10 gold a night. Restores your HP & MP. Would you like to spend the night?";
+	public string	notEnoughMoneyMessage = "Begone with you, penniless fool! Waste not my worthless time!";
+	public string	partyWasHealedMessage = "Health and magic restored. Bless your heart, babe!";
+	public string	noMessage = "That's cool. Later, bro.";
+
 	public int		cost = 10;
 
 	// Sets which direction the NPC faces on start
@@ -32,7 +36,7 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 		// Set SubMenu Text
 		GameManager.S.gameSubMenu.SetText("Yes", "No");
 
-		DialogueManager.S.DisplayText(message);
+		DialogueManager.S.DisplayText(offerMessage);
 
 		// Face towards player
 		if (anim != null) {
@@ -82,7 +86,7 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 				StartCoroutine("CloseCurtains");
 			} else {
 				// Display Text: Not enough Gold
-				DialogueManager.S.DisplayText("Begone with you, penniless fool! Waste not my worthless time!");
+				DialogueManager.S.DisplayText(notEnoughMoneyMessage);
 			}
 		}
 	}
@@ -126,14 +130,14 @@ public class InnkeeperTrigger : ActivateOnButtonPress {
 		GameManager.S.paused = false;
 
 		DialogueManager.S.ResetSettings();
-		DialogueManager.S.DisplayText("Health and magic restored. Bless your heart, babe!");
+		DialogueManager.S.DisplayText(partyWasHealedMessage);
 	}
 
 	public void No() {
 		AudioManager.S.PlaySFX(eSoundName.deny);
 
 		DialogueManager.S.ResetSettings();
-		DialogueManager.S.DisplayText("That's cool. Later, bro.");
+		DialogueManager.S.DisplayText(noMessage);
 	}
 
 	private void SetWalkDirectionAnimation() {
